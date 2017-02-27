@@ -3,6 +3,7 @@ package com.gedder.gedderalarm;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,8 +26,11 @@ public class MainActivity extends AppCompatActivity {
     //this is how much time we have for alarm in milliseconds
     //everything that has to do with time in android is done with milliseconds
     long milliseconds_until_alarm;
-    boolean alarm_set;
+    public static final String gedder_alarm_saved_variables = "__GEDDER_ALARM_SAVED_VARIABLES__";
+    static long scheduled_alarm_time_in_milliseconds;
+    static boolean alarm_set;
     AlarmManager alarmManager;
+    final int intent_id = 31582;
 
     //this is always called when an activity (can think of Activity == 1 screen) is created.
     @Override
@@ -38,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeVariables() {
         //THIS NEEDS TO BE CHANGED HERE WHEN WE INTRODUCE SAVED VARIABLES:
-        alarm_set = false;
-        milliseconds_until_alarm = 0L;
+        SharedPreferences saved_values = getSharedPreferences(gedder_alarm_saved_variables, 0);
+        alarm_set = saved_values.getBoolean("__WAS_ALARM_SET__", false);
+        milliseconds_until_alarm = saved_values.getLong("__MILL_UNTIL_ALARM__", 0L);
+        scheduled_alarm_time_in_milliseconds = saved_values.getLong("__ALARM_TIME_IN_MILL__", -1L);
+
 
         //Define Views (buttons and text to show seconds for alarm)
         //we are connecing these variables to the actual objects in UI
@@ -62,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 setTime();
             }
         });
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         //This will be called when alarms are set or go off etc...
         updateDynamicVariables();
+        updateSavedVariable();
     }
 
     //this may or may not need to be public, we may need other classes to be able to call this
@@ -79,6 +88,15 @@ public class MainActivity extends AppCompatActivity {
         seconds_text.setText(String.valueOf(milliseconds_until_alarm/1000) + " seconds");
     }
 
+    private void updateSavedVariable(){
+        SharedPreferences saved_values = getSharedPreferences(gedder_alarm_saved_variables, 0);
+        SharedPreferences.Editor editor = saved_values.edit();
+        editor.putBoolean("__WAS_ALARM_SET__", alarm_set);
+        editor.putLong("__MILL_UNTIL_ALARM__", milliseconds_until_alarm);
+        editor.putLong("__ALARM_TIME_IN_MILL__", scheduled_alarm_time_in_milliseconds);
+        editor.commit();
+    }
+
     private void setTime() {
         if(alarm_set){
             alarm_set = false;
@@ -88,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             milliseconds_until_alarm += 5000;
         }
         updateDynamicVariables();
+        updateSavedVariable();
     }
 
     private void startOrCancel() {
@@ -105,35 +124,34 @@ public class MainActivity extends AppCompatActivity {
             startAlarm();
         }
         updateDynamicVariables();
+        updateSavedVariable();
     }
 
     private void startAlarm() {
         Log.e("Start Alarm", "startAlarm method called");
-        Long alarmTime = System.currentTimeMillis() + milliseconds_until_alarm;
+        scheduled_alarm_time_in_milliseconds = System.currentTimeMillis() + milliseconds_until_alarm;
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this,
         //        1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, PendingIntent.getBroadcast(this,
-                1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, PendingIntent.getBroadcast(this,
+        //        1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= 23) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                    alarmTime, PendingIntent.getBroadcast(this,
-                            1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                    scheduled_alarm_time_in_milliseconds, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, PendingIntent.getBroadcast(this,
-                    1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, pendingIntent);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, PendingIntent.getBroadcast(this,
-                    1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+            alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, pendingIntent);
         }
     }
 
     private void cancelAlarm() {
         Log.e("Cancel Alarm", "cancelAlarm method called");
-        if(alarmManager != null){
-            //do something....
-        }
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
     }
 }
+

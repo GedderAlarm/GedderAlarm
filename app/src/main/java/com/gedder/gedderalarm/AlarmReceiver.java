@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("in receiver", "yay");
+        Log.e("AlarmReceiver", "OnReceive method called");
         Toast.makeText(context, "Alarm Triggered", Toast.LENGTH_LONG).show();
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Ringtone r = RingtoneManager.getRingtone(context, notification);
