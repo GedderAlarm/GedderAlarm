@@ -9,20 +9,27 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.gedder.gedderalarm.util.Log;
+
+
 /**
- * Created by jameskluz on 2/24/17.
+ * USER: jameskluz
+ * DATE: 2/24/17.
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("AlarmReceiver", "OnReceive method called");
+        Log.e("AlarmReceiver", "onReceive() called");
+        Log.v("AlarmReceiver", "onReceive() called");
+
         Toast.makeText(context, "Alarm Triggered", Toast.LENGTH_LONG).show();
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Ringtone r = RingtoneManager.getRingtone(context, notification);
         r.play();
+
+        Log.v("AlarmReceiver", "onReceive() ending");
     }
 }

@@ -7,32 +7,46 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.gedder.gedderalarm.util.Log;
+
+
 /**
- * Created by jameskluz on 2/24/17.
+ * USER: jameskluz
+ * DATE: 2/24/17
  */
 
 public class MainActivity extends AppCompatActivity {
-    //This is connected to the display for seconds
-    TextView seconds_text;
-    //This is connected to the button to start or cancel the alarm
-    Button start_cancel_btn;
-    //this is (currently) connected to the "add 10 seconds" button
-    Button set_time_btn;
-    //this is how much time we have for alarm in milliseconds
-    //everything that has to do with time in android is done with milliseconds
-    long milliseconds_until_alarm;
-    public static final String gedder_alarm_saved_variables = "__GEDDER_ALARM_SAVED_VARIABLES__";
-    static long scheduled_alarm_time_in_milliseconds;
-    static boolean alarm_set;
-    AlarmManager alarmManager;
-    final int intent_id = 31582;
+    // This is connected to the display for seconds.
+    private TextView seconds_text;
 
-    //this is always called when an activity (can think of Activity == 1 screen) is created.
+    // This is connected to the button to start or cancel the alarm.
+    private Button start_cancel_btn;
+
+    // This is (currently) connected to the "add 10 seconds" button.
+    private Button set_time_btn;
+
+    // This is how much time we have for alarm in milliseconds.
+    // NOTE: Everything that has to do with time in android is done with milliseconds.
+    private long ms_until_alarm;
+
+    // Keys.
+    public static final String GEDDER_ALARM_SAVED_VARIABLES = "__GEDDER_ALARM_SAVED_VARIABLES__";
+    public static final String GEDDER_ALARM_WAS_ALARM_SET = "__GEDDER_ALARM_WAS_ALARM_SET__";
+    public static final String GEDDER_ALARM_MILL_UNTIL_ALARM = "__GEDDER_ALARM_MILL_UNTIL_ALARM__";
+    public static final String GEDDER_ALARM_ALARM_TIME_IN_MILL =
+            "__GEDDER_ALARM_ALARM_TIME_IN_MILL__";
+
+    // Other necessary private variables.
+    private static long scheduled_alarm_time_in_ms;
+    private static boolean alarm_set;
+    private AlarmManager alarmManager;
+    private final int intent_id = 31582;
+
+    /** This is always called when an activity (can think of Activity == 1 screen) is created. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,29 +55,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeVariables() {
-        //THIS NEEDS TO BE CHANGED HERE WHEN WE INTRODUCE SAVED VARIABLES:
-        SharedPreferences saved_values = getSharedPreferences(gedder_alarm_saved_variables, 0);
-        alarm_set = saved_values.getBoolean("__WAS_ALARM_SET__", false);
-        milliseconds_until_alarm = saved_values.getLong("__MILL_UNTIL_ALARM__", 0L);
-        scheduled_alarm_time_in_milliseconds = saved_values.getLong("__ALARM_TIME_IN_MILL__", -1L);
+        Log.v("Initialize Variables", "initializeVariables() called");
 
+        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
+        alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
+        ms_until_alarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
+        scheduled_alarm_time_in_ms = saved_values.getLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
 
-        //Define Views (buttons and text to show seconds for alarm)
-        //we are connecing these variables to the actual objects in UI
+        /*
+         * Define Views (buttons and text to show seconds for alarm)
+         * we are connecting these variables to the actual objects in UI
+         */
         seconds_text = (TextView) findViewById(R.id.seconds_for_alarm);
         start_cancel_btn = (Button) findViewById(R.id.start_cancel_btn);
         set_time_btn = (Button) findViewById(R.id.set_time);
 
-        //set listeners for buttons (we're saying: "Call these functions when button is pushed")
-        start_cancel_btn.setOnClickListener(new View.OnClickListener()
-        {
+        // Set listeners for buttons (we're saying: "Call these functions when button is pushed").
+        start_cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startOrCancel();
             }
         });
-        set_time_btn.setOnClickListener(new View.OnClickListener()
-        {
+        set_time_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setTime();
@@ -71,53 +85,73 @@ public class MainActivity extends AppCompatActivity {
         });
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        //This will be called when alarms are set or go off etc...
+        // This will be called when alarms are set or go off etc...
         updateDynamicVariables();
         updateSavedVariable();
+
+        Log.v("Initialize Variables", "initializeVariables() ending");
     }
 
-    //this may or may not need to be public, we may need other classes to be able to call this
-    //or we might make a class that contains global information like alarm times
-    public void updateDynamicVariables(){
-        //Set up text shown for start_cancel button
-        if(alarm_set){
+    /**
+     * This may or may not need to be public, we may need other classes to be able to call this.
+     * Or we might make a class that contains global information like alarm times.
+    */
+    private void updateDynamicVariables() {
+        Log.v("UpdateDynamicVariables", "updateDynamicVariables() called");
+
+        // Set up text shown for start_cancel button
+        if (alarm_set) {
             start_cancel_btn.setText("CANCEL ALARM");
         } else {
             start_cancel_btn.setText("START ALARM");
         }
-        seconds_text.setText(String.valueOf(milliseconds_until_alarm/1000) + " seconds");
+        seconds_text.setText(String.valueOf(ms_until_alarm/1000) + " seconds");
+
+        Log.v("UpdateDynamicVariables", "updateDynamicVariables() ending");
     }
 
-    private void updateSavedVariable(){
-        SharedPreferences saved_values = getSharedPreferences(gedder_alarm_saved_variables, 0);
+    private void updateSavedVariable() {
+        Log.v("UpdateSavedVariable", "updateSavedVariable() called");
+
+        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
-        editor.putBoolean("__WAS_ALARM_SET__", alarm_set);
-        editor.putLong("__MILL_UNTIL_ALARM__", milliseconds_until_alarm);
-        editor.putLong("__ALARM_TIME_IN_MILL__", scheduled_alarm_time_in_milliseconds);
-        editor.commit();
+        editor.putBoolean(GEDDER_ALARM_WAS_ALARM_SET, alarm_set);
+        editor.putLong(GEDDER_ALARM_MILL_UNTIL_ALARM, ms_until_alarm);
+        editor.putLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, scheduled_alarm_time_in_ms);
+        editor.apply();
+
+        Log.v("UpdateSavedVariable", "updateSavedVariable() ending");
     }
 
     private void setTime() {
-        if(alarm_set){
+        Log.v("Set Time", "setTime() called");
+
+        if (alarm_set) {
             alarm_set = false;
-            milliseconds_until_alarm = 5000L;
+            ms_until_alarm = 5000L;
         } else {
-            //add 10 seconds or 10000 milliseconds to alarm time
-            milliseconds_until_alarm += 5000;
+            // Add 10 seconds or 10000 milliseconds to alarm time.
+            ms_until_alarm += 5000;
         }
         updateDynamicVariables();
         updateSavedVariable();
+
+        Log.v("Set Time", "setTime() ending");
     }
 
     private void startOrCancel() {
-        //This function is just for our Log, it's for debugging
-        //I'm classifying all of my logs as errors, this is a little severe
-        //but I find it makes it easier to filter through all of the noise
-        //in the debugging window. I'm not married to this, we can change it
-        Log.e("Start/Cancel Alarm", "Start/Cancel Alarm button Pressed");
-        if(alarm_set){
+        /*
+         * This function below is just for our Log, it's for debugging
+         * I'm classifying all of my logs as errors, this is a little severe
+         * but I find it makes it easier to filter through all of the noise
+         * in the debugging window. I'm not married to this, we can change it
+         */
+        Log.e("Start/Cancel Alarm", "Start/Cancel Alarm button pressed");
+        Log.v("Start/Cancel Alarm", "startOrCancel() called");
+
+        if(alarm_set) {
             alarm_set = false;
-            milliseconds_until_alarm = 0L;
+            ms_until_alarm = 0L;
             cancelAlarm();
         } else {
             alarm_set = true;
@@ -125,33 +159,49 @@ public class MainActivity extends AppCompatActivity {
         }
         updateDynamicVariables();
         updateSavedVariable();
+
+        Log.v("Start/Cancel Alarm", "startOrCancel() ending");
     }
 
     private void startAlarm() {
-        Log.e("Start Alarm", "startAlarm method called");
-        scheduled_alarm_time_in_milliseconds = System.currentTimeMillis() + milliseconds_until_alarm;
+        Log.e("Start Alarm", "startAlarm() called");
+        Log.v("Start Alarm", "startAlarm() called");
+
+        scheduled_alarm_time_in_ms = System.currentTimeMillis() + ms_until_alarm;
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this,
-        //        1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, PendingIntent.getBroadcast(this,
-        //        1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
 
         if (Build.VERSION.SDK_INT >= 23) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                    scheduled_alarm_time_in_milliseconds, pendingIntent);
+            Log.v("Start Alarm", "Build.VERSION.SDK_INT >= 23");
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_ms, pendingIntent
+            );
         } else if (Build.VERSION.SDK_INT >= 19) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, pendingIntent);
+            Log.v("Start Alarm", "19 <= Build.VERSION.SDK_INT < 23");
+            alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_ms, pendingIntent
+            );
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_milliseconds, pendingIntent);
+            Log.v("Start Alarm", "Build.VERSION.SDK_INT < 19");
+            alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_ms, pendingIntent);
         }
+
+        Log.v("Start Alarm", "startAlarm() ending");
     }
 
     private void cancelAlarm() {
-        Log.e("Cancel Alarm", "cancelAlarm method called");
+        Log.e("Cancel Alarm", "cancelAlarm() called");
+        Log.v("Cancel Alarm", "cancelAlarm() called");
+
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
         alarmManager.cancel(pendingIntent);
+
+        Log.v("Cancel Alarm", "cancelAlarm() ending");
     }
 }
 
