@@ -12,7 +12,7 @@ package com.gedder.gedderalarm.util;
  * pushing to production, or debugging).
  */
 public class Log {
-    private static final boolean LOG = false;
+    private static final boolean LOG = true;
 
     public static void i(String tag, String string) {
         if (LOG) android.util.Log.i(tag, string);
