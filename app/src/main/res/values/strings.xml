@@ -4,4 +4,6 @@
     <string name="set_alarm">Add 5 Seconds</string>
     <string name="start_alarm">Start Alarm</string>
     <string name="cancel_alarm">Cancel Alarm</string>
+    <string name="alarm_message">ALARM!!!!!!!</string>
+    <string name="stop_alarm_txt">STOP ALARM!</string>
 </resources>

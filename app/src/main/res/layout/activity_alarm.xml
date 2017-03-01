@@ -15,7 +15,7 @@
         android:weightSum="1" >
 
         <TextView
-            android:id="@+id/titleBox0"
+            android:id="@+id/alarm_titleBox0"
             android:background="@android:color/holo_green_light"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -25,7 +25,7 @@
             android:layout_marginStart="16dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="@string/app_title"
+            android:text="@string/alarm_message"
             android:textColor="@android:color/black"
             android:textSize="36sp"
             android:textStyle="normal|bold" />
@@ -45,28 +45,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_alarm"
+            android:text="@string/stop_alarm_txt"
             android:paddingEnd="60dp"
             android:paddingStart="60dp"
             android:id="@+id/stop_alarm"
             android:onClick="playerOneButtonClicked"
             android:textSize="24sp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_alarm"
-            android:paddingEnd="60dp"
-            android:paddingStart="60dp"
-            android:id="@+id/start_cancel_btn"
-            android:textSize="24sp"
-            android:onClick="playerTwoButtonClicked"
-            android:layout_below="@+id/stop_alarm"
-            android:layout_alignStart="@+id/stop_alarm"
-            android:layout_marginTop="27dp" />
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
@@ -82,12 +68,12 @@
         android:layout_marginStart="16dp">
 
         <TextView
-            android:text="0 seconds"
+            android:text="@string/alarm_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/seconds_for_alarm"
+            android:id="@+id/alarm_message"
             android:textSize="36sp"
             tools:textStyle="bold"
             android:textColor="@android:color/black" />

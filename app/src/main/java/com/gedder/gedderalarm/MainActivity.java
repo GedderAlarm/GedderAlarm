@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeVariables() {
-        Log.v("Initialize Variables", "initializeVariables() called");
+        Log.v("Initialize Variables MainActivity", "initializeVariables() called");
 
         SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
         alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
          */
         seconds_text = (TextView) findViewById(R.id.seconds_for_alarm);
         start_cancel_btn = (Button) findViewById(R.id.start_cancel_btn);
-        set_time_btn = (Button) findViewById(R.id.set_time);
+        set_time_btn = (Button) findViewById(R.id.stop_alarm);
 
         // Set listeners for buttons (we're saying: "Call these functions when button is pushed").
         start_cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         updateDynamicVariables();
         updateSavedVariable();
 
-        Log.v("Initialize Variables", "initializeVariables() ending");
+        Log.v("Initialize Variables MainActivity", "initializeVariables() ending");
     }
 
     /**
