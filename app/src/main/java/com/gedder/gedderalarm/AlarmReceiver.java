@@ -20,9 +20,9 @@ import com.gedder.gedderalarm.util.Log;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
-    public static String NOTIFICATION_ID = "NOTIFICATION-ID";
-    public static String NOTIFICATION = "NOTIFICATION";
-    private Notification.Builder mBuilder;
+    //public static String NOTIFICATION_ID = "NOTIFICATION-ID";
+    //public static String NOTIFICATION = "NOTIFICATION";
+    //private Notification.Builder mBuilder;
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("AlarmReceiver", "onReceive() called");
@@ -32,10 +32,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //Ringtone r = RingtoneManager.getRingtone(context, notification);
         //r.play();
-        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = intent.getParcelableExtra(NOTIFICATION);
-        int id = intent.getIntExtra(NOTIFICATION_ID, 0);
-        notificationManager.notify(id, notification);
+        Intent alarmActivityIntent = new Intent(context.getApplicationContext(), AlarmActivity.class);
+        alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(alarmActivityIntent);
         Log.v("AlarmReceiver", "onReceive() ending");
     }
 }

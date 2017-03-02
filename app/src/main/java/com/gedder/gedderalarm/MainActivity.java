@@ -172,49 +172,8 @@ public class MainActivity extends AppCompatActivity {
         Log.v("Start Alarm", "startAlarm() called");
 
         scheduled_alarm_time_in_ms = System.currentTimeMillis() + ms_until_alarm;
-        /******************************************/
-        //TRYING
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-
-        NotificationCompat.InboxStyle inboxStyle =
-                new NotificationCompat.InboxStyle();
-        inboxStyle.setBigContentTitle("Event tracker details:");
-
-        //builder.setStyle(new NotificationCompat.BigTextStyle().bigText("big text"));
-        builder.setStyle(inboxStyle);
-
-        builder.setContentTitle("Alarm");
-        builder.setContentText("ALARM");
-        /*
-        Uri alarmSound = RingtoneManager
-                .getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if(alarmSound == null){
-            alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            if(alarmSound == null) {
-                // alert backup is null, using 2nd backup
-                alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            }
-        }
-
-        builder.setSound(alarmSound);
-        */
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        Intent alarmActivityIntent = new Intent(this, AlarmActivity.class);
-
-        PendingIntent pendingIntentToOpenAlarmActivity = PendingIntent.getActivity(this,0, alarmActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntentToOpenAlarmActivity);
-        //builder.setSmallIcon(R.drawable.ic_launcher);
-        Notification notification = builder.build();
-        /******************************************/
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        /******************************************/
-        //TRYING
-        alarmIntent.putExtra(AlarmReceiver.NOTIFICATION_ID, 1);
-        alarmIntent.putExtra(AlarmReceiver.NOTIFICATION, notification);
-        alarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        /******************************************/
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this, intent_id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
         );
@@ -249,5 +208,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.v("Cancel Alarm", "cancelAlarm() ending");
     }
+    /*
+    @Override
+    void onDestroy(){
+
+    }
+    */
 }
 
