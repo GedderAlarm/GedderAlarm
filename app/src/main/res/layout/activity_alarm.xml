@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/alarm_titleBox0"
-            android:background="@android:color/holo_green_light"
+            android:background="@color/colorAccent"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginEnd="16dp"
@@ -36,7 +36,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@android:color/holo_green_light"
+        android:background="@color/colorAccent"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
@@ -61,7 +61,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@android:color/holo_green_light"
+        android:background="@color/colorAccent"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
@@ -75,7 +75,7 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/alarm_message"
             android:textSize="36sp"
-            tools:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textStyle="normal|bold" />
     </RelativeLayout>
 </LinearLayout>
