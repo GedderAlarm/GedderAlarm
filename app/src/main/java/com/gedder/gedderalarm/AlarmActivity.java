@@ -68,12 +68,12 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void stopAlarm() {
-        if(ringtone.isPlaying()){
+        if(ringtone.isPlaying()) {
             ringtone.stop();
+        }
             Intent MainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
             MainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(MainActivityIntent);
-        }
     }
 
     private void updateSavedVariable() {
