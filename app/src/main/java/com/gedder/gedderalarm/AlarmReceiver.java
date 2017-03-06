@@ -33,7 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //Ringtone r = RingtoneManager.getRingtone(context, notification);
         //r.play();
         Intent alarmActivityIntent = new Intent(context.getApplicationContext(), AlarmActivity.class);
-        alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        alarmActivityIntent.addFlags(/*Intent.FLAG_ACTIVITY_CLEAR_TASK | */ Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(alarmActivityIntent);
         Log.v("AlarmReceiver", "onReceive() ending");
     }

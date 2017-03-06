@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -71,9 +72,16 @@ public class AlarmActivity extends AppCompatActivity {
         if(ringtone.isPlaying()) {
             ringtone.stop();
         }
-            Intent MainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
-            MainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            this.startActivity(MainActivityIntent);
+        Intent MainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+        MainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        //REMOVE COMMENTS WHEN DONE TESTING API 19
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //    finishAndRemoveTask();
+        //} else {
+            finish();
+        //}
+        //REMOVE COMMENT IF WE WANT TO LAUNCH MAIN OR SOME OTHER ACTIVITY AFTER
+        //this.startActivity(MainActivityIntent);
     }
 
     private void updateSavedVariable() {
@@ -87,5 +95,10 @@ public class AlarmActivity extends AppCompatActivity {
         editor.apply();
 
         Log.v("UpdateSavedVariable", "updateSavedVariable() ending");
+    }
+
+    @Override
+    public void onBackPressed(){
+        Log.v("On Back Pressed", "onBackPressed() called");
     }
 }

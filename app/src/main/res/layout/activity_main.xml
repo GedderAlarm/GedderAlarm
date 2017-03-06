@@ -52,8 +52,7 @@
             android:onClick="playerOneButtonClicked"
             android:textSize="24sp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp" />
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:layout_width="wrap_content"
@@ -64,9 +63,17 @@
             android:id="@+id/start_cancel_btn"
             android:textSize="24sp"
             android:onClick="playerTwoButtonClicked"
-            android:layout_below="@+id/stop_alarm"
-            android:layout_alignStart="@+id/stop_alarm"
-            android:layout_marginTop="27dp" />
+            android:layout_centerVertical="true"
+            android:layout_alignStart="@+id/stop_alarm" />
+
+        <Button
+            android:text="Test Frag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/test_frag"
+            android:layout_alignStart="@+id/start_cancel_btn"
+            android:layout_alignEnd="@+id/start_cancel_btn" />
 
     </RelativeLayout>
 
