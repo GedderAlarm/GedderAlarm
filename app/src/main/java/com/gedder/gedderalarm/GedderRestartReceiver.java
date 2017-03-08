@@ -64,6 +64,13 @@ public class GedderRestartReceiver extends BroadcastReceiver {
                 com.gedder.gedderalarm.util.Log.v("Start Alarm", "Build.VERSION.SDK_INT < 19");
                 alarmManager.set(AlarmManager.RTC_WAKEUP, scheduled_alarm_time_in_ms, pendingIntent);
             }
+        } else {
+            //we missed the alarm while the phone was off, reset saved variables
+            SharedPreferences.Editor editor = saved_values.edit();
+            editor.putBoolean(MainActivity.GEDDER_ALARM_WAS_ALARM_SET, false);
+            editor.putLong(MainActivity.GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
+            editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
+            editor.apply();
         }
         Log.v("GedderRestartReceiver", "resetAlarms() called");
     }

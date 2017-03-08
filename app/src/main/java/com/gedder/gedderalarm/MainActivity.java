@@ -1,20 +1,12 @@
 package com.gedder.gedderalarm;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     // This is (currently) connected to the "add 10 seconds" button.
     private Button set_time_btn;
 
-    //this button is for testing
-    private Button button;
-
     // This is how much time we have for alarm in milliseconds.
     // NOTE: Everything that has to do with time in android is done with milliseconds.
     private long ms_until_alarm;
@@ -50,13 +39,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String GEDDER_ALARM_MILL_UNTIL_ALARM = "__GEDDER_ALARM_MILL_UNTIL_ALARM__";
     public static final String GEDDER_ALARM_ALARM_TIME_IN_MILL =
             "__GEDDER_ALARM_ALARM_TIME_IN_MILL__";
-    public static final String GEDDER_ALARM_APP_SHUTDOWN_CORRECTLY = "__GEDDER_ALARM_SHUT_DOWN_CORRECTLY__";
 
     // Other necessary private variables.
     private static long scheduled_alarm_time_in_ms;
     private static boolean alarm_set;
-    //I have an idea for this that isn't fully fleshed out yet
-    private static boolean app_shut_down_correctly;
     private AlarmManager alarmManager;
     private final int intent_id = 31582;
 
@@ -66,64 +52,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeVariables();
-        //initializeVariablesForTesting();
     }
-/*
-    private void initializeVariablesForTesting() {
-        button = (Button) findViewById(R.id.test_frag);
-        //result = (EditText) findViewById(R.id.editTextResult);
-
-        // add button listener
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-                // get prompts.xml view
-                LayoutInflater li = LayoutInflater.from(getApplicationContext());
-                View promptsView = li.inflate(R.layout.dialog_get_time, null);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        getApplicationContext());
-
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(promptsView);
-
-                //final EditText userInput = (EditText) promptsView
-                //        .findViewById(R.id.editTextDialogUserInput);
-
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        // get user input and set it to result
-                                        // edit text
-                                        //result.setText(userInput.getText());
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-
-            }
-        });
-    }
-    */
 
     private void initializeVariables() {
         Log.v("Initialize Variables MainActivity", "initializeVariables() called");
-
         getSavedValues();
 
         /*
@@ -156,17 +88,6 @@ public class MainActivity extends AppCompatActivity {
         Log.v("Initialize Variables MainActivity", "initializeVariables() ending");
     }
 
-    //I have an idea for this that isn't fully fleshed out yet
-    private void resolveBadShutDown() {
-        alarm_set = false;
-        ms_until_alarm = 0L;
-        scheduled_alarm_time_in_ms = -1L;
-    }
-
-    /**
-     * This may or may not need to be public, we may need other classes to be able to call this.
-     * Or we might make a class that contains global information like alarm times.
-    */
     private void updateDynamicVariables() {
         Log.v("UpdateDynamicVariables", "updateDynamicVariables() called");
 
@@ -194,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
         Log.v("UpdateSavedVariable", "updateSavedVariable() ending");
     }
 
+    private void getSavedValues() {
+        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
+        alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
+        ms_until_alarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
+        if(!alarm_set){
+            ms_until_alarm = 0L;
+        }
+        scheduled_alarm_time_in_ms = saved_values.getLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
+    }
+
     private void setTime() {
         Log.v("Set Time", "setTime() called");
 
@@ -211,12 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startOrCancel() {
-        /*
-         * This function below is just for our Log, it's for debugging
-         * I'm classifying all of my logs as errors, this is a little severe
-         * but I find it makes it easier to filter through all of the noise
-         * in the debugging window. I'm not married to this, we can change it
-         */
         Log.e("Start/Cancel Alarm", "Start/Cancel Alarm button pressed");
         Log.v("Start/Cancel Alarm", "startOrCancel() called");
 
@@ -295,23 +220,6 @@ public class MainActivity extends AppCompatActivity {
         getSavedValues();
         updateDynamicVariables();
         Log.e("onResume", "onResume() ending");
-    }
-
-    private void getSavedValues() {
-        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
-        alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
-        ms_until_alarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
-        if(!alarm_set){
-            ms_until_alarm = 0L;
-        }
-        scheduled_alarm_time_in_ms = saved_values.getLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
-        //I have an idea for this that isn't fully fleshed out yet
-        app_shut_down_correctly = saved_values.getBoolean(GEDDER_ALARM_APP_SHUTDOWN_CORRECTLY , false);
-
-        //I have an idea for this that isn't fully fleshed out yet
-        if(!app_shut_down_correctly){
-            //resolveBadShutDown();
-        }
     }
 }
 

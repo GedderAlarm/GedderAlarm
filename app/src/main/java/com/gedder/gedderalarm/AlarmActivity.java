@@ -1,12 +1,9 @@
 package com.gedder.gedderalarm;
 
-import android.app.AlarmManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -97,15 +94,11 @@ public class AlarmActivity extends AppCompatActivity {
         Log.e("UpdateSavedVariable", "updateSavedVariable() ending");
     }
 
+    //This essentially disables the back button, if removed things will break
+    //unless someone addresses what should happen on back press
     @Override
     public void onBackPressed(){
         Log.v("On Back Pressed", "onBackPressed() called");
-        /*
-        if(ringtone.isPlaying()) {
-            ringtone.stop();
-        }
-        finish();
-        */
     }
 
     @Override
