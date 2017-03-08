@@ -124,20 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeVariables() {
         Log.v("Initialize Variables MainActivity", "initializeVariables() called");
 
-        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
-        alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
-        ms_until_alarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
-        if(!alarm_set){
-            ms_until_alarm = 0L;
-        }
-        scheduled_alarm_time_in_ms = saved_values.getLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
-        //I have an idea for this that isn't fully fleshed out yet
-        app_shut_down_correctly = saved_values.getBoolean(GEDDER_ALARM_APP_SHUTDOWN_CORRECTLY , false);
-
-        //I have an idea for this that isn't fully fleshed out yet
-        if(!app_shut_down_correctly){
-            //resolveBadShutDown();
-        }
+        getSavedValues();
 
         /*
          * Define Views (buttons and text to show seconds for alarm)
@@ -299,6 +286,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onPause();
         Log.v("On Destroy", "onDestroy() called");
+    }
+
+    @Override
+    protected void onResume(){
+        Log.e("onResume", "onResume() called");
+        super.onResume();
+        getSavedValues();
+        updateDynamicVariables();
+        Log.e("onResume", "onResume() ending");
+    }
+
+    private void getSavedValues() {
+        SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
+        alarm_set = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
+        ms_until_alarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
+        if(!alarm_set){
+            ms_until_alarm = 0L;
+        }
+        scheduled_alarm_time_in_ms = saved_values.getLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
+        //I have an idea for this that isn't fully fleshed out yet
+        app_shut_down_correctly = saved_values.getBoolean(GEDDER_ALARM_APP_SHUTDOWN_CORRECTLY , false);
+
+        //I have an idea for this that isn't fully fleshed out yet
+        if(!app_shut_down_correctly){
+            //resolveBadShutDown();
+        }
     }
 }
 

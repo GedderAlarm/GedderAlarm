@@ -72,8 +72,8 @@ public class AlarmActivity extends AppCompatActivity {
         if(ringtone.isPlaying()) {
             ringtone.stop();
         }
-        Intent MainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
-        MainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        //Intent MainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+        //MainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         //REMOVE COMMENTS WHEN DONE TESTING API 19
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         //    finishAndRemoveTask();
@@ -85,7 +85,7 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void updateSavedVariable() {
-        Log.v("UpdateSavedVariable", "updateSavedVariable() called");
+        Log.e("UpdateSavedVariable", "updateSavedVariable() called");
 
         SharedPreferences saved_values = getSharedPreferences(MainActivity.GEDDER_ALARM_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
@@ -94,11 +94,37 @@ public class AlarmActivity extends AppCompatActivity {
         editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, scheduled_alarm_time_in_ms);
         editor.apply();
 
-        Log.v("UpdateSavedVariable", "updateSavedVariable() ending");
+        Log.e("UpdateSavedVariable", "updateSavedVariable() ending");
     }
 
     @Override
     public void onBackPressed(){
         Log.v("On Back Pressed", "onBackPressed() called");
+        /*
+        if(ringtone.isPlaying()) {
+            ringtone.stop();
+        }
+        finish();
+        */
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(ringtone.isPlaying()) {
+            ringtone.stop();
+        }
+        finish();
+        Log.v("On Pause", "onPause() called");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onPause();
+        if(ringtone.isPlaying()) {
+            ringtone.stop();
+        }
+        finish();
+        Log.v("On Destroy", "onDestroy() called");
     }
 }
