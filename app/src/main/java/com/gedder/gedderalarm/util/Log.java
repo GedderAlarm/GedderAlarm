@@ -1,6 +1,6 @@
 package com.gedder.gedderalarm.util;
 
-/**
+/*
  * USER: mslm
  * DATE: 3/1/2017
  * FROM: http://stackoverflow.com/a/4592958
