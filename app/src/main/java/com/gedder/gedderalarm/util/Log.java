@@ -6,6 +6,7 @@ package com.gedder.gedderalarm.util;
  * FROM: http://stackoverflow.com/a/4592958
  */
 
+
 /**
  * A wrapper on android.util.Log's functionality, to
  * make it easier to disable/enable logging (i.e. for
