@@ -113,7 +113,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
-        super.onPause();
+        super.onDestroy();
         if(ringtone.isPlaying()) {
             ringtone.stop();
         }
