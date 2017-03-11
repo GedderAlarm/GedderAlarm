@@ -5,7 +5,15 @@
 
 package com.gedder.gedderalarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
 import com.gedder.gedderalarm.util.Log;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -15,6 +23,10 @@ import com.gedder.gedderalarm.util.Log;
 public class AlarmClock {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
+    private final int intentId = 31582;
+
+    private Context sContext;
+    private AlarmManager mAlarmManager;
     private long msUntilAlarm;
     private long scheduledAlarmTimeInMs;
     private boolean alarmSet;
@@ -22,7 +34,9 @@ public class AlarmClock {
     /**
      * A fresh alarm clock without any alarm set.
      */
-    public AlarmClock() {
+    public AlarmClock(Context context) {
+        sContext = context;
+        mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
         msUntilAlarm = -1L;
         scheduledAlarmTimeInMs = -1L;
         alarmSet = false;
@@ -32,7 +46,9 @@ public class AlarmClock {
      * A fresh alarm clock with alarm set for msUntilAlarm milliseconds into the future.
      * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
-    public AlarmClock(long msUntilAlarm) {
+    public AlarmClock(Context context, long msUntilAlarm) {
+        sContext = context;
+        mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
         setAlarmTime(msUntilAlarm);
     }
 
@@ -45,10 +61,25 @@ public class AlarmClock {
         Log.v(TAG, "setAlarmTime(" + String.valueOf(msUntilAlarm) + ")");
 
         this.msUntilAlarm = msUntilAlarm;
-
-        // scheduledAlarmTimeInMs = time_right_now + this.msUntilAlarm;
+        scheduledAlarmTimeInMs = System.currentTimeMillis() + this.msUntilAlarm;
 
         // bunch of code to activate intents etc.
+        Intent alarmIntent = new Intent(sContext, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                sContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
+            mAlarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
+            mAlarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+        } else {
+            Log.v(TAG, "Build.VERSION.SDK_INT < 19");
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+        }
 
         alarmSet = true;
     }
@@ -62,7 +93,10 @@ public class AlarmClock {
         msUntilAlarm = -1L;
         scheduledAlarmTimeInMs = -1L;
 
-        // bunch of code to deactivate intents etc.
+        Intent alarmIntent = new Intent(sContext, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                sContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mAlarmManager.cancel(pendingIntent);
 
         alarmSet = false;
     }
