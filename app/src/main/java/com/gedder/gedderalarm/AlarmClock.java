@@ -36,5 +36,42 @@ public class AlarmClock {
 
     }
 
+    /**
+     *
+     * @param date
+     */
+    public void setAlarm(Date date) {
 
+    }
+
+    /**
+     *
+     */
+    public void cancelAlarm() {
+
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date getAlarmTime() {
+
+    }
+
+    /**
+     *
+     * @param date
+     */
+    public void adjustAlarmTime(Date date) {
+
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isSet () {
+
+    }
 }
