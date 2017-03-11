@@ -9,7 +9,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gedder.gedderalarm.AlarmClock;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
+
+import java.util.List;
 
 
 /**
@@ -54,5 +57,55 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String DROP_ALARM_CLOCK_TABLE = "DROP TABLE IF EXISTS " + AlarmClockTable.TABLE_NAME;
         db.execSQL(DROP_ALARM_CLOCK_TABLE);
+    }
+
+    /**
+     *
+     * @param alarmClock
+     */
+    public void addAlarmClock(AlarmClock alarmClock) {
+
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public AlarmClock getAlarmClock(int id) {
+
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<AlarmClock> getAllAlarmClocks() {
+
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getAlarmClockCount() {
+
+    }
+
+    /**
+     * 
+     * @param alarmClock
+     * @return
+     */
+    public int updateAlarmClock(AlarmClock alarmClock) {
+
+    }
+
+    /**
+     *
+     * @param alarmClock
+     */
+    public void deleteAlarmClock(AlarmClock alarmClock) {
+
     }
 }
