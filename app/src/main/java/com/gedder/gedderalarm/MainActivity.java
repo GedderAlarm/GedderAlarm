@@ -59,31 +59,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.e(TAG, "onResume() called");
-
+        Log.e(TAG, "onResume()");
         super.onResume();
+
         getSavedValues();
         updateDynamicVariables();
-
-        Log.e(TAG, "onResume() ending");
     }
 
     @Override
     protected void onPause() {
+        Log.v(TAG, "onPause()");
         super.onPause();
-
-        Log.v(TAG, "onPause() called");
     }
 
     @Override
     protected void onDestroy() {
+        Log.v(TAG, "onDestroy()");
         super.onDestroy();
-
-        Log.v(TAG, "onDestroy() called");
     }
 
     private void initializeVariables() {
-        Log.v(TAG, "initializeVariables() called");
+        Log.v(TAG, "initializeVariables()");
 
         getSavedValues();
 
@@ -113,12 +109,10 @@ public class MainActivity extends AppCompatActivity {
         // This will be called when alarms are set or go off etc...
         updateDynamicVariables();
         updateSavedVariable();
-
-        Log.v(TAG, "initializeVariables() ending");
     }
 
     private void updateDynamicVariables() {
-        Log.v(TAG, "updateDynamicVariables() called");
+        Log.v(TAG, "updateDynamicVariables()");
 
         // Set up text shown for start_cancel button
         if (sAlarmSet)
@@ -127,12 +121,10 @@ public class MainActivity extends AppCompatActivity {
             startCancelBtn.setText("START ALARM");
 
         secondsText.setText(String.valueOf(msUntilAlarm/1000) + " seconds");
-
-        Log.v(TAG, "updateDynamicVariables() ending");
     }
 
     private void updateSavedVariable() {
-        Log.v(TAG, "updateSavedVariable() called");
+        Log.v(TAG, "updateSavedVariable()");
 
         SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
@@ -140,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
         editor.putLong(GEDDER_ALARM_MILL_UNTIL_ALARM, msUntilAlarm);
         editor.putLong(GEDDER_ALARM_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
         editor.apply();
-
-        Log.v(TAG, "updateSavedVariable() ending");
     }
 
     private void getSavedValues() {
+        Log.v(TAG, "getSavedValues()");
+
         SharedPreferences saved_values = getSharedPreferences(GEDDER_ALARM_SAVED_VARIABLES, 0);
         sAlarmSet = saved_values.getBoolean(GEDDER_ALARM_WAS_ALARM_SET, false);
         msUntilAlarm = saved_values.getLong(GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
@@ -154,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setTime() {
-        Log.v(TAG, "setTime() called");
+        Log.v(TAG, "setTime()");
 
         if (sAlarmSet) {
             sAlarmSet = false;
@@ -165,13 +157,11 @@ public class MainActivity extends AppCompatActivity {
         }
         updateDynamicVariables();
         updateSavedVariable();
-
-        Log.v(TAG, "setTime() ending");
     }
 
     private void startOrCancel() {
         Log.e(TAG, "Start/Cancel Alarm button pressed");
-        Log.v(TAG, "startOrCancel() called");
+        Log.v(TAG, "startOrCancel()");
 
         if (sAlarmSet) {
             sAlarmSet = false;
@@ -183,13 +173,11 @@ public class MainActivity extends AppCompatActivity {
         }
         updateDynamicVariables();
         updateSavedVariable();
-
-        Log.v(TAG, "startOrCancel() ending");
     }
 
     private void startAlarm() {
-        Log.e(TAG, "startAlarm() called");
-        Log.v(TAG, "startAlarm() called");
+        Log.e(TAG, "startAlarm()");
+        Log.v(TAG, "startAlarm()");
 
         sScheduledAlarmTimeInMs = System.currentTimeMillis() + msUntilAlarm;
 
@@ -209,20 +197,16 @@ public class MainActivity extends AppCompatActivity {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
         }
-
-        Log.v(TAG, "startAlarm() ending");
     }
 
     private void cancelAlarm() {
-        Log.e(TAG, "cancelAlarm() called");
-        Log.v(TAG, "cancelAlarm() called");
+        Log.e(TAG, "cancelAlarm()");
+        Log.v(TAG, "cancelAlarm()");
 
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(pendingIntent);
-
-        Log.v(TAG, "cancelAlarm() ending");
     }
 }
 

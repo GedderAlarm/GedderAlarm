@@ -29,7 +29,7 @@ public class GedderRestartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v(TAG, "onReceive() called");
+        Log.v(TAG, "onReceive()");
 
         if (intent != null) {
             String action = intent.getAction();
@@ -43,12 +43,10 @@ public class GedderRestartReceiver extends BroadcastReceiver {
                         break;
             }
         }
-
-        Log.v(TAG, "onReceive() ended");
     }
 
     private void resetAlarms(Context context) {
-        Log.v(TAG, "resetAlarms() called");
+        Log.v(TAG, "resetAlarms()");
 
         SharedPreferences saved_values =
                 context.getSharedPreferences(MainActivity.GEDDER_ALARM_SAVED_VARIABLES, 0);
@@ -82,7 +80,5 @@ public class GedderRestartReceiver extends BroadcastReceiver {
             editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
             editor.apply();
         }
-
-        Log.v(TAG, "resetAlarms() called");
     }
 }

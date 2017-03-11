@@ -46,24 +46,22 @@ public class AlarmActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.v(TAG, "onPause()");
         super.onPause();
 
         if (ringtone.isPlaying())
             ringtone.stop();
         finish();
-
-        Log.v(TAG, "onPause() called");
     }
 
     @Override
     protected void onDestroy() {
+        Log.v(TAG, "onDestroy()");
         super.onDestroy();
 
         if (ringtone.isPlaying())
             ringtone.stop();
         finish();
-
-        Log.v(TAG, "onDestroy() called");
     }
 
     /**
@@ -72,11 +70,11 @@ public class AlarmActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Log.v(TAG, "onBackPressed() called");
+        Log.v(TAG, "onBackPressed()");
     }
 
     private void initializeVariables() {
-        Log.v(TAG, "initializeVariables() called");
+        Log.v(TAG, "initializeVariables()");
 
         alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alert == null) {
@@ -100,8 +98,6 @@ public class AlarmActivity extends AppCompatActivity {
         sAlarmSet = false;
         msUntilAlarm = 0L;
         updateSavedVariable();
-
-        Log.v(TAG, "initializeVariables() ending");
     }
 
     private void stopAlarm() {
@@ -111,7 +107,7 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void updateSavedVariable() {
-        Log.e(TAG, "updateSavedVariable() called");
+        Log.e(TAG, "updateSavedVariable()");
 
         SharedPreferences saved_values =
                 getSharedPreferences(MainActivity.GEDDER_ALARM_SAVED_VARIABLES, 0);
@@ -120,7 +116,5 @@ public class AlarmActivity extends AppCompatActivity {
         editor.putLong(MainActivity.GEDDER_ALARM_MILL_UNTIL_ALARM, msUntilAlarm);
         editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
         editor.apply();
-
-        Log.e(TAG, "updateSavedVariable() ending");
     }
 }

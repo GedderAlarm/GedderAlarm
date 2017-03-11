@@ -18,8 +18,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e(TAG, "onReceive() called");
-        Log.v(TAG, "onReceive() called");
+        Log.e(TAG, "onReceive()");
+        Log.v(TAG, "onReceive()");
 
         Toast.makeText(context, "Alarm Triggered", Toast.LENGTH_LONG).show();
 
@@ -29,7 +29,5 @@ public class AlarmReceiver extends BroadcastReceiver {
                 | Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(alarmActivity);
-
-        Log.v(TAG, "onReceive() ending");
     }
 }
