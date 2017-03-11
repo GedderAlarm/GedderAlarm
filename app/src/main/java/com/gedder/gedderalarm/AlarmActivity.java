@@ -112,8 +112,8 @@ public class AlarmActivity extends AppCompatActivity {
         SharedPreferences saved_values = getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
         editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, sAlarmSet);
-        editor.putLong(MainActivity.PREF_MILL_UNTIL_ALARM, msUntilAlarm);
-        editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
+        editor.putLong(MainActivity.PREF_MS_UNTIL_ALARM, msUntilAlarm);
+        editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MS, sScheduledAlarmTimeInMs);
         editor.apply();
     }
 }

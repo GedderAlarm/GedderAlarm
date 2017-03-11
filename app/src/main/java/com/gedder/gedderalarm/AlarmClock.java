@@ -37,8 +37,8 @@ public class AlarmClock {
     public AlarmClock(Context context) {
         sContext = context;
         mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        msUntilAlarm = -1L;
-        scheduledAlarmTimeInMs = -1L;
+        msUntilAlarm = 0L;
+        scheduledAlarmTimeInMs = 0L;
         alarmSet = false;
     }
 
@@ -90,8 +90,8 @@ public class AlarmClock {
     public void cancelAlarm() {
         Log.v(TAG, "cancelAlarm()");
 
-        msUntilAlarm = -1L;
-        scheduledAlarmTimeInMs = -1L;
+        msUntilAlarm = 0L;
+        scheduledAlarmTimeInMs = 0L;
 
         Intent alarmIntent = new Intent(sContext, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -107,6 +107,15 @@ public class AlarmClock {
      */
     public long getAlarmTime() {
         return scheduledAlarmTimeInMs;
+    }
+
+    /**
+     * Gets the time until the alarm clock in milliseconds.
+     * @return The time until the alarm in milliseconds.
+     */
+    public long timeUntilAlarm() {
+        updateMsUntilAlarm();
+        return msUntilAlarm;
     }
 
     /**
