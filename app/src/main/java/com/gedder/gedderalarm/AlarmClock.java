@@ -85,10 +85,7 @@ public class AlarmClock {
     }
 
     private void updateMsUntilAlarm() {
-        /*
-         * 1. Get current time in milliseconds.
-         * 2. Subtract that from scheduledAlarmTimeInMs.
-         * 3. Equate msUntilAlarm to the result.
-         */
+        long current = System.currentTimeMillis();
+        msUntilAlarm = scheduledAlarmTimeInMs - current;
     }
 }
