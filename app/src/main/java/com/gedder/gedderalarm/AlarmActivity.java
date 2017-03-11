@@ -31,7 +31,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     private static long sScheduledAlarmTimeInMs;
     private static boolean sAlarmSet;
-    private long msUntilAlarm;
+    private long mMsUntilAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +49,7 @@ public class AlarmActivity extends AppCompatActivity {
         Log.v(TAG, "onPause()");
         super.onPause();
 
-        if (ringtone.isPlaying())
-            ringtone.stop();
-        finish();
+        stopAlarm();
     }
 
     @Override
@@ -59,9 +57,7 @@ public class AlarmActivity extends AppCompatActivity {
         Log.v(TAG, "onDestroy()");
         super.onDestroy();
 
-        if (ringtone.isPlaying())
-            ringtone.stop();
-        finish();
+        stopAlarm();
     }
 
     /**
@@ -96,7 +92,8 @@ public class AlarmActivity extends AppCompatActivity {
         });
         sScheduledAlarmTimeInMs = -1L;
         sAlarmSet = false;
-        msUntilAlarm = 0L;
+        mMsUntilAlarm = 0L;
+
         updateSavedVariable();
     }
 
@@ -112,7 +109,7 @@ public class AlarmActivity extends AppCompatActivity {
         SharedPreferences saved_values = getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
         editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, sAlarmSet);
-        editor.putLong(MainActivity.PREF_MS_UNTIL_ALARM, msUntilAlarm);
+        editor.putLong(MainActivity.PREF_MS_UNTIL_ALARM, mMsUntilAlarm);
         editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MS, sScheduledAlarmTimeInMs);
         editor.apply();
     }
