@@ -5,11 +5,14 @@
 
 package com.gedder.gedderalarm.db;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.gedder.gedderalarm.AlarmClock;
+import com.gedder.gedderalarm.MainActivity;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 
 import java.util.List;
@@ -64,7 +67,15 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      * @param alarmClock
      */
     public void addAlarmClock(AlarmClock alarmClock) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
+        contentValues.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
+        contentValues.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isSet());
+
+        db.insert(AlarmClockTable.TABLE_NAME, null, contentValues);
+        db.close();
     }
 
     /**
@@ -72,8 +83,23 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      * @param id
      * @return
      */
-    public AlarmClock getAlarmClock(int id) {
+    public AlarmClock getAlarmClock(Context context, int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        Cursor cursor = db.query(AlarmClockTable.TABLE_NAME,
+                new String[] {
+                        AlarmClockTable.Columns.ID,
+                        AlarmClockTable.Columns.UUID,
+                        AlarmClockTable.Columns.ALARM_TIME,
+                        AlarmClockTable.Columns.ALARM_SET
+                },
+                AlarmClockTable.Columns.ID + "=?",
+                new String[] { String.valueOf(id)},
+                null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        //AlarmClock alarmClock = new AlarmClock(context);
     }
 
     /**
@@ -93,7 +119,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * 
+     *
      * @param alarmClock
      * @return
      */

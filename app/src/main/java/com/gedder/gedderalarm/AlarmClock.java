@@ -13,6 +13,8 @@ import android.os.Build;
 
 import com.gedder.gedderalarm.util.Log;
 
+import java.util.UUID;
+
 import static android.content.Context.ALARM_SERVICE;
 
 
@@ -24,6 +26,7 @@ public class AlarmClock {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     private final int intentId = 31582;
+    private final UUID uuid = UUID.randomUUID();
 
     private Context sContext;
     private AlarmManager mAlarmManager;
@@ -125,6 +128,10 @@ public class AlarmClock {
      */
     public boolean isSet() {
         return alarmSet;
+    }
+
+    public UUID getUUID() {
+        return uuid;
     }
 
     private void updateMsUntilAlarm() {
