@@ -52,56 +52,92 @@ public class Url {
         addApiKey(apiKey);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBaseUrl() {
         return baseUrl;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getOrigin() {
         return origin;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDestination() {
         return destination;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getApiKey() {
         return apiKey;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getArrivalTime() {
         return arrivalTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDepartureTime() {
         return departureTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTravelMode() {
         return travelMode;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean avoidToll() {
         return avoidToll;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean avoidHighways() {
         return avoidHighways;
     }
 
-    // Needs to abide by Google's naming rules.
-    // TODO: Figure out a way to abide by Google's naming rules
-    //       through possibly using a type other than String.
     private void addOrigin(String origin) {
+        // Needs to abide by Google's naming rules.
+        // TODO: Figure out a way to abide by Google's naming rules
+        //       through possibly using a type other than String.
         if (origin != null)
             this.url += "origin=" + origin;
         else
             ; // TODO: Throw exception; this variable is required.
     }
 
-    // Needs to abide by Google's naming rules.
-    // TODO: Figure out a way to abide by Google's naming rules
-    //       through possibly using a type other than String.
     private void addDestination(String destination) {
+        // Needs to abide by Google's naming rules.
+        // TODO: Figure out a way to abide by Google's naming rules
+        //       through possibly using a type other than String.
         if (destination != null)
             this.url += "destination=" + destination;
         else
@@ -115,14 +151,14 @@ public class Url {
             ; // TODO: Throw exception; this variable is required.
     }
 
-    // TODO: Need to add unix time
     private void addArrivalTime(String arrivalTime) {
+        // TODO: Need to add unix time
         if (arrivalTime != null)
             this.url += "arrival_time=" + arrivalTime;
     }
 
-    // TODO: Need to add unix time
     private void addDepartureTime(String departureTime) {
+        // TODO: Need to add unix time
         if (departureTime != null)
             this.url += "departure_time=" + departureTime;
     }
@@ -142,6 +178,9 @@ public class Url {
             this.url += "avoid=highways";
     }
 
+    /**
+     *
+     */
     public static class UrlBuilder {
         private final String origin;        // required
         private final String destination;   // required
@@ -152,42 +191,74 @@ public class Url {
         private boolean avoidToll;          // optional
         private boolean avoidHighways;      // optional
 
-        // Needs to abide by Google's naming rules.
-        // TODO: Figure out a way to abide by Google's naming rules
-        //       through possibly using a type other than String.
+        /**
+         *
+         * @param origin
+         * @param destination
+         * @param apiKey
+         */
         public UrlBuilder(String origin, String destination, String apiKey) {
+            // Needs to abide by Google's naming rules.
+            // TODO: Figure out a way to abide by Google's naming rules
+            //       through possibly using a type other than String.
             this.origin = origin;
             this.destination = destination;
             this.apiKey = apiKey;
         }
 
-        // TODO: Need to add unix time
+        /**
+         *
+         * @param arrivalTime
+         * @return
+         */
         public UrlBuilder arrivalTime(String arrivalTime) {
+            // TODO: Need to add unix time
             this.arrivalTime = arrivalTime;
             return this;
         }
 
-        // TODO: Need to add unix time
+        /**
+         *
+         * @param departureTime
+         * @return
+         */
         public UrlBuilder departureTime(String departureTime) {
+            // TODO: Need to add unix time
             this.departureTime = departureTime;
             return this;
         }
 
+        /**
+         *
+         * @param travelMode
+         * @return
+         */
         public UrlBuilder travelMode(String travelMode) {
             this.travelMode = travelMode;
             return this;
         }
 
+        /**
+         *
+         * @return
+         */
         public UrlBuilder avoidToll() {
             this.avoidToll = true;
             return this;
         }
 
+        /**
+         *
+         * @return
+         */
         public UrlBuilder avoidHighways() {
             this.avoidHighways = true;
             return this;
         }
 
+        /**
+         *
+         */
         public Url build() {
             return new Url(this);
         }
