@@ -25,31 +25,60 @@ public class AlarmClock {
 
     private final int intentId = 31582;
 
-    private Context sContext;
+    private Context mContext;
     private AlarmManager mAlarmManager;
-    private long msUntilAlarm;
-    private long scheduledAlarmTimeInMs;
-    private boolean alarmSet;
+    private long mMsUntilAlarm;
+    private long mScheduledAlarmTimeInMs;
+    private boolean mAlarmSet;
+
+    /**
+     * Copy constructor.
+     * @param alarmClock The alarm clock instance to copy.
+     */
+    public AlarmClock(AlarmClock alarmClock) {
+        this.mContext = alarmClock.mContext;
+        this.mAlarmManager = alarmClock.mAlarmManager;
+        this.mMsUntilAlarm = alarmClock.mMsUntilAlarm;
+        this.mScheduledAlarmTimeInMs = alarmClock.mScheduledAlarmTimeInMs;
+        this.mAlarmSet = alarmClock.mAlarmSet;
+    }
 
     /**
      * A fresh alarm clock without any alarm set.
      */
     public AlarmClock(Context context) {
-        sContext = context;
-        mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        msUntilAlarm = 0L;
-        scheduledAlarmTimeInMs = 0L;
-        alarmSet = false;
+        mContext = context;
+        mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+        mMsUntilAlarm = 0L;
+        mScheduledAlarmTimeInMs = 0L;
+        mAlarmSet = false;
     }
 
     /**
-     * A fresh alarm clock with alarm set for msUntilAlarm milliseconds into the future.
-     * @param msUntilAlarm The time until the alarm, in milliseconds.
+     * A fresh alarm clock with alarm set for mMsUntilAlarm milliseconds into the future.
+     * @param mMsUntilAlarm The time until the alarm, in milliseconds.
      */
-    public AlarmClock(Context context, long msUntilAlarm) {
-        sContext = context;
-        mAlarmManager = (AlarmManager) sContext.getSystemService(ALARM_SERVICE);
-        setAlarmTime(msUntilAlarm);
+    public AlarmClock(Context context, long mMsUntilAlarm) {
+        mContext = context;
+        mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+        setAlarmTime(mMsUntilAlarm);
+    }
+
+    /**
+     * A fresh alarm based off of explicit parameters.
+     * @param context The context to use in the new alarm.
+     * @param alarmManager The alarm manager to use in the new alarm.
+     * @param msUntilAlarm The milliseconds-to-alarm to use in the new alarm.
+     * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
+     * @param alarmSet Whether the alarm is set already or not.
+     */
+    public AlarmClock(Context context, AlarmManager alarmManager,
+                      long msUntilAlarm, long scheduledAlarmTimeInMs, boolean alarmSet) {
+        this.mContext = context;
+        this.mAlarmManager = alarmManager;
+        this.mMsUntilAlarm = msUntilAlarm;
+        this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
+        this.mAlarmSet = alarmSet;
     }
 
     /**
@@ -60,28 +89,27 @@ public class AlarmClock {
     public void setAlarmTime(long msUntilAlarm) {
         Log.v(TAG, "setAlarmTime(" + String.valueOf(msUntilAlarm) + ")");
 
-        this.msUntilAlarm = msUntilAlarm;
-        scheduledAlarmTimeInMs = System.currentTimeMillis() + this.msUntilAlarm;
+        this.mMsUntilAlarm = msUntilAlarm;
+        mScheduledAlarmTimeInMs = System.currentTimeMillis() + this.mMsUntilAlarm;
 
-        // bunch of code to activate intents etc.
-        Intent alarmIntent = new Intent(sContext, AlarmReceiver.class);
+        Intent alarmIntent = new Intent(mContext, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                sContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= 23) {
             Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
             mAlarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
             Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
             mAlarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP, scheduledAlarmTimeInMs, pendingIntent);
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         }
 
-        alarmSet = true;
+        mAlarmSet = true;
     }
 
     /**
@@ -90,15 +118,26 @@ public class AlarmClock {
     public void cancelAlarm() {
         Log.v(TAG, "cancelAlarm()");
 
-        msUntilAlarm = 0L;
-        scheduledAlarmTimeInMs = 0L;
+        mMsUntilAlarm = 0L;
+        mScheduledAlarmTimeInMs = 0L;
 
-        Intent alarmIntent = new Intent(sContext, AlarmReceiver.class);
+        Intent alarmIntent = new Intent(mContext, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                sContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(pendingIntent);
 
-        alarmSet = false;
+        mAlarmSet = false;
+    }
+
+    /**
+     * Assuming the alarm has played, finishes the alarm by changing its settings.
+     */
+    public void finishAlarm() {
+        Log.v(TAG, "finishAlarm()");
+
+        mMsUntilAlarm = 0L;
+        mScheduledAlarmTimeInMs = 0L;
+        mAlarmSet = false;
     }
 
     /**
@@ -106,7 +145,7 @@ public class AlarmClock {
      * @return The current time set for the alarm.
      */
     public long getAlarmTime() {
-        return scheduledAlarmTimeInMs;
+        return mScheduledAlarmTimeInMs;
     }
 
     /**
@@ -115,7 +154,7 @@ public class AlarmClock {
      */
     public long timeUntilAlarm() {
         updateMsUntilAlarm();
-        return msUntilAlarm;
+        return mMsUntilAlarm;
     }
 
     /**
@@ -124,11 +163,11 @@ public class AlarmClock {
      * @return Whether the alarm is set or not.
      */
     public boolean isSet() {
-        return alarmSet;
+        return mAlarmSet;
     }
 
     private void updateMsUntilAlarm() {
         long current = System.currentTimeMillis();
-        msUntilAlarm = scheduledAlarmTimeInMs - current;
+        mMsUntilAlarm = mScheduledAlarmTimeInMs - current;
     }
 }
