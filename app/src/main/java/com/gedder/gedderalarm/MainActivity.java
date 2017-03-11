@@ -1,3 +1,8 @@
+/*
+ * USER: jameskluz
+ * DATE: 2/24/17
+ */
+
 package com.gedder.gedderalarm;
 
 import android.app.AlarmManager;
@@ -12,11 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.gedder.gedderalarm.util.Log;
-
-/*
- * USER: jameskluz
- * DATE: 2/24/17
- */
 
 
 public class MainActivity extends AppCompatActivity {
@@ -195,19 +195,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
-        );
+                this, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= 23) {
             Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
             mAlarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent
-            );
+                    AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
             Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
             mAlarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent
-            );
+                    AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
         } else {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
@@ -222,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
-        );
+                this, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(pendingIntent);
 
         Log.v(TAG, "cancelAlarm() ending");

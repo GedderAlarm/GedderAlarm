@@ -1,3 +1,8 @@
+/*
+ * USER: jameskluz
+ * DATE: 3/3/17
+ */
+
 package com.gedder.gedderalarm;
 
 import android.app.AlarmManager;
@@ -8,14 +13,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import static android.content.Context.ALARM_SERVICE;
-
 import com.gedder.gedderalarm.util.Log;
 
-/*
- * USER: jameskluz
- * DATE: 3/3/17
- */
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class GedderRestartReceiver extends BroadcastReceiver {
@@ -60,19 +60,16 @@ public class GedderRestartReceiver extends BroadcastReceiver {
             mAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                    context, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT
-            );
+                    context, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (Build.VERSION.SDK_INT >= 23) {
                 Log.v("Start Alarm", "Build.VERSION.SDK_INT >= 23");
                 mAlarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent
-                );
+                        AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
             } else if (Build.VERSION.SDK_INT >= 19) {
                 Log.v("Start Alarm", "19 <= Build.VERSION.SDK_INT < 23");
                 mAlarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent
-                );
+                        AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);
             } else {
                 Log.v("Start Alarm", "Build.VERSION.SDK_INT < 19");
                 mAlarmManager.set(AlarmManager.RTC_WAKEUP, sScheduledAlarmTimeInMs, pendingIntent);

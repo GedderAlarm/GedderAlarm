@@ -1,13 +1,14 @@
-package com.gedder.gedderalarm.util;
-
 /*
  * USER: Mike, mslm
  * DATE: 3/4/2017
- * Class to generate URLs for Google Maps API.
  */
+
+package com.gedder.gedderalarm.util;
 
 
 /**
+ * Class to generate URLs for Google Maps API.
+ *
  * Example usage:
  *
  * public Url url = new Url.UrlBuilder("origin", "destination", "apiKey") // required

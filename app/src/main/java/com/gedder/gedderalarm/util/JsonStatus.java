@@ -1,11 +1,10 @@
-package com.gedder.gedderalarm.util;
-
 /*
  * USER: mslm
  * DATE: March 8th, 2017
- * Enumeration class holding different status codes returned
- * by Google Maps API.
  */
+
+package com.gedder.gedderalarm.util;
+
 
 /**
  * Enumeration class holding different status codes returned

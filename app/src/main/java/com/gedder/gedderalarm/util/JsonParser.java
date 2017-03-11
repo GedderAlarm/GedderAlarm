@@ -1,3 +1,8 @@
+/*
+ * USER: mslm, Mike
+ * DATE: March 8th, 2017
+ */
+
 package com.gedder.gedderalarm.util;
 
 import java.util.ArrayList;
@@ -8,14 +13,10 @@ import org.json.JSONException;
 
 import com.gedder.gedderalarm.util.JsonStatus;
 
-/*
- * USER: mslm, Mike
- * DATE: March 8th, 2017
- * Class to parse the JSON received from Google Maps API.
- */
-
 
 /**
+ * Class to parse the JSON received from Google Maps API.
+ *
  * Example usage:
  *
  * public String json = "put json string here";

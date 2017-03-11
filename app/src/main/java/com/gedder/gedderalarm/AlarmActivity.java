@@ -1,3 +1,8 @@
+/*
+ * USER: jameskluz
+ * DATE: 3/1/17
+ */
+
 package com.gedder.gedderalarm;
 
 import android.content.SharedPreferences;
@@ -11,11 +16,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.gedder.gedderalarm.util.Log;
-
-/*
- * USER: jameskluz
- * DATE: 3/1/17
- */
 
 
 public class AlarmActivity extends AppCompatActivity {

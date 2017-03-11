@@ -1,13 +1,14 @@
-package com.gedder.gedderalarm.util;
-
 /*
  * USER: mslm
  * DATE: 3/1/2017
- * FROM: http://stackoverflow.com/a/4592958
  */
+
+package com.gedder.gedderalarm.util;
 
 
 /**
+ * http://stackoverflow.com/a/4592958
+ *
  * A wrapper on android.util.Log's functionality, to
  * make it easier to disable/enable logging (i.e. for
  * pushing to production, or debugging).

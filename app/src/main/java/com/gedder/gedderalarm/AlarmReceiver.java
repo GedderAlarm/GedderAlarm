@@ -1,3 +1,8 @@
+/*
+ * USER: jameskluz
+ * DATE: 2/24/17.
+ */
+
 package com.gedder.gedderalarm;
 
 import android.content.BroadcastReceiver;
@@ -6,11 +11,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.gedder.gedderalarm.util.Log;
-
-/*
- * USER: jameskluz
- * DATE: 2/24/17.
- */
 
 
 public class AlarmReceiver extends BroadcastReceiver {
