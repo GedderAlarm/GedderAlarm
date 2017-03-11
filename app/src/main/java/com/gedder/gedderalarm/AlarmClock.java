@@ -5,6 +5,8 @@
 
 package com.gedder.gedderalarm;
 
+import com.gedder.gedderalarm.util.Log;
+
 
 /**
  * An alarm clock class encapsulating the data stored in a typical alarm clock and the logic
@@ -40,6 +42,8 @@ public class AlarmClock {
      * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
     public void setAlarmTime(long msUntilAlarm) {
+        Log.v(TAG, "setAlarmTime(" + String.valueOf(msUntilAlarm) + ")");
+
         this.msUntilAlarm = msUntilAlarm;
 
         // scheduledAlarmTimeInMs = time_right_now + this.msUntilAlarm;
@@ -53,6 +57,8 @@ public class AlarmClock {
      * Cancels any alarm associated with this alarm clock instance.
      */
     public void cancelAlarm() {
+        Log.v(TAG, "cancelAlarm()");
+
         msUntilAlarm = -1L;
         scheduledAlarmTimeInMs = -1L;
 
