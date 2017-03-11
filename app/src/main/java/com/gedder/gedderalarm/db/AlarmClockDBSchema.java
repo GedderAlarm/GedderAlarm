@@ -11,6 +11,7 @@ public class AlarmClockDBSchema {
         public static final String TABLE_NAME = "alarmClocks";
 
         public static final class Columns {
+            public static final String ID = "id";
             public static final String UUID = "uuid";
             public static final String ALARM_TIME = "alarmTime";
             public static final String ALARM_SET = "alarmSet";
