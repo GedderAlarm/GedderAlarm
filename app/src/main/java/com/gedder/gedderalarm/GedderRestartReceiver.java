@@ -49,10 +49,10 @@ public class GedderRestartReceiver extends BroadcastReceiver {
         Log.v(TAG, "resetAlarms()");
 
         SharedPreferences saved_values =
-                context.getSharedPreferences(MainActivity.GEDDER_ALARM_SAVED_VARIABLES, 0);
-        sAlarmSet = saved_values.getBoolean(MainActivity.GEDDER_ALARM_WAS_ALARM_SET, false);
+                context.getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
+        sAlarmSet = saved_values.getBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
         sScheduledAlarmTimeInMs =
-                saved_values.getLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
+                saved_values.getLong(MainActivity.PREF_ALARM_TIME_IN_MILL, -1L);
 
         if (sAlarmSet && sScheduledAlarmTimeInMs > System.currentTimeMillis()) {
             mAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -75,9 +75,9 @@ public class GedderRestartReceiver extends BroadcastReceiver {
         } else {
             // We missed the alarm while the phone was off; reset saved variables.
             SharedPreferences.Editor editor = saved_values.edit();
-            editor.putBoolean(MainActivity.GEDDER_ALARM_WAS_ALARM_SET, false);
-            editor.putLong(MainActivity.GEDDER_ALARM_MILL_UNTIL_ALARM, 0L);
-            editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, -1L);
+            editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
+            editor.putLong(MainActivity.PREF_MILL_UNTIL_ALARM, 0L);
+            editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MILL, -1L);
             editor.apply();
         }
     }

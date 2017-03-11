@@ -110,11 +110,11 @@ public class AlarmActivity extends AppCompatActivity {
         Log.e(TAG, "updateSavedVariable()");
 
         SharedPreferences saved_values =
-                getSharedPreferences(MainActivity.GEDDER_ALARM_SAVED_VARIABLES, 0);
+                getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
-        editor.putBoolean(MainActivity.GEDDER_ALARM_WAS_ALARM_SET, sAlarmSet);
-        editor.putLong(MainActivity.GEDDER_ALARM_MILL_UNTIL_ALARM, msUntilAlarm);
-        editor.putLong(MainActivity.GEDDER_ALARM_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
+        editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, sAlarmSet);
+        editor.putLong(MainActivity.PREF_MILL_UNTIL_ALARM, msUntilAlarm);
+        editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
         editor.apply();
     }
 }
