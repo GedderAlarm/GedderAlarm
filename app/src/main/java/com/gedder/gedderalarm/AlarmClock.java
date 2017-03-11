@@ -5,8 +5,6 @@
 
 package com.gedder.gedderalarm;
 
-import java.util.Date;
-
 
 /**
  *
