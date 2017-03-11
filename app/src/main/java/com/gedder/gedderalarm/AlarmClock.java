@@ -26,7 +26,7 @@ public class AlarmClock {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     private final int intentId = 31582;
-    private final UUID uuid = UUID.randomUUID();
+    private UUID mUuid;
 
     private Context mContext;
     private AlarmManager mAlarmManager;
@@ -41,6 +41,7 @@ public class AlarmClock {
     public AlarmClock(AlarmClock alarmClock) {
         this.mContext = alarmClock.mContext;
         this.mAlarmManager = alarmClock.mAlarmManager;
+        this.mUuid = alarmClock.mUuid;
         this.mMsUntilAlarm = alarmClock.mMsUntilAlarm;
         this.mScheduledAlarmTimeInMs = alarmClock.mScheduledAlarmTimeInMs;
         this.mAlarmSet = alarmClock.mAlarmSet;
@@ -52,6 +53,7 @@ public class AlarmClock {
     public AlarmClock(Context context) {
         mContext = context;
         mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+        mUuid = UUID.randomUUID();
         mMsUntilAlarm = 0L;
         mScheduledAlarmTimeInMs = 0L;
         mAlarmSet = false;
@@ -64,6 +66,7 @@ public class AlarmClock {
     public AlarmClock(Context context, long mMsUntilAlarm) {
         mContext = context;
         mAlarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+        mUuid = UUID.randomUUID();
         setAlarmTime(mMsUntilAlarm);
     }
 
@@ -75,13 +78,14 @@ public class AlarmClock {
      * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
      * @param alarmSet Whether the alarm is set already or not.
      */
-    public AlarmClock(Context context, AlarmManager alarmManager,
-                      long msUntilAlarm, long scheduledAlarmTimeInMs, boolean alarmSet) {
+    public AlarmClock(Context context, AlarmManager alarmManager, UUID uuid,
+                      long scheduledAlarmTimeInMs, boolean alarmSet) {
         this.mContext = context;
         this.mAlarmManager = alarmManager;
-        this.mMsUntilAlarm = msUntilAlarm;
+        this.mUuid = uuid;
         this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
         this.mAlarmSet = alarmSet;
+        updateMsUntilAlarm();
     }
 
     /**
@@ -170,7 +174,7 @@ public class AlarmClock {
     }
 
     public UUID getUUID() {
-        return uuid;
+        return mUuid;
     }
 
     private void updateMsUntilAlarm() {

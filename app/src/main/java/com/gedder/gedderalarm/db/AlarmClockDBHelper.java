@@ -5,6 +5,7 @@
 
 package com.gedder.gedderalarm.db;
 
+import android.app.AlarmManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,10 +13,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.gedder.gedderalarm.AlarmClock;
-import com.gedder.gedderalarm.MainActivity;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 
 import java.util.List;
+import java.util.UUID;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -96,10 +99,16 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 AlarmClockTable.Columns.ID + "=?",
                 new String[] { String.valueOf(id)},
                 null, null, null, null);
+
         if (cursor != null)
             cursor.moveToFirst();
 
-        //AlarmClock alarmClock = new AlarmClock(context);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        UUID uuid = UUID.fromString(cursor.getString(1));
+        long scheduledAlarmTime = cursor.getLong(2);
+        boolean alarmSet = cursor.getInt(3) > 0;
+
+        return new AlarmClock(context, alarmManager, uuid, scheduledAlarmTime, alarmSet);
     }
 
     /**
