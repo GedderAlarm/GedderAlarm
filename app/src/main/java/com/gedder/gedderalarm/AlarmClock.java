@@ -7,11 +7,10 @@ package com.gedder.gedderalarm;
 
 
 /**
- *
+ * An alarm clock class encapsulating the data stored in a typical alarm clock and the logic
+ * required to start alarm clocks using raw pending intents.
  */
 public class AlarmClock {
-    // TODO: Skeletal functionality.
-
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     private long msUntilAlarm;
