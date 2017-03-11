@@ -51,8 +51,7 @@ public class GedderRestartReceiver extends BroadcastReceiver {
         SharedPreferences saved_values =
                 context.getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
         sAlarmSet = saved_values.getBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
-        sScheduledAlarmTimeInMs =
-                saved_values.getLong(MainActivity.PREF_ALARM_TIME_IN_MILL, -1L);
+        sScheduledAlarmTimeInMs = saved_values.getLong(MainActivity.PREF_ALARM_TIME_IN_MILL, -1L);
 
         if (sAlarmSet && sScheduledAlarmTimeInMs > System.currentTimeMillis()) {
             mAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);

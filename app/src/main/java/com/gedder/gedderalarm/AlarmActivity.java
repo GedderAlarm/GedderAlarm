@@ -109,8 +109,7 @@ public class AlarmActivity extends AppCompatActivity {
     private void updateSavedVariable() {
         Log.e(TAG, "updateSavedVariable()");
 
-        SharedPreferences saved_values =
-                getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
+        SharedPreferences saved_values = getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
         editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, sAlarmSet);
         editor.putLong(MainActivity.PREF_MILL_UNTIL_ALARM, msUntilAlarm);

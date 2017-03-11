@@ -23,8 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Toast.makeText(context, "Alarm Triggered", Toast.LENGTH_LONG).show();
 
-        Intent alarmActivity = new Intent(context.getApplicationContext(),
-                AlarmActivity.class);
+        Intent alarmActivity = new Intent(context.getApplicationContext(), AlarmActivity.class);
         alarmActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
