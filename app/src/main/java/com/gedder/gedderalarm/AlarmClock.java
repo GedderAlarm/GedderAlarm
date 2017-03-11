@@ -16,62 +16,76 @@ public class AlarmClock {
 
     private static final String TAG = AlarmClock.class.getSimpleName();
 
-
     private long msUntilAlarm;
-    private long sScheduledAlarmTimeInMs;
-    private boolean sAlarmSet;
+    private long scheduledAlarmTimeInMs;
+    private boolean alarmSet;
 
     /**
-     *
+     * A fresh alarm clock without any alarm set.
      */
     public AlarmClock() {
-
+        msUntilAlarm = -1L;
+        scheduledAlarmTimeInMs = -1L;
+        alarmSet = false;
     }
 
     /**
-     *
-     * @param date
+     * A fresh alarm clock with alarm set for msUntilAlarm milliseconds into the future.
+     * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
-    public AlarmClock(Date date) {
-
+    public AlarmClock(long msUntilAlarm) {
+        setAlarmTime(msUntilAlarm);
     }
 
     /**
-     *
-     * @param date
+     * Sets a new alarm clock through intents to the Android OS.
+     * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
+     * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
-    public void setAlarm(Date date) {
+    public void setAlarmTime(long msUntilAlarm) {
+        this.msUntilAlarm = msUntilAlarm;
 
+        // scheduledAlarmTimeInMs = time_right_now + this.msUntilAlarm;
+
+        // bunch of code to activate intents etc.
+
+        alarmSet = true;
     }
 
     /**
-     *
+     * Cancels any alarm associated with this alarm clock instance.
      */
     public void cancelAlarm() {
+        msUntilAlarm = -1L;
+        scheduledAlarmTimeInMs = -1L;
 
+        // bunch of code to deactivate intents etc.
+
+        alarmSet = false;
     }
 
     /**
-     *
-     * @return
+     * Gets the current intended alarm clock time in milliseconds since the "epoch".
+     * @return The current time set for the alarm.
      */
-    public Date getAlarmTime() {
-
+    public long getAlarmTime() {
+        return scheduledAlarmTimeInMs;
     }
 
     /**
-     *
-     * @param date
+     * Tells you whether the alarm is currently set or not. It will return false if the alarm has
+     * already gone off or been explicitly canceled.
+     * @return Whether the alarm is set or not.
      */
-    public void adjustAlarmTime(Date date) {
-
+    public boolean isSet() {
+        return alarmSet;
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isSet () {
-
+    private void updateMsUntilAlarm() {
+        /*
+         * 1. Get current time in milliseconds.
+         * 2. Subtract that from scheduledAlarmTimeInMs.
+         * 3. Equate msUntilAlarm to the result.
+         */
     }
 }
