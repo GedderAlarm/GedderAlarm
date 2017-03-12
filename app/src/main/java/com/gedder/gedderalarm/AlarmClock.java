@@ -74,7 +74,6 @@ public class AlarmClock {
      * A fresh alarm based off of explicit parameters.
      * @param context The context to use in the new alarm.
      * @param alarmManager The alarm manager to use in the new alarm.
-     * @param msUntilAlarm The milliseconds-to-alarm to use in the new alarm.
      * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
      * @param alarmSet Whether the alarm is set already or not.
      */
