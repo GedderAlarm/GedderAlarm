@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     // Keys.
     public static final String PREF_SAVED_VARIABLES = "__GEDDER_ALARM_SAVED_VARIABLES__";
     public static final String PREF_WAS_ALARM_SET = "__GEDDER_ALARM_WAS_ALARM_SET__";
-    public static final String PREF_MILL_UNTIL_ALARM = "__GEDDER_ALARM_MILL_UNTIL_ALARM__";
-    public static final String PREF_ALARM_TIME_IN_MILL = "__GEDDER_ALARM_ALARM_TIME_IN_MILL__";
+    public static final String PREF_MS_UNTIL_ALARM = "__GEDDER_ALARM_MS_UNTIL_ALARM__";
+    public static final String PREF_ALARM_TIME_IN_MS = "__GEDDER_ALARM_ALARM_TIME_IN_MS__";
 
     private final int intentId = 31582;
 
@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences saved_values = getSharedPreferences(PREF_SAVED_VARIABLES, 0);
         SharedPreferences.Editor editor = saved_values.edit();
         editor.putBoolean(PREF_WAS_ALARM_SET, sAlarmSet);
-        editor.putLong(PREF_MILL_UNTIL_ALARM, msUntilAlarm);
-        editor.putLong(PREF_ALARM_TIME_IN_MILL, sScheduledAlarmTimeInMs);
+        editor.putLong(PREF_MS_UNTIL_ALARM, msUntilAlarm);
+        editor.putLong(PREF_ALARM_TIME_IN_MS, sScheduledAlarmTimeInMs);
         editor.apply();
     }
 
@@ -138,10 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences saved_values = getSharedPreferences(PREF_SAVED_VARIABLES, 0);
         sAlarmSet = saved_values.getBoolean(PREF_WAS_ALARM_SET, false);
-        msUntilAlarm = saved_values.getLong(PREF_MILL_UNTIL_ALARM, 0L);
+        msUntilAlarm = saved_values.getLong(PREF_MS_UNTIL_ALARM, 0L);
         if (!sAlarmSet)
             msUntilAlarm = 0L;
-        sScheduledAlarmTimeInMs = saved_values.getLong(PREF_ALARM_TIME_IN_MILL, -1L);
+        sScheduledAlarmTimeInMs = saved_values.getLong(PREF_ALARM_TIME_IN_MS, -1L);
     }
 
     private void setTime() {
