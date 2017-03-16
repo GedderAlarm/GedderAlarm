@@ -1,5 +1,5 @@
 /*
- * USER: jameskluz
+ * USER: jameskluz, mslm
  * DATE: 2/24/17
  */
 
@@ -7,6 +7,7 @@ package com.gedder.gedderalarm;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.gedder.gedderalarm.alarm.AlarmClock;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         Log.v(TAG, "onPause()");
         super.onPause();
+
     }
 
     /**
@@ -66,69 +68,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.v(TAG, "onDestroy()");
         super.onDestroy();
-    }
-
-    /**
-     *
-     */
-    private void initializeVariables() {
-        Log.v(TAG, "initializeVariables()");
 
     }
 
     /**
-     *
+     * Called by some view when a new alarm is to be made. Brings us to the alarm creation activity.
+     * @param view The view that references this function.
      */
-    private void updateDynamicVariables() {
-        Log.v(TAG, "updateDynamicVariables()");
-
-    }
-
-    /**
-     *
-     */
-    private void updateSavedVariable() {
-        Log.v(TAG, "updateSavedVariable()");
-
-    }
-
-    /**
-     *
-     */
-    private void getSavedValues() {
-        Log.v(TAG, "getSavedValues()");
-
-    }
-
-    /**
-     *
-     */
-    private void setTime() {
-        Log.v(TAG, "setTime()");
-
-    }
-
-    /**
-     *
-     */
-    private void startOrCancel() {
-        Log.v(TAG, "startOrCancel()");
-
-    }
-
-    /**
-     *
-     */
-    private void startAlarm() {
-        Log.v(TAG, "startAlarm()");
-
-    }
-
-    /**
-     *
-     */
-    private void cancelAlarm() {
-        Log.v(TAG, "cancelAlarm()");
+    public void newAlarm(View view) {
 
     }
 }
