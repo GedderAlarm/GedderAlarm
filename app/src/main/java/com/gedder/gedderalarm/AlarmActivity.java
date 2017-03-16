@@ -5,7 +5,6 @@
 
 package com.gedder.gedderalarm;
 
-import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
