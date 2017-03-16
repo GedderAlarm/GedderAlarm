@@ -156,8 +156,8 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      * @param context The required context for each alarm clock.
      * @return A list of all alarm clocks currently existing in the database.
      */
-    public List<AlarmClock> getAllAlarmClocks(Context context) {
-        List<AlarmClock> alarmClockList = new ArrayList<>();
+    public ArrayList<AlarmClock> getAllAlarmClocks(Context context) {
+        ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + AlarmClockTable.TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(
