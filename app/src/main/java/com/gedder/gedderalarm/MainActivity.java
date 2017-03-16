@@ -5,14 +5,17 @@
 
 package com.gedder.gedderalarm;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.gedder.gedderalarm.alarm.AlarmClock;
+import com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
+import com.gedder.gedderalarm.db.AlarmClockDBSchema;
 import com.gedder.gedderalarm.util.Log;
 
 import java.util.ArrayList;
@@ -21,13 +24,13 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     // TODO: Redo this with a cursor adapter. We are only showing/working with alarms IN the db.
-    
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private final int intentId = 31582;
 
-    private ArrayList<AlarmClock> mAlarmClocks;
-    private ArrayAdapter<AlarmClock> mAlarmClocksAdapter;
+    private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
+    private Cursor alarmClockCursor;
 
     /**
      *
@@ -38,19 +41,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get currently saved alarm clocks.
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        mAlarmClocks = db.getAllAlarmClocks(this);
-        // Attach our alarm clock list to the adapter.
-        mAlarmClocksAdapter = new ArrayAdapter<>(this,
-                R.layout.item_alarm_clock, mAlarmClocks);
+        // Get a cursor pointing to all currently saved alarm clocks.
+        AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        alarmClockCursor = db.rawQuery(
+                "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
+
+        // Make an adapter based off of the cursor.
+        mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, alarmClockCursor);
+
         // Attach the adapter to the list view which we'll populate.
         ListView alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
-        alarmClocksListView.setAdapter(mAlarmClocksAdapter);
-
-        // Anytime we call add/insert/remove/clear on the adapter, the view will automatically
-        // update its data.
-        mAlarmClocksAdapter.setNotifyOnChange(true);
+        alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
 
         db.close();
     }
@@ -101,8 +103,9 @@ public class MainActivity extends AppCompatActivity {
     private void addAlarm(AlarmClock alarmClock) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         db.addAlarmClock(alarmClock);
-        mAlarmClocksAdapter.add(alarmClock);
         db.close();
+
+        updateAlarmClockCursorAdapter();
     }
 
     /**
@@ -112,8 +115,9 @@ public class MainActivity extends AppCompatActivity {
     private void removeAlarm(AlarmClock alarmClock) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         db.deleteAlarmClock(alarmClock.getUUID());
-        mAlarmClocksAdapter.remove(alarmClock);
         db.close();
+
+        updateAlarmClockCursorAdapter();
     }
 
     /**
@@ -124,8 +128,9 @@ public class MainActivity extends AppCompatActivity {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         AlarmClock alarmClock = db.getAlarmClock(this, uuid);
         db.deleteAlarmClock(uuid);
-        mAlarmClocksAdapter.remove(alarmClock);
         db.close();
+
+        updateAlarmClockCursorAdapter();
     }
 
     /**
@@ -133,13 +138,26 @@ public class MainActivity extends AppCompatActivity {
      * @param alarmClock
      */
     private void toggleAlarm(AlarmClock alarmClock) {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         if (alarmClock.isSet()) {
-            alarmClock.cancelAlarm();
+            db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), false);
         } else {
-            alarmClock.setAlarm();
+            db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), true);
         }
+
         // We notify the adapter to update the button text from "Unset" to "Set" and vice versa.
-        mAlarmClocksAdapter.notifyDataSetChanged();
+        updateAlarmClockCursorAdapter();
+    }
+
+    private void updateAlarmClockCursorAdapter() {
+        // TODO: Need to find a nicer way to do this. Maybe CursorWrapper will do the trick, dunno.
+        AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        alarmClockCursor = db.rawQuery(
+                "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
+        mAlarmClocksCursorAdapter.changeCursor(alarmClockCursor);
+
+        db.close();
     }
 }
 

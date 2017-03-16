@@ -196,17 +196,6 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Updates an existing alarm clock to a new time. Assumes alarm is set.
-     * @see #updateAlarmClock(UUID, long, boolean)
-     * @param uuid The UUID of the alarm clock to update.
-     * @param scheduledTimeInMs The new scheduled time for the alarm clock.
-     * @return Number of rows affected by the update.
-     */
-    public int updateAlarmClock(UUID uuid, long scheduledTimeInMs) {
-        return updateAlarmClock(uuid, scheduledTimeInMs, true);
-    }
-
-    /**
      * Updates an existing alarm clock to a new time.
      * @param uuid The UUID of the alarm clock to update.
      * @param scheduledTimeInMs The new scheduled time for the alarm clock.
