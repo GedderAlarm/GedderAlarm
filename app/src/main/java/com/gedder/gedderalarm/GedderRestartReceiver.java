@@ -10,7 +10,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.gedder.gedderalarm.util.Log;
@@ -48,10 +47,10 @@ public class GedderRestartReceiver extends BroadcastReceiver {
     private void resetAlarms(Context context) {
         Log.v(TAG, "resetAlarms()");
 
-        SharedPreferences saved_values =
-                context.getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
-        sAlarmSet = saved_values.getBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
-        sScheduledAlarmTimeInMs = saved_values.getLong(MainActivity.PREF_ALARM_TIME_IN_MS, -1L);
+        //SharedPreferences saved_values =
+                //context.getSharedPreferences(MainActivity.PREF_SAVED_VARIABLES, 0);
+        //sAlarmSet = saved_values.getBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
+        //sScheduledAlarmTimeInMs = saved_values.getLong(MainActivity.PREF_ALARM_TIME_IN_MS, -1L);
 
         if (sAlarmSet && sScheduledAlarmTimeInMs > System.currentTimeMillis()) {
             mAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -73,11 +72,11 @@ public class GedderRestartReceiver extends BroadcastReceiver {
             }
         } else {
             // We missed the alarm while the phone was off; reset saved variables.
-            SharedPreferences.Editor editor = saved_values.edit();
-            editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
-            editor.putLong(MainActivity.PREF_MS_UNTIL_ALARM, 0L);
-            editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MS, -1L);
-            editor.apply();
+            //SharedPreferences.Editor editor = saved_values.edit();
+            //editor.putBoolean(MainActivity.PREF_WAS_ALARM_SET, false);
+            //editor.putLong(MainActivity.PREF_MS_UNTIL_ALARM, 0L);
+            //editor.putLong(MainActivity.PREF_ALARM_TIME_IN_MS, -1L);
+            //editor.apply();
         }
     }
 }

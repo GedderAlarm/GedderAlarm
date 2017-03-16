@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         mAlarmClocks = db.getAllAlarmClocks(this);
-        mAlarmClocksAdapter = new ArrayAdapter<AlarmClock>(this,
+        mAlarmClocksAdapter = new ArrayAdapter<>(this,
                 R.layout.item_alarm_clock, mAlarmClocks);
 
     }

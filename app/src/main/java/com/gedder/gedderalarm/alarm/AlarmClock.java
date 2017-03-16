@@ -3,7 +3,7 @@
  * DATE: 3/10/2017
  */
 
-package com.gedder.gedderalarm;
+package com.gedder.gedderalarm.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.gedder.gedderalarm.AlarmReceiver;
 import com.gedder.gedderalarm.util.Log;
 
 import java.util.UUID;

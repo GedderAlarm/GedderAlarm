@@ -12,13 +12,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.gedder.gedderalarm.AlarmClock;
+import com.gedder.gedderalarm.alarm.AlarmClock;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.UuidToIdTable;
 import com.gedder.gedderalarm.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static android.content.Context.ALARM_SERVICE;
