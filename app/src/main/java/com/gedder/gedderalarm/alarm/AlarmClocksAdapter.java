@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.gedder.gedderalarm.R;
@@ -38,12 +39,14 @@ public class AlarmClocksAdapter extends ArrayAdapter<AlarmClock> {
         if (convertView == null)
             convertView = LayoutInflater.from(getContext())
                             .inflate(R.layout.item_alarm_clock, parent, false);
-        // Get our text views; we will populate them.
+        // Get our views; we will populate them.
         TextView time = (TextView) convertView.findViewById(R.id.alarm_clock_time);
         TextView set = (TextView) convertView.findViewById(R.id.alarm_clock_set);
+        Button toggle = (Button) convertView.findViewById(R.id.alarm_clock_toggle_btn);
         // Populate.
         time.setText(String.valueOf(alarmClock.getAlarmTime()));
-        set.setText(alarmClock.isSet() ? "set" : "not set");
+        set.setText(alarmClock.isSet() ? "is set" : "not set");
+        toggle.setText(alarmClock.isSet() ? "Off" : "On");
         return convertView;
     }
 }

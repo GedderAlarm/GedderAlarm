@@ -49,7 +49,7 @@ public class AlarmClock {
     }
 
     /**
-     * A fresh alarm clock without any alarm set.
+     * Initializes an unset alarm clock with default parameters.
      */
     public AlarmClock(Context context) {
         mContext = context;
@@ -61,7 +61,7 @@ public class AlarmClock {
     }
 
     /**
-     * A fresh alarm clock with alarm set for mMsUntilAlarm milliseconds into the future.
+     * Initializes an unset alarm clock.
      * @param mMsUntilAlarm The time until the alarm, in milliseconds.
      */
     public AlarmClock(Context context, long mMsUntilAlarm) {
@@ -72,7 +72,7 @@ public class AlarmClock {
     }
 
     /**
-     * A fresh alarm based off of explicit parameters.
+     * Initializes an unset alarm clock based off of explicit parameters.
      * @param context The context to use in the new alarm.
      * @param alarmManager The alarm manager to use in the new alarm.
      * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
@@ -89,8 +89,8 @@ public class AlarmClock {
     }
 
     /**
-     * Sets a new alarm clock through intents to the Android OS.
-     * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
+     * Sets the time for the alarm.
+     * NOTE: Does NOT set the pending intent for the alarm; only sets data.
      * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
     public void setAlarmTime(long msUntilAlarm) {
@@ -98,7 +98,24 @@ public class AlarmClock {
 
         this.mMsUntilAlarm = msUntilAlarm;
         mScheduledAlarmTimeInMs = System.currentTimeMillis() + this.mMsUntilAlarm;
+    }
 
+    /**
+     * Clears any current settings. The alarm may still be on and set to run at the previously
+     * appointed time.
+     */
+    public void clearAlarmSettings() {
+        Log.v(TAG, "resetAlarm()");
+
+        mMsUntilAlarm = 0L;
+        mScheduledAlarmTimeInMs = 0L;
+    }
+
+    /**
+     * Sets a new alarm clock through intents to the Android OS.
+     * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
+     */
+    public void setAlarm() {
         Intent alarmIntent = new Intent(mContext, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 mContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -121,29 +138,16 @@ public class AlarmClock {
 
     /**
      * Cancels any alarm associated with this alarm clock instance.
+     * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
      */
     public void cancelAlarm() {
         Log.v(TAG, "cancelAlarm()");
-
-        mMsUntilAlarm = 0L;
-        mScheduledAlarmTimeInMs = 0L;
 
         Intent alarmIntent = new Intent(mContext, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 mContext, intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mAlarmManager.cancel(pendingIntent);
 
-        mAlarmSet = false;
-    }
-
-    /**
-     * Assuming the alarm has played, finishes the alarm by changing its settings.
-     */
-    public void finishAlarm() {
-        Log.v(TAG, "finishAlarm()");
-
-        mMsUntilAlarm = 0L;
-        mScheduledAlarmTimeInMs = 0L;
         mAlarmSet = false;
     }
 

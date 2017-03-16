@@ -2,16 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/alarm_clock_time"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="PLACEHOLDER_TEXT" />
 
     <TextView
         android:id="@+id/alarm_clock_set"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="PLACEHOLDER_TEXT" />
+
+    <Button
+        android:id="@+id/alarm_clock_toggle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Toggle" />
 
 </LinearLayout>
