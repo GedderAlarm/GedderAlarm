@@ -23,7 +23,7 @@ import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
-    // TODO: Redo this with a cursor adapter. We are only showing/working with alarms IN the db.
+    // TODO: See todo in com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter.
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
