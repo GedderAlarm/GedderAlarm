@@ -17,9 +17,9 @@ import com.gedder.gedderalarm.util.Log;
 
 /**
  * Class to parse the JSON received from Google Maps API.
- *
+ * <p>
  * Example usage:
- *
+ * <p>
  * public String json = "put json string here";
  * public JsonParser jsonParser = new JsonParser(json);
  * private int duration = jsonParser.duration();
@@ -81,7 +81,7 @@ public class JsonParser {
      * Grabs json['routes'][route-1]['legs'][leg-1]['duration']['value'].
      *
      * @param route which route, if multiple. Starts from 1.
-     * @param leg which leg, if multiple. Starts from 1.
+     * @param leg   which leg, if multiple. Starts from 1.
      * @return duration of travel in seconds.
      */
     public int duration(int route, int leg) {
@@ -125,7 +125,7 @@ public class JsonParser {
      * Grabs json['routes'][route-1]['legs'][0]['distance']['value'].
      *
      * @param route which route, if multiple. Starts from 1.
-     * @return  distance of travel in meters.
+     * @return distance of travel in meters.
      */
     public int distance(int route) {
         return distance(route, 1);
@@ -135,7 +135,7 @@ public class JsonParser {
      * Grabs json['routes'][route-1]['legs'][leg-1]['distance']['value'].
      *
      * @param route which route, if multiple. Starts from 1.
-     * @param leg which leg, if multiple. Starts from 1.
+     * @param leg   which leg, if multiple. Starts from 1.
      * @return distance of travel in meters.
      */
     public int distance(int route, int leg) {
@@ -190,7 +190,7 @@ public class JsonParser {
      * Only exists if the request specified a traffic model.
      *
      * @param route which route, if multiple. Starts from 1.
-     * @param leg which leg, if multiple. Starts from 1.
+     * @param leg   which leg, if multiple. Starts from 1.
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic(int route, int leg) {
@@ -386,7 +386,7 @@ public class JsonParser {
      *
      * @param route which route, if multiple. Starts from 1.
      * @return the total fare amount in the currency specified by fareCurrency().
-     *         -1 if there was a JSONException.
+     * -1 if there was a JSONException.
      */
     public int fare(int route) {
         // User expected to enter values starting from 1.
@@ -415,7 +415,7 @@ public class JsonParser {
      * Grabs json['status'].
      *
      * @return status number of the request, corresponding to
-     *         com.gedder.gedderalarm.util.JSONStatus enumerations.
+     * com.gedder.gedderalarm.util.JSONStatus enumerations.
      */
     public JsonStatus status() {
         JsonStatus code;
@@ -486,7 +486,7 @@ public class JsonParser {
      * no results.
      *
      * @return an ArrayList<String> object containing all available
-     *         travel modes.
+     * travel modes.
      */
     public ArrayList<String> availableTravelModes() {
         JSONArray travel_modes;
