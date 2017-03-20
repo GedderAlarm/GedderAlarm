@@ -35,4 +35,8 @@ public class Log {
     public static void w(String tag, String string) {
         if (LOG) android.util.Log.w(tag, string);
     }
+
+    public static void wtf(String tag, String string) {
+        if (LOG) android.util.Log.wtf(tag, string);
+    }
 }

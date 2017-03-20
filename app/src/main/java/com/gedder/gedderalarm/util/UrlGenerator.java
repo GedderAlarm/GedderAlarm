@@ -257,7 +257,7 @@ public class UrlGenerator {
                 this.origin = URLEncoder.encode(origin, "UTF-8");
                 this.destination = URLEncoder.encode(destination, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                // TODO: Implement.
+                Log.wtf(SUB_TAG, "UTF-8 is apparently unsupported.");
             }
 
             this.apiKey = apiKey;
@@ -270,7 +270,6 @@ public class UrlGenerator {
          * @return
          */
         public UrlBuilder arrivalTime(String arrivalTime) {
-            // TODO: Need to sanitize time to unix time format.
             this.arrivalTime = toUnixTime(arrivalTime);
             return this;
         }
@@ -282,7 +281,6 @@ public class UrlGenerator {
          * @return
          */
         public UrlBuilder departureTime(String departureTime) {
-            // TODO: Need to sanitize time to unix time format.
             this.departureTime = toUnixTime(departureTime);
             return this;
         }
