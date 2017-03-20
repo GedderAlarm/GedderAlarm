@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.gedder.gedderalarm.util.JsonStatus;
+import com.gedder.gedderalarm.util.Log;
 
 
 /**
@@ -35,10 +36,13 @@ public class JsonParser {
     // TODO: Add choose-your-step functionality for everything that is in the `steps` key.
     // TODO: Add travelMode() functionality for individual steps.
 
+    private static final String TAG = JsonParser.class.getSimpleName();
+
     private String json;
     private JSONObject obj;
 
     /**
+     * Initializes JsonParser object using a valid JSON string.
      *
      * @param json The JSON string to parse.
      */
@@ -48,12 +52,15 @@ public class JsonParser {
         try {
             this.obj = new JSONObject(this.json);
         } catch (JSONException e) {
-            // TODO: Implement
+            Log.e(TAG, "Invalid JSON string in constructor " + TAG + "::JsonParser(String).");
+            this.json = "";
+            this.obj = null;
         }
     }
 
     /**
      * Grabs json['routes'][0]['legs'][0]['duration']['value'].
+     *
      * @return duration of travel in seconds.
      */
     public int duration() {
@@ -62,8 +69,9 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['legs'][0]['duration']['value'].
-     * param[0]: which route, if multiple. Starts from 1.
-     * return: duration of travel in seconds.
+     *
+     * @param: which route, if multiple. Starts from 1.
+     * @return: duration of travel in seconds.
      */
     public int duration(int route) {
         return duration(route, 1);
@@ -71,13 +79,12 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['legs'][leg-1]['duration']['value'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @param leg which leg, if multiple. Starts from 1.
      * @return duration of travel in seconds.
      */
     public int duration(int route, int leg) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -98,7 +105,8 @@ public class JsonParser {
             durationObj = leg_number.getJSONObject("duration");
             duration = durationObj.getInt("value");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::duration.");
+            return -1;
         }
 
         return duration;
@@ -106,6 +114,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['legs'][0]['distance']['value'].
+     *
      * @return distance of travel in meters.
      */
     public int distance() {
@@ -114,6 +123,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['legs'][0]['distance']['value'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return  distance of travel in meters.
      */
@@ -123,13 +133,12 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['legs'][leg-1]['distance']['value'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @param leg which leg, if multiple. Starts from 1.
      * @return distance of travel in meters.
      */
     public int distance(int route, int leg) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -148,7 +157,8 @@ public class JsonParser {
             leg_number = legs.getJSONObject(leg);
             distance = leg_number.getInt("value");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::distance.");
+            return -1;
         }
 
         return distance;
@@ -157,6 +167,7 @@ public class JsonParser {
     /**
      * Grabs json['routes'][0]['legs'][0]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
+     *
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic() {
@@ -166,6 +177,7 @@ public class JsonParser {
     /**
      * Grabs json['routes'][route-1]['legs'][0]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return duration in traffic in seconds.
      */
@@ -176,13 +188,12 @@ public class JsonParser {
     /**
      * Grabs json['routes'][route-1]['legs'][leg-1]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
+     *
      * @param route which route, if multiple. Starts from 1.
      * @param leg which leg, if multiple. Starts from 1.
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic(int route, int leg) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -203,7 +214,8 @@ public class JsonParser {
             duration_in_traffic = leg_number.getJSONObject("duration_in_traffic");
             value = duration_in_traffic.getInt("value");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::durationInTraffic.");
+            return -1;
         }
 
         return value;
@@ -212,6 +224,7 @@ public class JsonParser {
     /**
      * Grabs json['routes'][0]['warnings'] elements and puts them
      * in a ArrayList of Strings.
+     *
      * @return an ArrayList<String> object containing all warnings.
      */
     public ArrayList<String> warnings() {
@@ -221,12 +234,11 @@ public class JsonParser {
     /**
      * Grabs json['routes'][route-1]['warnings'] elements and puts them
      * in a ArrayList of Strings.
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return an ArrayList<String> object containing all warnings.
      */
     public ArrayList<String> warnings(int route) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -243,7 +255,8 @@ public class JsonParser {
             for (int i = 0; i < warnings.length(); i++)
                 warningsList.add(warnings.getString(i));
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::warnings.");
+            return null;
         }
 
         return warningsList;
@@ -251,6 +264,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['copyrights'].
+     *
      * @return a String containing the copyright information.
      */
     public String copyrights() {
@@ -259,12 +273,11 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['copyrights'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return a String containing the copyright information.
      */
     public String copyrights(int route) {
-        // TODO: Implement.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -278,7 +291,8 @@ public class JsonParser {
             route_number = routes.getJSONObject(route);
             copyrights = route_number.getString("copyrights");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::copyrights.");
+            return null;
         }
 
         return copyrights;
@@ -286,6 +300,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['summary'].
+     *
      * @return a String containing summary information for the route.
      */
     public String summary() {
@@ -294,12 +309,11 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['summary'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return a String containing summary information for the route.
      */
     public String summary(int route) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -313,7 +327,8 @@ public class JsonParser {
             route_number = routes.getJSONObject(route);
             summary = route_number.getString("summary");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::summary.");
+            return null;
         }
 
         return summary;
@@ -321,6 +336,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['fare']['currency'].
+     *
      * @return the ISO 4217 currency code that the fare is expressed in.
      */
     public String fareCurrency() {
@@ -329,12 +345,11 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['fare']['currency'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return the ISO 4217 currency code that the fare is expressed in.
      */
     public String fareCurrency(int route) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -350,7 +365,8 @@ public class JsonParser {
             fare = route_number.getJSONObject("fare");
             currency = fare.getString("currency");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::fareCurrency.");
+            return null;
         }
 
         return currency;
@@ -358,6 +374,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['fare']['value'].
+     *
      * @return the total fare amount in the currency specified by fareCurrency().
      */
     public int fare() {
@@ -366,12 +383,12 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route-1]['fare']['value'].
+     *
      * @param route which route, if multiple. Starts from 1.
      * @return the total fare amount in the currency specified by fareCurrency().
+     *         -1 if there was a JSONException.
      */
     public int fare(int route) {
-        // TODO: Test.
-
         // User expected to enter values starting from 1.
         // We expect to use it starting from 0.
         route -= 1;
@@ -387,7 +404,8 @@ public class JsonParser {
             fareObj = route_number.getJSONObject("fare");
             fare = fareObj.getInt("value");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::fare.");
+            return -1;
         }
 
         return fare;
@@ -395,19 +413,19 @@ public class JsonParser {
 
     /**
      * Grabs json['status'].
+     *
      * @return status number of the request, corresponding to
      *         com.gedder.gedderalarm.util.JSONStatus enumerations.
      */
     public JsonStatus status() {
-        // TODO: Test.
-
         JsonStatus code;
         String status = "";
 
         try {
             status = obj.getString("status");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::status.");
+            return null;
         }
 
         switch (status) {
@@ -446,6 +464,7 @@ public class JsonParser {
     /**
      * Grabs json['error_message'].
      * Only exists if json['status'] != "OK".
+     *
      * @return error message string.
      */
     public String errorMessage() {
@@ -454,7 +473,8 @@ public class JsonParser {
         try {
             error = obj.getString("error_message");
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::errorMessage.");
+            return null;
         }
 
         return error;
@@ -464,12 +484,11 @@ public class JsonParser {
      * Grabs json['available_travel_modes'].
      * Only exists if a request specifies a travel mode and gets
      * no results.
+     *
      * @return an ArrayList<String> object containing all available
      *         travel modes.
      */
     public ArrayList<String> availableTravelModes() {
-        // TODO: Test.
-
         JSONArray travel_modes;
         ArrayList<String> modes = new ArrayList<>();
 
@@ -478,7 +497,8 @@ public class JsonParser {
             for (int i = 0; i < travel_modes.length(); i++)
                 modes.add(travel_modes.getString(i));
         } catch (JSONException e) {
-            // TODO: Implement.
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::availableTravelModes.");
+            return null;
         }
 
         return modes;
