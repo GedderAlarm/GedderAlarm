@@ -7,7 +7,6 @@ package com.gedder.gedderalarm.alarm;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
