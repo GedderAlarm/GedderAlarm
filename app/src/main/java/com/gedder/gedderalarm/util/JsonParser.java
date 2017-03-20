@@ -57,7 +57,7 @@ public class JsonParser {
      * @return duration of travel in seconds.
      */
     public int duration() {
-        return duration(0, 0);
+        return duration(1, 1);
     }
 
     /**
@@ -66,7 +66,7 @@ public class JsonParser {
      * return: duration of travel in seconds.
      */
     public int duration(int route) {
-        return duration(route, 0);
+        return duration(route, 1);
     }
 
     /**
@@ -91,7 +91,7 @@ public class JsonParser {
         int duration = -1;
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -109,7 +109,7 @@ public class JsonParser {
      * @return distance of travel in meters.
      */
     public int distance() {
-        return distance(0, 0);
+        return distance(1, 1);
     }
 
     /**
@@ -118,7 +118,7 @@ public class JsonParser {
      * @return  distance of travel in meters.
      */
     public int distance(int route) {
-        return distance(route, 0);
+        return distance(route, 1);
     }
 
     /**
@@ -142,7 +142,7 @@ public class JsonParser {
         int distance = -1;
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -160,7 +160,7 @@ public class JsonParser {
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic() {
-        return durationInTraffic(0, 0);
+        return durationInTraffic(1, 1);
     }
 
     /**
@@ -170,7 +170,7 @@ public class JsonParser {
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic(int route) {
-        return durationInTraffic(route, 0);
+        return durationInTraffic(route, 1);
     }
 
     /**
@@ -196,7 +196,7 @@ public class JsonParser {
         int value = -1;
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -215,7 +215,7 @@ public class JsonParser {
      * @return an ArrayList<String> object containing all warnings.
      */
     public ArrayList<String> warnings() {
-        return warnings(0);
+        return warnings(1);
     }
 
     /**
@@ -237,7 +237,7 @@ public class JsonParser {
         ArrayList<String> warningsList = new ArrayList<>();
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             warnings = route_number.getJSONArray("warnings");
             for (int i = 0; i < warnings.length(); i++)
@@ -254,7 +254,7 @@ public class JsonParser {
      * @return a String containing the copyright information.
      */
     public String copyrights() {
-        return copyrights(0);
+        return copyrights(1);
     }
 
     /**
@@ -274,7 +274,7 @@ public class JsonParser {
         String copyrights = "";
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             copyrights = route_number.getString("copyrights");
         } catch (JSONException e) {
@@ -289,7 +289,7 @@ public class JsonParser {
      * @return a String containing summary information for the route.
      */
     public String summary() {
-        return summary(0);
+        return summary(1);
     }
 
     /**
@@ -309,7 +309,7 @@ public class JsonParser {
         String summary = "";
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             summary = route_number.getString("summary");
         } catch (JSONException e) {
@@ -324,7 +324,7 @@ public class JsonParser {
      * @return the ISO 4217 currency code that the fare is expressed in.
      */
     public String fareCurrency() {
-        return fareCurrency(0);
+        return fareCurrency(1);
     }
 
     /**
@@ -345,7 +345,7 @@ public class JsonParser {
         String currency = "";
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             fare = route_number.getJSONObject("fare");
             currency = fare.getString("currency");
@@ -361,7 +361,7 @@ public class JsonParser {
      * @return the total fare amount in the currency specified by fareCurrency().
      */
     public int fare() {
-        return fare(0);
+        return fare(1);
     }
 
     /**
@@ -382,7 +382,7 @@ public class JsonParser {
         int fare = -1;
 
         try {
-            routes = obj.getJSONArray("route");
+            routes = obj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             fareObj = route_number.getJSONObject("fare");
             fare = fareObj.getInt("value");
