@@ -219,6 +219,12 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 AlarmClockTable.Columns.ID + "=?", new String[] { String.valueOf(id) });
     }
 
+    public int updateAlarmClock(UUID uuid, AlarmClock alarmClock) {
+        // Update alarm clock with UUID uuid in the database to match the settings of alarmClock.
+        // TODO: Implement.
+        return -1;
+    }
+
     /**
      * Deletes the alarm clock that has UUID uuid.
      * @param uuid The UUID of the alarm clock to delete.

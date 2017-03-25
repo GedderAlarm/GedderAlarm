@@ -17,9 +17,7 @@ import com.gedder.gedderalarm.alarm.AlarmClock;
 import com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
-import com.gedder.gedderalarm.util.Log;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private final int intentId = 31582;
 
     private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
-    private Cursor alarmClockCursor;
+    private Cursor mAlarmClockCursor;
 
     /**
      *
@@ -45,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
-        alarmClockCursor = db.rawQuery(
+        mAlarmClockCursor = db.rawQuery(
                 "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
 
         // Make an adapter based off of the cursor.
-        mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, alarmClockCursor);
+        mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, mAlarmClockCursor);
 
         // Attach the adapter to the list view which we'll populate.
         ListView alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
@@ -133,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Need to find a nicer way to do this. Maybe CursorWrapper will do the trick, dunno.
         AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
         SQLiteDatabase db = helper.getWritableDatabase();
-        alarmClockCursor = db.rawQuery(
+        mAlarmClockCursor = db.rawQuery(
                 "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
-        mAlarmClocksCursorAdapter.changeCursor(alarmClockCursor);
+        mAlarmClocksCursorAdapter.changeCursor(mAlarmClockCursor);
 
         db.close();
     }
