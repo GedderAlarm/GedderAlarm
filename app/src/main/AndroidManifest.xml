@@ -39,7 +39,7 @@
         </receiver>
 
         <activity
-            android:name=".EditAlarmScrollingActivity"
+            android:name=".AlarmEditScrollingActivity"
             android:label="@string/title_activity_edit_alarm_scrolling"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
