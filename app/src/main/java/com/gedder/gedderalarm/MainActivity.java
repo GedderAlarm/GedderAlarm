@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.gedder.gedderalarm.alarm.AlarmClock;
@@ -54,46 +55,25 @@ public class MainActivity extends AppCompatActivity {
         ListView alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
         alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
 
+        // When an alarm in the list is touched, we go to the alarm edit activity.
+        alarmClocksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Some alarm clock item on the list of alarms is clicked.
+                // TODO: bring to the alarm edit activity.
+            }
+        });
+
         db.close();
     }
 
     /**
-     *
-     */
-    @Override
-    protected void onResume() {
-        Log.e(TAG, "onResume()");
-        super.onResume();
-
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void onPause() {
-        Log.v(TAG, "onPause()");
-        super.onPause();
-
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void onDestroy() {
-        Log.v(TAG, "onDestroy()");
-        super.onDestroy();
-
-    }
-
-    /**
-     * Called by some view when a new alarm is to be made. Brings up some alarm creation
-     * functionality.
+     * Called by some view when a new alarm is to be made. Brings up some alarm creation activity.
      * @param view The view that references this function.
      */
-    public void newAlarmBtnHandler(View view) {
-
+    public void handleNewAlarmBtn(View view) {
+        // A new alarm is desired.
+        // TODO: Bring us to the alarm edit activity.
     }
 
     /**
