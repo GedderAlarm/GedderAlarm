@@ -9,20 +9,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:text="PLACEHOLDER_TEXT" />
+        android:layout_weight="1"
+        android:text="Time" />
 
     <TextView
         android:id="@+id/alarm_clock_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:text="PLACEHOLDER_TEXT" />
+        android:layout_weight="1"
+        android:text="M T W T F S S" />
+
+    <Button
+        android:id="@+id/gedder_alarm_toggle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_weight="1"
+        android:text="Toggle Gedder"/>
 
     <Button
         android:id="@+id/alarm_clock_toggle_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:text="Toggle" />
+        android:layout_weight="1"
+        android:text="Toggle Alarm" />
 
 </LinearLayout>
