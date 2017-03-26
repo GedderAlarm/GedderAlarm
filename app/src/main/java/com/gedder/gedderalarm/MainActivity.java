@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     public void newAlarm(View view) {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
-        intent.putExtra(SERIALIZED_ALARM_CLOCK, new AlarmClock(this));
+        intent.putExtra(SERIALIZED_ALARM_CLOCK, new AlarmClock(this.getApplicationContext()));
         startActivity(intent);
     }
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void removeAlarm(UUID uuid) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        AlarmClock alarmClock = db.getAlarmClock(this, uuid);
+        AlarmClock alarmClock = db.getAlarmClock(this.getApplicationContext(), uuid);
         db.deleteAlarmClock(uuid);
         db.close();
 
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), !alarmClock.isSet());
+        db.close();
 
         // We notify the adapter to update the button text from "Unset" to "Set" and vice versa.
         updateAlarmClockCursorAdapter();

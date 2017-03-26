@@ -129,7 +129,6 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     public AlarmClock getAlarmClock(Context context, UUID uuid) {
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.rawQuery(
                 "SELECT " + AlarmClockTable.Columns.ALARM_TIME + "," +
                             AlarmClockTable.Columns.ALARM_SET + " " +
@@ -137,6 +136,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 "WHERE " + AlarmClockTable.Columns.ID + "=" + UuidToIdTable.Columns.ID + " " +
                 "AND " + UuidToIdTable.Columns.UUID + "='" + uuid.toString() + "'",
                 null);
+        db.close();
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -160,7 +160,6 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     public ArrayList<AlarmClock> getAllAlarmClocks(Context context) {
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + AlarmClockTable.TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " + AlarmClockTable.Columns.ALARM_TIME + "," +
@@ -169,6 +168,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 "FROM " + AlarmClockTable.TABLE_NAME + "," + UuidToIdTable.TABLE_NAME + " " +
                 "WHERE " + AlarmClockTable.Columns.ID + "=" + UuidToIdTable.Columns.ID,
                 null);
+        db.close();
 
         if (cursor.moveToFirst()) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -218,8 +218,10 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         contentValues.put(AlarmClockTable.Columns.ALARM_TIME, scheduledTimeInMs);
         contentValues.put(AlarmClockTable.Columns.ALARM_SET, alarmSet);
 
-        return db.update(AlarmClockTable.TABLE_NAME, contentValues,
+        int updated_rows = db.update(AlarmClockTable.TABLE_NAME, contentValues,
                 AlarmClockTable.Columns.ID + "=?", new String[] { String.valueOf(id) });
+        db.close();
+        return updated_rows;
     }
 
     /**
@@ -238,9 +240,8 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     public void deleteAlarmClock(UUID uuid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int id = getId(uuid);
         db.delete(AlarmClockTable.TABLE_NAME,
-                AlarmClockTable.Columns.ID + "=?", new String[] { String.valueOf(id) });
+                AlarmClockTable.Columns.ID + "=?", new String[] { String.valueOf(getId(uuid)) });
         db.close();
     }
 
@@ -251,18 +252,19 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     private int getId(UUID uuid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        int id = -1;
         Cursor idCursor = db.rawQuery(
                 "SELECT " + UuidToIdTable.Columns.ID + " " +
                 "FROM " + UuidToIdTable.TABLE_NAME + " " +
                 "WHERE " + UuidToIdTable.Columns.UUID + "='" + uuid.toString() + "'",
                 null);
+        db.close();
+
+        int id = -1;
         if (idCursor != null) {
             idCursor.moveToFirst();
             id = idCursor.getInt(0);
+            idCursor.close();
         }
-        idCursor.close();
-        db.close();
         return id;
     }
 
@@ -274,13 +276,14 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor idCursor = db.rawQuery("SELECT seq FROM sqlite_sequence " +
                 "WHERE NAME=\"" + AlarmClockTable.TABLE_NAME + "\"", null);
+        db.close();
+
         int lastId = -1;
         if (idCursor != null) {
             idCursor.moveToFirst();
             lastId = idCursor.getInt(0);
+            idCursor.close();
         }
-        idCursor.close();
-        db.close();
         return lastId;
     }
 }
