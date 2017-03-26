@@ -15,12 +15,21 @@ import android.view.View;
  *
  */
 public class AlarmEditScrollingActivity extends AppCompatActivity {
+    private static final String TAG = AlarmEditScrollingActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_edit_scrolling);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+    }
+
+    public void cancel(View view) {
+
+    }
+
+    public void done(View view) {
+
     }
 }
