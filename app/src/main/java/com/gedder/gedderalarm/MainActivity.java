@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    public static final String SERIALIZED_ALARM_CLOCK = "_GEDDER_SERIALIZED_ALARM_CLOCK_";
+    public static final String PARCEL_ALARM_CLOCK = "_GEDDER_PARCEL_ALARM_CLOCK_";
 
     private final int intentId = 31582;
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void newAlarm(View view) {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
-        //intent.putExtra(SERIALIZED_ALARM_CLOCK, new AlarmClock());
+        intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
         startActivity(intent);
     }
 

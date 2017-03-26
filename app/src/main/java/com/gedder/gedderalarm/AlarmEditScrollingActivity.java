@@ -25,8 +25,7 @@ public class AlarmEditScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_edit_scrolling);
 
         // Get the alarm clock in question.
-        AlarmClock alarmClock = (AlarmClock) getIntent().getSerializableExtra(
-                MainActivity.SERIALIZED_ALARM_CLOCK);
+        AlarmClock alarmClock = getIntent().getParcelableExtra(MainActivity.PARCEL_ALARM_CLOCK);
 
         // Programmatically change settings of views to match this alarm clock's settings.
     }
