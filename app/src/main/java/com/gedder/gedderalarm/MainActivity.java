@@ -117,14 +117,11 @@ public class MainActivity extends AppCompatActivity {
      * @param alarmClock
      */
     private void toggleAlarm(AlarmClock alarmClock) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         // TODO: Use updated updateAlarmClock function later.
         // TODO: Make sure to turn off gedder functionality when toggling alarm.
-        if (alarmClock.isSet()) {
-            db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), false);
-        } else {
-            db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), true);
-        }
+
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), !alarmClock.isSet());
 
         // We notify the adapter to update the button text from "Unset" to "Set" and vice versa.
         updateAlarmClockCursorAdapter();

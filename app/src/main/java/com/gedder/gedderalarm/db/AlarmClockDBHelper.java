@@ -196,11 +196,11 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Updates an existing alarm clock to a new time.
+     * Updates an existing alarm clock to a new set of parameters.
      * @param uuid The UUID of the alarm clock to update.
      * @param scheduledTimeInMs The new scheduled time for the alarm clock.
      * @param alarmSet Whether this alarm is set or not.
-     * @return Number of rows affected by the update.
+     * @return Number of rows affected by the update. Not 1 if failed.
      */
     public int updateAlarmClock(UUID uuid, long scheduledTimeInMs, boolean alarmSet) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -219,10 +219,14 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 AlarmClockTable.Columns.ID + "=?", new String[] { String.valueOf(id) });
     }
 
+    /**
+     * Updates an existing alarm clock to the parameters of the passed in alarm clock.
+     * @param uuid The UUID of the alarm clock to update.
+     * @param alarmClock The alarm clock whose values to copy into the alarm clock with UUID uuid.
+     * @return Number of rows affected by the update. Not 1 if failed.
+     */
     public int updateAlarmClock(UUID uuid, AlarmClock alarmClock) {
-        // Update alarm clock with UUID uuid in the database to match the settings of alarmClock.
-        // TODO: Implement.
-        return -1;
+        return updateAlarmClock(uuid, alarmClock.getAlarmTime(), alarmClock.isSet());
     }
 
     /**
