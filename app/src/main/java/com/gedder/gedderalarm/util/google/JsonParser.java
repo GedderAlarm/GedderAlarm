@@ -3,7 +3,7 @@
  * DATE: March 8th, 2017
  */
 
-package com.gedder.gedderalarm.util;
+package com.gedder.gedderalarm.util.google;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.gedder.gedderalarm.util.JsonStatus;
 import com.gedder.gedderalarm.util.Log;
 
 

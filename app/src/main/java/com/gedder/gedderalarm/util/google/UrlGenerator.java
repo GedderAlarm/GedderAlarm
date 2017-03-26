@@ -3,13 +3,13 @@
  * DATE: 3/4/2017
  */
 
-package com.gedder.gedderalarm.util;
+package com.gedder.gedderalarm.util.google;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.except.RequiredParamMissingException;
-import com.gedder.gedderalarm.util.google.TravelModes;
 
 
 /**
