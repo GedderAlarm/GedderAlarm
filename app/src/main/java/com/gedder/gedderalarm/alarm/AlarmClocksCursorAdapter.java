@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.gedder.gedderalarm.R;
+import com.gedder.gedderalarm.db.AlarmClockDBSchema;
 
 
 /**
@@ -29,7 +30,7 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    public View newView(final Context context, final Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.item_alarm_clock, parent, false);
     }
 
@@ -38,14 +39,16 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
         // TODO: Implement a CursorWrapper to more easily retrieve an AlarmClock from a cursor.
         // Get our views; we will populate them.
         TextView time = (TextView) view.findViewById(R.id.alarm_clock_time);
-        TextView set = (TextView) view.findViewById(R.id.alarm_clock_set);
-        Button toggle = (Button) view.findViewById(R.id.alarm_clock_toggle_btn);
+        TextView repeat = (TextView) view.findViewById(R.id.alarm_clock_repeat_dates);
+        Button gedderToggle = (Button) view.findViewById(R.id.gedder_alarm_toggle_btn);
+        Button alarmToggle = (Button) view.findViewById(R.id.alarm_clock_toggle_btn);
         // Get data from cursor.
-        long alarmTime = cursor.getLong(cursor.getColumnIndexOrThrow("alarmClocks.alarmTime"));
-        int alarmSet = cursor.getInt(cursor.getColumnIndexOrThrow("alarmClocks.alarmSet"));
-        // Populate.
+        long alarmTime = cursor.getLong(cursor.getColumnIndexOrThrow(
+                AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_TIME));
+        int alarmSet = cursor.getInt(cursor.getColumnIndexOrThrow(
+                AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_SET));
+        // Populate our views with that data.
         time.setText(String.valueOf(alarmTime));
-        set.setText(alarmSet > 0 ? "is set" : "not set");
-        toggle.setText(alarmSet > 0 ? "On" : "Off");
+        alarmToggle.setText(alarmSet > 0 ? "Turn off" : "Turn on");
     }
 }

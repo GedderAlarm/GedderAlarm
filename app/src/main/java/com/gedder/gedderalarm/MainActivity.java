@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int intentId = 31582;
 
+    private ListView alarmClocksListView;
     private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
     private Cursor mAlarmClockCursor;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, mAlarmClockCursor);
 
         // Attach the adapter to the list view which we'll populate.
-        ListView alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
+        alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
         alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
 
         // When an alarm in the list is touched, we go to the alarm edit activity.
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void toggleAlarm(AlarmClock alarmClock) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        // TODO: Use updated updateAlarmClock function later.
+        // TODO: Make sure to turn off gedder functionality when toggling alarm.
         if (alarmClock.isSet()) {
             db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), false);
         } else {

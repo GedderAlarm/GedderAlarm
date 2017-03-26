@@ -162,7 +162,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(
                 "SELECT " + AlarmClockTable.Columns.ALARM_TIME + "," +
                             AlarmClockTable.Columns.ALARM_SET + "," +
-                            UuidToIdTable.Columns.UUID +
+                            UuidToIdTable.Columns.UUID + " " +
                 "FROM " + AlarmClockTable.TABLE_NAME + "," + UuidToIdTable.TABLE_NAME + " " +
                 "WHERE " + AlarmClockTable.Columns.ID + "=" + UuidToIdTable.Columns.ID,
                 null);
