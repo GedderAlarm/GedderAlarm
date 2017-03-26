@@ -5,6 +5,7 @@
 
 package com.gedder.gedderalarm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void newAlarm(View view) {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
-        intent.putExtra(SERIALIZED_ALARM_CLOCK, new AlarmClock(this.getApplicationContext()));
+        //intent.putExtra(SERIALIZED_ALARM_CLOCK, new AlarmClock());
         startActivity(intent);
     }
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void removeAlarm(UUID uuid) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        AlarmClock alarmClock = db.getAlarmClock(this.getApplicationContext(), uuid);
+        AlarmClock alarmClock = db.getAlarmClock(uuid);
         db.deleteAlarmClock(uuid);
         db.close();
 

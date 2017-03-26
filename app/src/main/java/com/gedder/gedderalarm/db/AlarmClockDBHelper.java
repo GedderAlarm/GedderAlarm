@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gedder.gedderalarm.GedderAlarmApplication;
 import com.gedder.gedderalarm.alarm.AlarmClock;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.UuidToIdTable;
@@ -123,11 +124,10 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
 
     /**
      * Gets the alarm clock with UUID uuid, if it exists in the database.
-     * @param context The required context for the alarm clock.
      * @param uuid The UUID of the alarm clock to get.
      * @return The AlarmClock object having UUID uuid.
      */
-    public AlarmClock getAlarmClock(Context context, UUID uuid) {
+    public AlarmClock getAlarmClock(UUID uuid) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " + AlarmClockTable.Columns.ALARM_TIME + "," +
@@ -142,23 +142,23 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         try {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) GedderAlarmApplication.getAppContext()
+                    .getSystemService(ALARM_SERVICE);
             long scheduledAlarmTime = cursor.getLong(0);
             boolean alarmSet = cursor.getInt(1) > 0;
             cursor.close();
-            return new AlarmClock(context, alarmManager, uuid, scheduledAlarmTime, alarmSet);
+            return new AlarmClock(alarmManager, uuid, scheduledAlarmTime, alarmSet);
         } catch (NullPointerException e) {
             Log.e(TAG, "getAlarmClock() NullPointerException");
-            return new AlarmClock(context);
+            return new AlarmClock();
         }
     }
 
     /**
      * Returns a list of all alarm clocks currently in the database, active or not.
-     * @param context The required context for each alarm clock.
      * @return A list of all alarm clocks currently existing in the database.
      */
-    public ArrayList<AlarmClock> getAllAlarmClocks(Context context) {
+    public ArrayList<AlarmClock> getAllAlarmClocks() {
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(
@@ -171,14 +171,15 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         db.close();
 
         if (cursor.moveToFirst()) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) GedderAlarmApplication.getAppContext()
+                    .getSystemService(ALARM_SERVICE);
             do {
                 long scheduledAlarmTime = cursor.getLong(0);
                 boolean alarmSet = cursor.getInt(1) > 0;
                 UUID uuid = UUID.fromString(cursor.getString(2));
 
-                alarmClockList.add(new AlarmClock(context, alarmManager, uuid,
-                        scheduledAlarmTime, alarmSet));
+                alarmClockList.add(new AlarmClock(alarmManager, uuid, scheduledAlarmTime,
+                        alarmSet));
             } while (cursor.moveToNext());
         }
 
