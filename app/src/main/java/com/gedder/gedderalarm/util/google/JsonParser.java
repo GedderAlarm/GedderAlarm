@@ -24,8 +24,8 @@ import com.gedder.gedderalarm.util.Log;
  * private int duration = jsonParser.duration();
  * private String origin = jsonParser.origin();
  * private String destination = jsonParser.destination();
- * private String route2_origin = jsonParser.origin(2);
- * private String route2_destination = jsonParser.destination(2);
+ * private String route2_origin = jsonParser.origin(1);
+ * private String route2_destination = jsonParser.destination(1);
  */
 public class JsonParser {
     // For mslm:
@@ -42,7 +42,6 @@ public class JsonParser {
 
     /**
      * Initializes JsonParser object using a valid JSON string.
-     *
      * @param json The JSON string to parse.
      */
     public JsonParser(String json) {
@@ -59,36 +58,28 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['legs'][0]['duration']['value'].
-     *
      * @return duration of travel in seconds.
      */
     public int duration() {
-        return duration(1, 1);
+        return duration(0, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][0]['duration']['value'].
-     *
-     * @param: which route, if multiple. Starts from 1.
-     * @return: duration of travel in seconds.
+     * Grabs json['routes'][route]['legs'][0]['duration']['value'].
+     * @param route route, if multiple. Starts from 0.
+     * @return duration of travel in seconds.
      */
     public int duration(int route) {
-        return duration(route, 1);
+        return duration(route, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][leg-1]['duration']['value'].
-     *
-     * @param route which route, if multiple. Starts from 1.
-     * @param leg   which leg, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['legs'][leg]['duration']['value'].
+     * @param route which route, if multiple. Starts from 0.
+     * @param leg   which leg, if multiple. Starts from 0.
      * @return duration of travel in seconds.
      */
     public int duration(int route, int leg) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-        leg -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONArray legs;
@@ -113,36 +104,28 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['legs'][0]['distance']['value'].
-     *
      * @return distance of travel in meters.
      */
     public int distance() {
-        return distance(1, 1);
+        return distance(0, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][0]['distance']['value'].
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['legs'][0]['distance']['value'].
+     * @param route which route, if multiple. Starts from 0.
      * @return distance of travel in meters.
      */
     public int distance(int route) {
-        return distance(route, 1);
+        return distance(route, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][leg-1]['distance']['value'].
-     *
-     * @param route which route, if multiple. Starts from 1.
-     * @param leg   which leg, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['legs'][leg]['distance']['value'].
+     * @param route which route, if multiple. Starts from 0.
+     * @param leg   which leg, if multiple. Starts from 0.
      * @return distance of travel in meters.
      */
     public int distance(int route, int leg) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-        leg -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONArray legs;
@@ -166,38 +149,30 @@ public class JsonParser {
     /**
      * Grabs json['routes'][0]['legs'][0]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
-     *
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic() {
-        return durationInTraffic(1, 1);
+        return durationInTraffic(0, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][0]['duration_in_traffic']['value'].
+     * Grabs json['routes'][route]['legs'][0]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * @param route which route, if multiple. Starts from 0.
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic(int route) {
-        return durationInTraffic(route, 1);
+        return durationInTraffic(route, 0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['legs'][leg-1]['duration_in_traffic']['value'].
+     * Grabs json['routes'][route]['legs'][leg]['duration_in_traffic']['value'].
      * Only exists if the request specified a traffic model.
-     *
-     * @param route which route, if multiple. Starts from 1.
-     * @param leg   which leg, if multiple. Starts from 1.
+     * @param route which route, if multiple. Starts from 0.
+     * @param leg   which leg, if multiple. Starts from 0.
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic(int route, int leg) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-        leg -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONArray legs;
@@ -221,27 +196,19 @@ public class JsonParser {
     }
 
     /**
-     * Grabs json['routes'][0]['warnings'] elements and puts them
-     * in a ArrayList of Strings.
-     *
+     * Grabs json['routes'][0]['warnings'] elements and puts them in a ArrayList of Strings.
      * @return an ArrayList<String> object containing all warnings.
      */
     public ArrayList<String> warnings() {
-        return warnings(1);
+        return warnings(0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['warnings'] elements and puts them
-     * in a ArrayList of Strings.
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['warnings'] elements and puts them in a ArrayList of Strings.
+     * @param route which route, if multiple. Starts from 0.
      * @return an ArrayList<String> object containing all warnings.
      */
     public ArrayList<String> warnings(int route) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONArray warnings;
@@ -263,24 +230,18 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['copyrights'].
-     *
      * @return a String containing the copyright information.
      */
     public String copyrights() {
-        return copyrights(1);
+        return copyrights(0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['copyrights'].
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['copyrights'].
+     * @param route which route, if multiple. Starts from 0.
      * @return a String containing the copyright information.
      */
     public String copyrights(int route) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         String copyrights = "";
@@ -299,24 +260,18 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['summary'].
-     *
      * @return a String containing summary information for the route.
      */
     public String summary() {
-        return summary(1);
+        return summary(0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['summary'].
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['summary'].
+     * @param route which route, if multiple. Starts from 0.
      * @return a String containing summary information for the route.
      */
     public String summary(int route) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         String summary = "";
@@ -335,24 +290,18 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['fare']['currency'].
-     *
      * @return the ISO 4217 currency code that the fare is expressed in.
      */
     public String fareCurrency() {
-        return fareCurrency(1);
+        return fareCurrency(0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['fare']['currency'].
-     *
-     * @param route which route, if multiple. Starts from 1.
+     * Grabs json['routes'][route]['fare']['currency'].
+     * @param route which route, if multiple. Starts from 0.
      * @return the ISO 4217 currency code that the fare is expressed in.
      */
     public String fareCurrency(int route) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONObject fare;
@@ -373,25 +322,19 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['fare']['value'].
-     *
      * @return the total fare amount in the currency specified by fareCurrency().
      */
     public int fare() {
-        return fare(1);
+        return fare(0);
     }
 
     /**
-     * Grabs json['routes'][route-1]['fare']['value'].
-     *
-     * @param route which route, if multiple. Starts from 1.
-     * @return the total fare amount in the currency specified by fareCurrency().
-     * -1 if there was a JSONException.
+     * Grabs json['routes'][route]['fare']['value'].
+     * @param route which route, if multiple. Starts from 0.
+     * @return the total fare amount in the currency specified by fareCurrency(). -1 if there was a
+     * JSONException.
      */
     public int fare(int route) {
-        // User expected to enter values starting from 1.
-        // We expect to use it starting from 0.
-        route -= 1;
-
         JSONArray routes;
         JSONObject route_number;
         JSONObject fareObj;
@@ -412,9 +355,8 @@ public class JsonParser {
 
     /**
      * Grabs json['status'].
-     *
-     * @return status number of the request, corresponding to
-     * com.gedder.gedderalarm.util.JSONStatus enumerations.
+     * @return status number of the request, corresponding to com.gedder.gedderalarm.util.JSONStatus
+     * enumerations.
      */
     public JsonStatus status() {
         JsonStatus code;
@@ -461,9 +403,7 @@ public class JsonParser {
     }
 
     /**
-     * Grabs json['error_message'].
-     * Only exists if json['status'] != "OK".
-     *
+     * Grabs json['error_message']. Only exists if json['status'] != "OK".
      * @return error message string.
      */
     public String errorMessage() {
@@ -480,12 +420,9 @@ public class JsonParser {
     }
 
     /**
-     * Grabs json['available_travel_modes'].
-     * Only exists if a request specifies a travel mode and gets
-     * no results.
-     *
-     * @return an ArrayList<String> object containing all available
-     * travel modes.
+     * Grabs json['available_travel_modes']. Only exists if a request specifies a travel mode and
+     * gets no results.
+     * @return an ArrayList<String> object containing all available travel modes.
      */
     public ArrayList<String> availableTravelModes() {
         JSONArray travel_modes;
