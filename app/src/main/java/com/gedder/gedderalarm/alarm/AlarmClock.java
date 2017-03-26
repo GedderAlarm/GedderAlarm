@@ -30,12 +30,12 @@ import static android.content.Context.ALARM_SERVICE;
 public class AlarmClock implements Serializable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
-    private final int intentId = 31582;
-    private UUID mUuid;
+    private transient final int intentId = 31582;
+    private transient Context mContext;
+    private transient AlarmManager mAlarmManager;
+    private transient long mMsUntilAlarm;
 
-    private Context mContext;
-    private AlarmManager mAlarmManager;
-    private long mMsUntilAlarm;
+    private UUID mUuid;
     private long mScheduledAlarmTimeInMs;
     private boolean mAlarmSet;
 
@@ -197,6 +197,7 @@ public class AlarmClock implements Serializable {
         mMsUntilAlarm = mScheduledAlarmTimeInMs - current;
     }
 
+    /*
     private void writeObject(ObjectOutputStream oos)
         throws IOException {
 
@@ -206,4 +207,5 @@ public class AlarmClock implements Serializable {
         throws ClassNotFoundException, IOException {
 
     }
+    */
 }
