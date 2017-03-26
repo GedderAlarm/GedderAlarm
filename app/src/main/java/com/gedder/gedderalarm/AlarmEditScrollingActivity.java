@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.gedder.gedderalarm.alarm.AlarmClock;
+
 
 /**
  *
@@ -21,8 +23,12 @@ public class AlarmEditScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_edit_scrolling);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
+        // Get the alarm clock in question.
+        AlarmClock alarmClock = (AlarmClock) getIntent().getSerializableExtra(
+                MainActivity.SERIALIZED_ALARM_CLOCK);
+
+        // Programmatically change settings of views to match this alarm clock's settings.
     }
 
     public void cancel(View view) {
