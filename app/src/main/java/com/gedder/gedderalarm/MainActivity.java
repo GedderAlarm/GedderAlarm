@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
      * Called by some view when a new alarm is to be made. Brings up some alarm creation activity.
      * @param view The view that references this function.
      */
-    public void handleNewAlarmBtn(View view) {
+    public void newAlarm(View view) {
         // A new alarm is desired.
         // TODO: Bring us to the alarm edit activity.
     }
