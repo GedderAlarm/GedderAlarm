@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), !alarmClock.isSet());
         db.close();
 
-        // We notify the adapter to update the button text from "Unset" to "Set" and vice versa.
+        // We notify the adapter to update the views to match changes.
         updateAlarmClockCursorAdapter();
     }
 
