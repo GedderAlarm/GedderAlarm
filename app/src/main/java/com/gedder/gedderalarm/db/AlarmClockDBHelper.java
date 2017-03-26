@@ -48,15 +48,15 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ALARM_CLOCK_TABLE =
                 "CREATE TABLE " + AlarmClockTable.TABLE_NAME + "(" +
-                            AlarmClockTable.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            AlarmClockTable.Columns.ALARM_TIME + " INT8," +
+                            AlarmClockTable.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            AlarmClockTable.Columns.ALARM_TIME + " INT8, " +
                             AlarmClockTable.Columns.ALARM_SET + " BOOLEAN" +
                         ")";
 
         String CREATE_UUID_TO_ID_TABLE =
                 "CREATE TABLE " + UuidToIdTable.TABLE_NAME + "(" +
-                        UuidToIdTable.Columns.UUID + " TEXT PRIMARY KEY," +
-                        UuidToIdTable.Columns.ID + " INTEGER," +
+                        UuidToIdTable.Columns.UUID + " TEXT PRIMARY KEY, " +
+                        UuidToIdTable.Columns.ID + " INTEGER, " +
                         "FOREIGN KEY(" +
                                 UuidToIdTable.Columns.ID +
                             ")" +
@@ -64,6 +64,9 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                                 UuidToIdTable.Columns.ID +
                             ")" +
                         ")";
+
+        Log.v(TAG, CREATE_ALARM_CLOCK_TABLE);
+        Log.v(TAG, CREATE_UUID_TO_ID_TABLE);
 
         db.execSQL(CREATE_ALARM_CLOCK_TABLE);
         db.execSQL(CREATE_UUID_TO_ID_TABLE);

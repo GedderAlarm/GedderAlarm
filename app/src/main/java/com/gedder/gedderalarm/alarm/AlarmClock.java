@@ -14,6 +14,9 @@ import android.os.Build;
 import com.gedder.gedderalarm.AlarmReceiver;
 import com.gedder.gedderalarm.util.Log;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -192,5 +195,15 @@ public class AlarmClock implements Serializable {
     private void updateMsUntilAlarm() {
         long current = System.currentTimeMillis();
         mMsUntilAlarm = mScheduledAlarmTimeInMs - current;
+    }
+
+    private void writeObject(ObjectOutputStream oos)
+        throws IOException {
+
+    }
+
+    private void readObject(ObjectInputStream ois)
+        throws ClassNotFoundException, IOException {
+
     }
 }
