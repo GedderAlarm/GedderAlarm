@@ -7,14 +7,13 @@ package com.gedder.gedderalarm;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.gedder.gedderalarm.alarm.AlarmClock;
 
 
 /**
- *
+ * The activity where the user edits an alarm, new or old.
  */
 public class AlarmEditScrollingActivity extends AppCompatActivity {
     private static final String TAG = AlarmEditScrollingActivity.class.getSimpleName();
