@@ -14,6 +14,7 @@ import android.os.Build;
 import com.gedder.gedderalarm.AlarmReceiver;
 import com.gedder.gedderalarm.util.Log;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -23,7 +24,7 @@ import static android.content.Context.ALARM_SERVICE;
  * An alarm clock class encapsulating the data stored in a typical alarm clock and the logic
  * required to start alarm clocks using raw pending intents.
  */
-public class AlarmClock {
+public class AlarmClock implements Serializable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     private final int intentId = 31582;

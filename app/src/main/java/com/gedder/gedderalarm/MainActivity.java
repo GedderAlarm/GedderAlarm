@@ -5,6 +5,7 @@
 
 package com.gedder.gedderalarm;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -71,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view that references this function.
      */
     public void newAlarm(View view) {
-        // A new alarm is desired.
-        // TODO: Bring us to the alarm edit activity.
+        // Pass in new, default alarm.
+        Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
+        intent.putExtra("alarm_clock", new AlarmClock(this));
+        startActivity(intent);
     }
 
     /**
