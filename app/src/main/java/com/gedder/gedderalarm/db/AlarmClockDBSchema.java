@@ -7,7 +7,6 @@ package com.gedder.gedderalarm.db;
 
 
 public class AlarmClockDBSchema {
-
     /**
      * Contains data for each alarm clock.
      */

@@ -19,6 +19,9 @@ import com.gedder.gedderalarm.model.AlarmClock;
 
 
 public class MainActivity extends AppCompatActivity {
+    // TODO: Stop handling UI in this activity. Move it to a view class in the view package.
+    // See http://www.techyourchance.com/mvp-mvc-android-2/
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final String PARCEL_ALARM_CLOCK = "_GEDDER_PARCEL_ALARM_CLOCK_";
