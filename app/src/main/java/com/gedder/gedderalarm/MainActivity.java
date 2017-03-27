@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void newAlarm(View view) {
         // Pass in new, default alarm.
-        Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
+        Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
         startActivity(intent);
     }

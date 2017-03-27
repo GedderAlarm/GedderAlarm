@@ -29,7 +29,7 @@
 
         </activity>
         <activity
-            android:name=".AlarmEditScrollingActivity"
+            android:name=".AddEditAlarmScrollingActivity"
             android:label="@string/title_activity_edit_alarm_scrolling"
             android:theme="@style/AppTheme.NoActionBar">
 

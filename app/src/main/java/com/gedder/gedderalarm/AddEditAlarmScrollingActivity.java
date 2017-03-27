@@ -15,8 +15,8 @@ import com.gedder.gedderalarm.model.AlarmClock;
 /**
  * The activity where the user edits an alarm, new or old.
  */
-public class AlarmEditScrollingActivity extends AppCompatActivity {
-    private static final String TAG = AlarmEditScrollingActivity.class.getSimpleName();
+public class AddEditAlarmScrollingActivity extends AppCompatActivity {
+    private static final String TAG = AddEditAlarmScrollingActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
