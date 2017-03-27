@@ -3,7 +3,7 @@
  * DATE: 3/10/2017
  */
 
-package com.gedder.gedderalarm.model.alarm;
+package com.gedder.gedderalarm.model;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

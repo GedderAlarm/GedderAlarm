@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.gedder.gedderalarm.model.alarm.AlarmClock;
+import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
