@@ -30,10 +30,10 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity {
     }
 
     public void cancel(View view) {
-
+        finish();
     }
 
     public void done(View view) {
-
+        finish();
     }
 }

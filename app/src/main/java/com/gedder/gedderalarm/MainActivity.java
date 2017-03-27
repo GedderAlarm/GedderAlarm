@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         db.addAlarmClock(new AlarmClock());
+        db.addAlarmClock(new AlarmClock());
         mAlarmClockCursor = db.getAllAlarmClocks();
-        db.close();
 
         // Make an adapter based off of the cursor.
         mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, mAlarmClockCursor);
@@ -59,13 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: bring to the alarm edit activity.
             }
         });
+        db.close();
     }
 
     /**
      * Called by some view when a new alarm is to be made. Brings up some alarm creation activity.
      * @param view The view that references this function.
      */
-    public void newAlarm(View view) {
+    public void onClickNewAlarm(View view) {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
