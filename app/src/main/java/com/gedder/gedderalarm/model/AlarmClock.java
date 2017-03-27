@@ -28,47 +28,31 @@ import static android.content.Context.ALARM_SERVICE;
 public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
-    private final int intentId = 31582;
+    private static final int INTENT_ID = 31582;
+    private static final AlarmManager sAlarmManager =
+            (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
 
-    private AlarmManager mAlarmManager;
-    private long mMsUntilAlarm;
     private UUID mUuid;
     private long mScheduledAlarmTimeInMs;
     private boolean mAlarmSet;
+
+    /**
+     * Initializes an unset alarm clock with default parameters.
+     */
+    public AlarmClock() {
+        mUuid = UUID.randomUUID();
+        mScheduledAlarmTimeInMs = 0L;
+        mAlarmSet = false;
+    }
 
     /**
      * Copy constructor.
      * @param alarmClock The alarm clock instance to copy.
      */
     public AlarmClock(AlarmClock alarmClock) {
-        this.mAlarmManager = alarmClock.mAlarmManager;
         this.mUuid = alarmClock.mUuid;
-        this.mMsUntilAlarm = alarmClock.mMsUntilAlarm;
         this.mScheduledAlarmTimeInMs = alarmClock.mScheduledAlarmTimeInMs;
         this.mAlarmSet = alarmClock.mAlarmSet;
-    }
-
-    /**
-     * Initializes an unset alarm clock with default parameters.
-     */
-    public AlarmClock() {
-        mAlarmManager = (AlarmManager) GedderAlarmApplication.getAppContext()
-                .getSystemService(ALARM_SERVICE);
-        mUuid = UUID.randomUUID();
-        mMsUntilAlarm = 0L;
-        mScheduledAlarmTimeInMs = 0L;
-        mAlarmSet = false;
-    }
-
-    /**
-     * Initializes an unset alarm clock.
-     * @param mMsUntilAlarm The time until the alarm, in milliseconds.
-     */
-    public AlarmClock(long mMsUntilAlarm) {
-        mAlarmManager = (AlarmManager) GedderAlarmApplication.getAppContext()
-                .getSystemService(ALARM_SERVICE);
-        mUuid = UUID.randomUUID();
-        setAlarmTime(mMsUntilAlarm);
     }
 
     /**
@@ -77,13 +61,9 @@ public class AlarmClock implements Parcelable {
      * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
      * @param alarmSet               Whether the alarm is set already or not.
      */
-    public AlarmClock(AlarmManager alarmManager, UUID uuid,
-                      long scheduledAlarmTimeInMs, boolean alarmSet) {
-        this.mAlarmManager = alarmManager;
-        this.mUuid = uuid;
+    public AlarmClock(long scheduledAlarmTimeInMs, boolean alarmSet) {
         this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
         this.mAlarmSet = alarmSet;
-        updateMsUntilAlarm();
     }
 
     /**
@@ -91,11 +71,8 @@ public class AlarmClock implements Parcelable {
      * NOTE: Does NOT set the pending intent for the alarm; only sets data.
      * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
-    public void setAlarmTime(long msUntilAlarm) {
-        Log.v(TAG, "setAlarmTime(" + String.valueOf(msUntilAlarm) + ")");
-
-        this.mMsUntilAlarm = msUntilAlarm;
-        mScheduledAlarmTimeInMs = System.currentTimeMillis() + this.mMsUntilAlarm;
+    public void setAlarmTime(long scheduledAlarmTimeInMs) {
+        this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
     }
 
     /**
@@ -103,9 +80,6 @@ public class AlarmClock implements Parcelable {
      * appointed time.
      */
     public void clearAlarmSettings() {
-        Log.v(TAG, "resetAlarm()");
-
-        mMsUntilAlarm = 0L;
         mScheduledAlarmTimeInMs = 0L;
     }
 
@@ -118,19 +92,20 @@ public class AlarmClock implements Parcelable {
                 AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 GedderAlarmApplication.getAppContext(),
-                intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= 23) {
             Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
-            mAlarmManager.setExactAndAllowWhileIdle(
+            AlarmClock.sAlarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
             Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
-            mAlarmManager.setExact(
+            AlarmClock.sAlarmManager.setExact(
                     AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
+            AlarmClock.sAlarmManager.set(
+                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         }
 
         mAlarmSet = true;
@@ -141,15 +116,12 @@ public class AlarmClock implements Parcelable {
      * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
      */
     public void cancelAlarm() {
-        Log.v(TAG, "cancelAlarm()");
-
-        Intent alarmIntent = new Intent(GedderAlarmApplication.getAppContext(),
-                AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                GedderAlarmApplication.getAppContext(),
-                intentId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mAlarmManager.cancel(pendingIntent);
-
+        Intent alarmIntent =
+                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
+                AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmClock.sAlarmManager.cancel(pendingIntent);
         mAlarmSet = false;
     }
 
@@ -159,15 +131,6 @@ public class AlarmClock implements Parcelable {
      */
     public long getAlarmTime() {
         return mScheduledAlarmTimeInMs;
-    }
-
-    /**
-     * Gets the time until the alarm clock in milliseconds.
-     * @return The time until the alarm in milliseconds.
-     */
-    public long timeUntilAlarm() {
-        updateMsUntilAlarm();
-        return mMsUntilAlarm;
     }
 
     /**
@@ -183,16 +146,8 @@ public class AlarmClock implements Parcelable {
         return mUuid;
     }
 
-    private void updateMsUntilAlarm() {
-        long current = System.currentTimeMillis();
-        mMsUntilAlarm = mScheduledAlarmTimeInMs - current;
-    }
-
-    /* Parcelable Implementation */
-
-    @Override
-    public int describeContents() {
-        return 0;
+    private long getMsUntilAlarm() {
+        return mScheduledAlarmTimeInMs - System.currentTimeMillis();
     }
 
     /** {@inheritDoc} */
@@ -203,6 +158,11 @@ public class AlarmClock implements Parcelable {
         dest.writeByte(this.mAlarmSet ? (byte) 1 : (byte) 0);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     /**
      * Parcel constructor.
      * @param in The parcel to read.
@@ -211,9 +171,6 @@ public class AlarmClock implements Parcelable {
         this.mUuid = (UUID) in.readSerializable();
         this.mScheduledAlarmTimeInMs = in.readLong();
         this.mAlarmSet = in.readByte() != 0;
-        this.mAlarmManager = (AlarmManager) GedderAlarmApplication.getAppContext()
-                .getSystemService(ALARM_SERVICE);
-        updateMsUntilAlarm();
     }
 
     public static final Creator<AlarmClock> CREATOR = new Creator<AlarmClock>() {
