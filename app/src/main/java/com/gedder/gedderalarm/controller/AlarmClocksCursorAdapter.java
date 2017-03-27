@@ -3,7 +3,7 @@
  * DATE: 3/15/17
  */
 
-package com.gedder.gedderalarm.alarm;
+package com.gedder.gedderalarm.controller;
 
 import android.content.Context;
 import android.database.Cursor;

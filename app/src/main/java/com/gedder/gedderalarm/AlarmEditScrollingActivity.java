@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.gedder.gedderalarm.alarm.AlarmClock;
+import com.gedder.gedderalarm.model.alarm.AlarmClock;
 
 
 /**

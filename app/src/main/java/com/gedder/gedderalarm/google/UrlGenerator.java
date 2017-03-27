@@ -3,7 +3,7 @@
  * DATE: 3/4/2017
  */
 
-package com.gedder.gedderalarm.util.google;
+package com.gedder.gedderalarm.google;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

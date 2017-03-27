@@ -14,16 +14,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.gedder.gedderalarm.alarm.AlarmClock;
-import com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter;
+import com.gedder.gedderalarm.model.alarm.AlarmClock;
+import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
 
-import java.util.UUID;
-
 
 public class MainActivity extends AppCompatActivity {
-    // TODO: See todo in com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter.
+    // TODO: See todo in com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter.
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -78,70 +76,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
         startActivity(intent);
-    }
-
-    /**
-     *
-     * @param alarmClock
-     */
-    private void addAlarm(AlarmClock alarmClock) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.addAlarmClock(alarmClock);
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     *
-     * @param alarmClock
-     */
-    private void removeAlarm(AlarmClock alarmClock) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.deleteAlarmClock(alarmClock.getUUID());
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     *
-     * @param uuid
-     */
-    private void removeAlarm(UUID uuid) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        AlarmClock alarmClock = db.getAlarmClock(uuid);
-        db.deleteAlarmClock(uuid);
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     * Toggles the alarm. Does not reset any data.
-     * @param alarmClock
-     */
-    private void toggleAlarm(AlarmClock alarmClock) {
-        // TODO: Use updated updateAlarmClock function later.
-        // TODO: Make sure to turn off gedder functionality when toggling alarm.
-
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), !alarmClock.isSet());
-        db.close();
-
-        // We notify the adapter to update the views to match changes.
-        updateAlarmClockCursorAdapter();
-    }
-
-    private void updateAlarmClockCursorAdapter() {
-        // TODO: Need to find a nicer way to do this. Maybe CursorWrapper will do the trick, dunno.
-        AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        mAlarmClockCursor = db.rawQuery(
-                "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
-        mAlarmClocksCursorAdapter.changeCursor(mAlarmClockCursor);
-
-        db.close();
     }
 }
 

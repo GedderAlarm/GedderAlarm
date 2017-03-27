@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.gedder.gedderalarm.GedderAlarmApplication;
-import com.gedder.gedderalarm.alarm.AlarmClock;
+import com.gedder.gedderalarm.model.alarm.AlarmClock;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.UuidToIdTable;
 import com.gedder.gedderalarm.util.Log;

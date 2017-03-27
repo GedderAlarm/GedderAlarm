@@ -3,7 +3,7 @@
  * DATE: March 8th, 2017
  */
 
-package com.gedder.gedderalarm.util.google;
+package com.gedder.gedderalarm.google;
 
 
 /**
