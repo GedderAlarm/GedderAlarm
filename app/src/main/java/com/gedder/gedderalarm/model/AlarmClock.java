@@ -48,9 +48,9 @@ public class AlarmClock implements Parcelable {
      * @param alarmClock The alarm clock instance to copy.
      */
     public AlarmClock(AlarmClock alarmClock) {
-        this.mUuid = alarmClock.mUuid;
-        this.mScheduledAlarmTimeInMs = alarmClock.mScheduledAlarmTimeInMs;
-        this.mAlarmSet = alarmClock.mAlarmSet;
+        mUuid = alarmClock.mUuid;
+        mScheduledAlarmTimeInMs = alarmClock.mScheduledAlarmTimeInMs;
+        mAlarmSet = alarmClock.mAlarmSet;
     }
 
     /**
@@ -60,8 +60,8 @@ public class AlarmClock implements Parcelable {
      * @param alarmSet               Whether the alarm is set already or not.
      */
     public AlarmClock(long scheduledAlarmTimeInMs, boolean alarmSet) {
-        this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
-        this.mAlarmSet = alarmSet;
+        mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
+        mAlarmSet = alarmSet;
     }
 
     /**
@@ -70,7 +70,7 @@ public class AlarmClock implements Parcelable {
      * @param msUntilAlarm The time until the alarm, in milliseconds.
      */
     public void setAlarmTime(long scheduledAlarmTimeInMs) {
-        this.mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
+        mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
     }
 
     /**
