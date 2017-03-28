@@ -46,6 +46,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 + AlarmClockTable.Columns.UUID  + " TEXT, "
                 + AlarmClockTable.Columns.ORIGIN      + " TEXT, "
                 + AlarmClockTable.Columns.DESTINATION + " TEXT, "
+                + AlarmClockTable.Columns.REPEAT_DAYS + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_DAY    + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_HOUR   + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_MINUTE + " SMALLINT, "
