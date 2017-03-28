@@ -29,8 +29,6 @@ public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     private static final int INTENT_ID = 31582;
-    private static final AlarmManager sAlarmManager =
-            (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
 
     private UUID mUuid;
     private long mScheduledAlarmTimeInMs;
@@ -88,6 +86,8 @@ public class AlarmClock implements Parcelable {
      * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
      */
     public void setAlarm() {
+        AlarmManager am =
+                (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(GedderAlarmApplication.getAppContext(),
                 AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -96,16 +96,14 @@ public class AlarmClock implements Parcelable {
 
         if (Build.VERSION.SDK_INT >= 23) {
             Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
-            AlarmClock.sAlarmManager.setExactAndAllowWhileIdle(
+            am.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
             Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
-            AlarmClock.sAlarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
+            am.setExact(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
-            AlarmClock.sAlarmManager.set(
-                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
+            am.set(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         }
 
         mAlarmSet = true;
@@ -116,12 +114,14 @@ public class AlarmClock implements Parcelable {
      * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
      */
     public void cancelAlarm() {
+        AlarmManager am =
+                (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
                 AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmClock.sAlarmManager.cancel(pendingIntent);
+        am.cancel(pendingIntent);
         mAlarmSet = false;
     }
 
