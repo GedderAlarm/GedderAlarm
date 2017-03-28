@@ -17,6 +17,9 @@
 /*
  * FROM: https://android.googlesource.com/platform/packages/apps/AlarmClock
  * FILE: src/com/android/alarmclock/Alarm.java
+ *
+ * Modified by: mslm
+ * Date of modification: 3/27/17 and onward.
  */
 
 package com.gedder.gedderalarm.util;
