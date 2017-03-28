@@ -116,4 +116,14 @@ public final class GedderAlarmManager {
             sAlarmManager.setWindow(
                     type, windowStartMillis, windowLengthMillis, tag, listener, targetHandler);
     }
+
+    public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
+        if (Build.VERSION.SDK_INT >= 23)
+            sAlarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+        else if (Build.VERSION.SDK_INT >= 19)
+            sAlarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+        else
+            sAlarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+    }
 }

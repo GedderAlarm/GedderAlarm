@@ -71,7 +71,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
         cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isSet());
+        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
         db.insert(AlarmClockTable.TABLE_NAME, null, cv);
         db.close();
     }
@@ -129,7 +129,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      * @return Number of rows affected by the update. Not 1 if failed.
      */
     public int updateAlarmClock(AlarmClock alarmClock) {
-        return updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), alarmClock.isSet());
+        return updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), alarmClock.isOn());
     }
 
     /**
