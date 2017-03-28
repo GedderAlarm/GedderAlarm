@@ -45,7 +45,8 @@ import java.util.EnumSet;
 public final class DaysOfWeek {
 
     /**
-     *
+     * USER: mslm
+     * DATE: 3/27/17
      */
     public enum DAY {
         MONDAY(Calendar.MONDAY),
@@ -94,6 +95,9 @@ public final class DaysOfWeek {
         mDays = days;
     }
 
+    /**
+     * MODIFIED BY: mslm
+     */
     public String toString(boolean showNever) {
         StringBuilder ret = new StringBuilder();
 

@@ -36,6 +36,8 @@ public class AlarmClock implements Parcelable {
     private String  mOrigin;
     private String  mDestination;
 
+    private
+
     // The real-time values for when this alarm is set, if it is set.
     private int     mAlarmDay;          // 1-7 (Sunday, Monday, ..., Saturday)
     private int     mAlarmHour;         // 0-23 (24 hour clock)
@@ -136,7 +138,6 @@ public class AlarmClock implements Parcelable {
         mAlarmSet = alarmClock.mAlarmSet;
         mGedderSet = alarmClock.mGedderSet;
     }
-
 
     public AlarmClock(String origin, String destination,
                       DaysOfWeek.DAY alarmDay, int alarmHour, int alarmMinute,
