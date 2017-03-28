@@ -91,6 +91,14 @@ public final class DaysOfWeek {
     // Bitmask of all repeating days
     private int mDays;
 
+    /**
+     * USER: mslm
+     * DATE: 3/28/17
+     */
+    public DaysOfWeek() {
+        mDays = 0x00; // No days.
+    }
+
     public DaysOfWeek(int days) {
         mDays = days;
     }

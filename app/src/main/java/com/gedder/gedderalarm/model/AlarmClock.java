@@ -8,6 +8,7 @@ package com.gedder.gedderalarm.model;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -36,33 +37,34 @@ public class AlarmClock implements Parcelable {
     private String  mOrigin;
     private String  mDestination;
 
-    private
+    // The days this alarm will repeat in its current form.
+    private DaysOfWeek mRepeatDays;
 
     // The real-time values for when this alarm is set, if it is set.
     private int     mAlarmDay;          // 1-7 (Sunday, Monday, ..., Saturday)
     private int     mAlarmHour;         // 0-23 (24 hour clock)
     private int     mAlarmMinute;       // 0-59 (60 minutes)
-    private long    mAlarmTime;         // Since the epoch.
+    private long    mAlarmTime;         // Milliseconds since the epoch.
 
     // The user-planned arrival time to mDestination from mOrigin.
     // Required for smart alarm.
     private int     mArrivalDay;        // 1-7 (Sunday, Monday, ..., Saturday)
     private int     mArrivalHour;       // 0-23 (24 hour clock)
     private int     mArrivalMinute;     // 0-59 (60 minutes)
-    private long    mArrivalTime;       // Since the epoch.
+    private long    mArrivalTime;       // Milliseconds since the epoch.
 
     // The user-inputted or smart-adjusted time it takes to get prepared in the morning.
     // Required for smart alarm.
     private int     mPrepHour;          // 0-23 (24 hour clock)
     private int     mPrepMinute;        // 0-59 (60 minutes)
-    private long    mPrepTime;          // Since the epoch.
+    private long    mPrepTime;          // Milliseconds since the epoch.
 
     // The user-inputted "wish" time to wake up: do not set an alarm past this time, only before.
     // Required for smart alarm.
     private int     mUpperBoundDay;     // 1-7 (Sunday, Monday, ..., Saturday)
     private int     mUpperBoundHour;    // 0-23 (24 hour clock)
     private int     mUpperBoundMinute;  // 0-59 (60 minutes)
-    private long    mUpperBoundTime;    // Since the epoch.
+    private long    mUpperBoundTime;    // Milliseconds since the epoch.
 
     // The different types of alarms available.
     private boolean mAlarmSet;
@@ -78,6 +80,9 @@ public class AlarmClock implements Parcelable {
 
         mOrigin      = "";         // If we find device location, that should be the default.
         mDestination = "";
+
+        // Not repeating by default.
+        mRepeatDays = new DaysOfWeek();
 
         // Tomorrow 6:00am
         mAlarmDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
@@ -116,6 +121,8 @@ public class AlarmClock implements Parcelable {
         mOrigin = alarmClock.mOrigin;
         mDestination = alarmClock.mDestination;
 
+        mRepeatDays = alarmClock.mRepeatDays;
+
         mAlarmDay = alarmClock.mAlarmDay;
         mAlarmHour = alarmClock.mAlarmHour;
         mAlarmMinute = alarmClock.mAlarmMinute;
@@ -140,12 +147,31 @@ public class AlarmClock implements Parcelable {
     }
 
     public AlarmClock(String origin, String destination,
+                      DaysOfWeek repeatDays,
+                      Calendar alarmTime,
+                      Calendar arrivalTime,
+                      int prepHour, int prepMinute,
+                      Calendar upperBoundTime) {
+        mOrigin = origin;
+        mDestination = destination;
+        mRepeatDays = repeatDays;
+        setAlarmTime(alarmTime);
+        setArrivalTime(arrivalTime);
+        setPrepTime(prepHour, prepMinute);
+        setUpperBoundTime(upperBoundTime);
+        mAlarmSet = false;
+        mGedderSet = false;
+    }
+
+    public AlarmClock(String origin, String destination,
+                      DaysOfWeek repeatDays,
                       DaysOfWeek.DAY alarmDay, int alarmHour, int alarmMinute,
                       DaysOfWeek.DAY arrivalDay, int arrivalHour, int arrivalMinute,
                       int prepHour, int prepMinute,
                       DaysOfWeek.DAY upperBoundDay, int upperBoundHour, int upperBoundMinute) {
         mOrigin             = origin;
         mDestination        = destination;
+        mRepeatDays         = repeatDays;
         mAlarmDay           = alarmDay.getInt();
         mAlarmHour          = alarmHour;
         mAlarmMinute        = alarmMinute;
@@ -330,6 +356,15 @@ public class AlarmClock implements Parcelable {
         GedderAlarmManager.setOptimal(
                 AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
 
+        if (isGedderOn()) {
+            // We've set the normal alarm, but now we want to activate the Gedder Engine as a
+            // service to watch over our alarm. For that, we need to send it some required data.
+
+            // TODO: Implement communication details.
+            GedderAlarmManager.setGedder(new Bundle());
+            mGedderSet = true;
+        }
+
         mAlarmSet = true;
     }
 
@@ -338,13 +373,21 @@ public class AlarmClock implements Parcelable {
      * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
      */
     public void turnOff() {
-        // TODO: Adjust for GedderEngine.
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
                 AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         GedderAlarmManager.cancel(pendingIntent);
+
+        if (isGedderOn()) {
+            // We've canceled the normal alarm, but let's tell the manager to turn off the engine.
+
+            // TODO: Implement communication details.
+            GedderAlarmManager.cancelGedder(new Bundle());
+            mGedderSet = false;
+        }
+
         mAlarmSet = false;
     }
 
@@ -370,6 +413,14 @@ public class AlarmClock implements Parcelable {
      */
     public String getDestination() {
         return mDestination;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public DaysOfWeek getRepeatDays() {
+        return mRepeatDays;
     }
 
     /**

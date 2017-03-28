@@ -10,6 +10,7 @@ import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -28,6 +29,37 @@ public final class GedderAlarmManager {
             (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
 
     private GedderAlarmManager() {}
+
+    /**
+     * Checks build version to decide which set functionality to use.
+     * @param type              See AlarmManager documentation.
+     * @param triggerAtMillis   See AlarmManager documentation.
+     * @param operation         See AlarmManager documentation.
+     */
+    public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
+        if (Build.VERSION.SDK_INT >= 23)
+            sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
+        else if (Build.VERSION.SDK_INT >= 19)
+            sAlarmManager.setExact(type, triggerAtMillis, operation);
+        else
+            sAlarmManager.set(type, triggerAtMillis, operation);
+    }
+
+    /**
+     *
+     * @param gedderData
+     */
+    public static void setGedder(Bundle gedderData) {
+
+    }
+
+    /**
+     *
+     * @param gedderData
+     */
+    public static void cancelGedder(Bundle gedderData) {
+
+    }
 
     public static void cancel(PendingIntent operation) {
         sAlarmManager.cancel(operation);
@@ -118,20 +150,5 @@ public final class GedderAlarmManager {
         if (Build.VERSION.SDK_INT >= 24)
             sAlarmManager.setWindow(
                     type, windowStartMillis, windowLengthMillis, tag, listener, targetHandler);
-    }
-
-    /**
-     * Checks build version to decide which set functionality to use.
-     * @param type              See AlarmManager documentation.
-     * @param triggerAtMillis   See AlarmManager documentation.
-     * @param operation         See AlarmManager documentation.
-     */
-    public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 23)
-            sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
-        else if (Build.VERSION.SDK_INT >= 19)
-            sAlarmManager.setExact(type, triggerAtMillis, operation);
-        else
-            sAlarmManager.set(type, triggerAtMillis, operation);
     }
 }
