@@ -11,9 +11,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
+import com.gedder.gedderalarm.model.AlarmClock;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 
@@ -45,17 +46,20 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 + AlarmClockTable.Columns.UUID  + " TEXT, "
                 + AlarmClockTable.Columns.ORIGIN      + " TEXT, "
                 + AlarmClockTable.Columns.DESTINATION + " TEXT, "
-                + AlarmClockTable.Columns.ALARM_HOUR   + " INTEGER, "
-                + AlarmClockTable.Columns.ALARM_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.ALARM_DAY    + " SMALLINT, "
+                + AlarmClockTable.Columns.ALARM_HOUR   + " SMALLINT, "
+                + AlarmClockTable.Columns.ALARM_MINUTE + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_TIME   + " INT8, "
-                + AlarmClockTable.Columns.ARRIVAL_HOUR   + " INTEGER, "
-                + AlarmClockTable.Columns.ARRIVAL_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.ARRIVAL_DAY    + " SMALLINT, "
+                + AlarmClockTable.Columns.ARRIVAL_HOUR   + " SMALLINT, "
+                + AlarmClockTable.Columns.ARRIVAL_MINUTE + " SMALLINT, "
                 + AlarmClockTable.Columns.ARRIVAL_TIME   + " INT8, "
-                + AlarmClockTable.Columns.PREP_HOUR   + " INTEGER, "
-                + AlarmClockTable.Columns.PREP_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.PREP_HOUR   + " SMALLINT, "
+                + AlarmClockTable.Columns.PREP_MINUTE + " SMALLINT, "
                 + AlarmClockTable.Columns.PREP_TIME   + " INT8, "
-                + AlarmClockTable.Columns.UPPER_BOUND_HOUR   + " INTEGER, "
-                + AlarmClockTable.Columns.UPPER_BOUND_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.UPPER_BOUND_DAY    + " SMALLINT, "
+                + AlarmClockTable.Columns.UPPER_BOUND_HOUR   + " SMALLINT, "
+                + AlarmClockTable.Columns.UPPER_BOUND_MINUTE + " SMALLINT, "
                 + AlarmClockTable.Columns.UPPER_BOUND_TIME   + " INT8, "
                 + AlarmClockTable.Columns.ALARM_SET  + " BOOLEAN, "
                 + AlarmClockTable.Columns.GEDDER_SET + " BOOLEAN)"
@@ -82,24 +86,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     public void addAlarmClock(AlarmClock alarmClock) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
-        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
-        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
-        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmHour());
-        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmMinute());
-        cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalHour());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmMinute());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTime());
-        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepHour());
-        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepMinute());
-        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTime());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundHour());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundMinute());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTime());
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
-        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
+        ContentValues cv = putAll(alarmClock);
         db.insert(AlarmClockTable.TABLE_NAME, null, cv);
         db.close();
     }
@@ -141,23 +128,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     public int updateAlarmClock(AlarmClock alarmClock) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
-        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
-        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmHour());
-        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmMinute());
-        cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalHour());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmMinute());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTime());
-        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepHour());
-        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepMinute());
-        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTime());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundHour());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundMinute());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTime());
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
-        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
+        ContentValues cv = putAllExceptUuid(alarmClock);
         return db.update(AlarmClockTable.TABLE_NAME, cv,
                 AlarmClockTable.Columns.UUID + "=?",
                 new String[] { alarmClock.getUUID().toString() });
@@ -171,6 +142,36 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(AlarmClockTable.TABLE_NAME,
                 AlarmClockTable.Columns.UUID + "=?", new String[] { uuid.toString() });
+    }
+
+    private ContentValues putAll(AlarmClock alarmClock) {
+        ContentValues cv = new ContentValues(putAllExceptUuid(alarmClock));
+        cv.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
+        return cv;
+    }
+
+    private ContentValues putAllExceptUuid(AlarmClock alarmClock) {
+        ContentValues cv = new ContentValues();
+        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
+        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
+        cv.put(AlarmClockTable.Columns.ALARM_DAY, alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));
+        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmTime().get(Calendar.HOUR));
+        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTimeMillis());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_DAY, alarmClock.getArrivalTime().get(Calendar.DAY_OF_WEEK));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalTime().get(Calendar.HOUR));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
+        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepTime().get(Calendar.HOUR));
+        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTimeMillis());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_DAY, alarmClock.getUpperBoundTime().get(Calendar.DAY_OF_WEEK));
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundTime().get(Calendar.HOUR));
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
+        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
+        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
+        return cv;
     }
 
     /**

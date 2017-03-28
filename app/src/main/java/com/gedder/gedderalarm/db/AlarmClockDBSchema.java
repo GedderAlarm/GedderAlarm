@@ -26,11 +26,13 @@ public class AlarmClockDBSchema {
             public static final String DESTINATION = "destination";
 
             /**  */
+            public static final String ALARM_DAY = "alarmDay";
             public static final String ALARM_HOUR = "alarmHour";
             public static final String ALARM_MINUTE = "alarmMinute";
             public static final String ALARM_TIME = "alarmTime";
 
             /**  */
+            public static final String ARRIVAL_DAY = "arrivalDay";
             public static final String ARRIVAL_HOUR = "arrivalHour";
             public static final String ARRIVAL_MINUTE = "arrivalMinute";
             public static final String ARRIVAL_TIME = "arrivalTime";
@@ -41,6 +43,7 @@ public class AlarmClockDBSchema {
             public static final String PREP_TIME = "prepTime";
 
             /**  */
+            public static final String UPPER_BOUND_DAY = "upperBoundDay";
             public static final String UPPER_BOUND_HOUR = "upperBoundHour";
             public static final String UPPER_BOUND_MINUTE = "upperBoundMinute";
             public static final String UPPER_BOUND_TIME = "upperBoundTime";
