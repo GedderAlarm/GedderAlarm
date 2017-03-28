@@ -14,11 +14,10 @@ import android.os.Parcelable;
 
 import com.gedder.gedderalarm.AlarmReceiver;
 import com.gedder.gedderalarm.GedderAlarmApplication;
+import com.gedder.gedderalarm.GedderAlarmManager;
 import com.gedder.gedderalarm.util.Log;
 
 import java.util.UUID;
-
-import static android.content.Context.ALARM_SERVICE;
 
 
 /**
@@ -33,6 +32,7 @@ public class AlarmClock implements Parcelable {
     private UUID mUuid;
     private long mScheduledAlarmTimeInMs;
     private boolean mAlarmSet;
+    private boolean mGedderSet;
 
     /**
      * Initializes an unset alarm clock with default parameters.
@@ -55,7 +55,6 @@ public class AlarmClock implements Parcelable {
 
     /**
      * Initializes an unset alarm clock based off of explicit parameters.
-     * @param alarmManager           The alarm manager to use in the new alarm.
      * @param scheduledAlarmTimeInMs The scheduled alarm time in milliseconds to use in new alarm.
      * @param alarmSet               Whether the alarm is set already or not.
      */
@@ -67,7 +66,7 @@ public class AlarmClock implements Parcelable {
     /**
      * Sets the time for the alarm.
      * NOTE: Does NOT set the pending intent for the alarm; only sets data.
-     * @param msUntilAlarm The time until the alarm, in milliseconds.
+     * @param scheduledAlarmTimeInMs The time the alarm is scheduled.
      */
     public void setAlarmTime(long scheduledAlarmTimeInMs) {
         mScheduledAlarmTimeInMs = scheduledAlarmTimeInMs;
@@ -86,8 +85,6 @@ public class AlarmClock implements Parcelable {
      * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
      */
     public void setAlarm() {
-        AlarmManager am =
-                (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(GedderAlarmApplication.getAppContext(),
                 AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -96,14 +93,16 @@ public class AlarmClock implements Parcelable {
 
         if (Build.VERSION.SDK_INT >= 23) {
             Log.v(TAG, "Build.VERSION.SDK_INT >= 23");
-            am.setExactAndAllowWhileIdle(
+            GedderAlarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= 19) {
             Log.v(TAG, "19 <= Build.VERSION.SDK_INT < 23");
-            am.setExact(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
+            GedderAlarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         } else {
             Log.v(TAG, "Build.VERSION.SDK_INT < 19");
-            am.set(AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
+            GedderAlarmManager.set(
+                    AlarmManager.RTC_WAKEUP, mScheduledAlarmTimeInMs, pendingIntent);
         }
 
         mAlarmSet = true;
@@ -114,14 +113,12 @@ public class AlarmClock implements Parcelable {
      * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
      */
     public void cancelAlarm() {
-        AlarmManager am =
-                (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
                 AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.cancel(pendingIntent);
+        GedderAlarmManager.cancel(pendingIntent);
         mAlarmSet = false;
     }
 
