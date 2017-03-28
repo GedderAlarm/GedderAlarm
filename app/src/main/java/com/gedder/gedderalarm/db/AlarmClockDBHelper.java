@@ -41,10 +41,24 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + AlarmClockTable.TABLE_NAME + "("
-                + AlarmClockTable.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + AlarmClockTable.Columns.UUID + " TEXT, "
-                + AlarmClockTable.Columns.ALARM_TIME + " INT8, "
-                + AlarmClockTable.Columns.ALARM_SET + " BOOLEAN)"
+                + AlarmClockTable.Columns.ID    + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + AlarmClockTable.Columns.UUID  + " TEXT, "
+                + AlarmClockTable.Columns.ORIGIN      + " TEXT, "
+                + AlarmClockTable.Columns.DESTINATION + " TEXT, "
+                + AlarmClockTable.Columns.ALARM_HOUR   + " INTEGER, "
+                + AlarmClockTable.Columns.ALARM_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.ALARM_TIME   + " INT8, "
+                + AlarmClockTable.Columns.ARRIVAL_HOUR   + " INTEGER, "
+                + AlarmClockTable.Columns.ARRIVAL_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.ARRIVAL_TIME   + " INT8, "
+                + AlarmClockTable.Columns.PREP_HOUR   + " INTEGER, "
+                + AlarmClockTable.Columns.PREP_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.PREP_TIME   + " INT8, "
+                + AlarmClockTable.Columns.UPPER_BOUND_HOUR   + " INTEGER, "
+                + AlarmClockTable.Columns.UPPER_BOUND_MINUTE + " INTEGER, "
+                + AlarmClockTable.Columns.UPPER_BOUND_TIME   + " INT8, "
+                + AlarmClockTable.Columns.ALARM_SET  + " BOOLEAN, "
+                + AlarmClockTable.Columns.GEDDER_SET + " BOOLEAN)"
         );
     }
 
@@ -70,8 +84,22 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
+        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
+        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
+        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmHour());
+        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmMinute());
         cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalHour());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmMinute());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTime());
+        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepHour());
+        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepMinute());
+        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTime());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundHour());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundMinute());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTime());
         cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
+        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
         db.insert(AlarmClockTable.TABLE_NAME, null, cv);
         db.close();
     }
@@ -107,29 +135,32 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Updates an existing alarm clock to a new set of parameters.
-     * @param uuid The UUID of the alarm clock to update.
-     * @param scheduledTimeInMs The new scheduled time for the alarm clock.
-     * @param alarmSet Whether this alarm is set or not.
-     * @return Number of rows affected by the update. Not 1 if failed.
-     */
-    public int updateAlarmClock(UUID uuid, long scheduledTimeInMs, boolean alarmSet) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(AlarmClockTable.Columns.UUID, uuid.toString());
-        cv.put(AlarmClockTable.Columns.ALARM_TIME, scheduledTimeInMs);
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmSet);
-        return db.update(AlarmClockTable.TABLE_NAME, cv,
-                AlarmClockTable.Columns.UUID + "=?", new String[] { uuid.toString() });
-    }
-
-    /**
      * Updates an existing alarm clock to the parameters of the passed in alarm clock.
      * @param alarmClock The alarm clock whose values to copy into the alarm clock with UUID uuid.
      * @return Number of rows affected by the update. Not 1 if failed.
      */
     public int updateAlarmClock(AlarmClock alarmClock) {
-        return updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), alarmClock.isOn());
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
+        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
+        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmHour());
+        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmMinute());
+        cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTime());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalHour());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmMinute());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTime());
+        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepHour());
+        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepMinute());
+        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTime());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundHour());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundMinute());
+        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTime());
+        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
+        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
+        return db.update(AlarmClockTable.TABLE_NAME, cv,
+                AlarmClockTable.Columns.UUID + "=?",
+                new String[] { alarmClock.getUUID().toString() });
     }
 
     /**

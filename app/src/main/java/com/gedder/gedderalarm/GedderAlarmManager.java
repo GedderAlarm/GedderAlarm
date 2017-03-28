@@ -14,9 +14,12 @@ import android.os.Handler;
 
 import static android.content.Context.ALARM_SERVICE;
 
-
 /**
  * A reimplementation of AlarmManager (because we can't extend it), to manage Gedder Alarms.
+ * All documentation can be found at Android's official documentation repositories.
+ * Search for 'AlarmManager'.
+ *
+ * All modified/added functionality is documented.
  */
 public final class GedderAlarmManager {
     private static final String TAG = GedderAlarmManager.class.getSimpleName();
@@ -117,13 +120,18 @@ public final class GedderAlarmManager {
                     type, windowStartMillis, windowLengthMillis, tag, listener, targetHandler);
     }
 
+    /**
+     * Checks build version to decide which set functionality to use.
+     * @param type              See AlarmManager documentation.
+     * @param triggerAtMillis   See AlarmManager documentation.
+     * @param operation         See AlarmManager documentation.
+     */
     public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
         if (Build.VERSION.SDK_INT >= 23)
-            sAlarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+            sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
         else if (Build.VERSION.SDK_INT >= 19)
-            sAlarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+            sAlarmManager.setExact(type, triggerAtMillis, operation);
         else
-            sAlarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
+            sAlarmManager.set(type, triggerAtMillis, operation);
     }
 }
