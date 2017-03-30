@@ -5,41 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.gedder.gedderalarm.AlarmEditScrollingActivity">
+    android:background="#17BC9C"
+    tools:context="com.gedder.gedderalarm.AddEditAlarmScrollingActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:background="#FF0F7C67">
+
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="100dp"
+                android:id="@+id/Cancel_Button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="cancel"
                 android:text="CANCEL"
-                android:onClick="handleCancelBtn" />
+                android:textColor="#FFffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:id="@+id/Done_Button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#FF5EB227"
+                android:gravity="center"
+                android:onClick="done"
                 android:text="DONE"
-                android:onClick="handleDoneBtn" />
+                android:textColor="#FFffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        </android.support.v7.widget.Toolbar>
+        </LinearLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/app_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <include
-        layout="@layout/content_alarm_edit_scrolling" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="ADD ALARM"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/threshold_time_picker" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <!--<include layout="@layout/threshold_time_picker" />-->
+                <!--<include layout="@layout/threshold_time_picker" />-->
+                <!--<include layout="@layout/threshold_time_picker" />-->
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    android:background="@android:color/black">
+    android:visibility="visible">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,13 +15,13 @@
 
         <TextView
             android:id="@+id/text_title_box_0"
-            android:background="@android:color/holo_green_light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/holo_green_light"
             android:gravity="center"
             android:text="@string/app_title"
             android:textColor="@android:color/black"
@@ -37,8 +38,8 @@
             android:id="@+id/add_alarm_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="New Alarm"
-            android:onClick="newAlarm"/>
+            android:onClick="onClickNewAlarm"
+            android:text="New Alarm" />
 
     </RelativeLayout>
 

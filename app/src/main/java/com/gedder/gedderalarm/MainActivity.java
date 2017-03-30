@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Get a cursor pointing to all currently saved alarm clocks.
-        AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        mAlarmClockCursor = db.rawQuery(
-                "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+//        db.addAlarmClock(new AlarmClock());
+//        db.addAlarmClock(new AlarmClock());
+        mAlarmClockCursor = db.getAllAlarmClocks();
 
         // Make an adapter based off of the cursor.
         mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, mAlarmClockCursor);
