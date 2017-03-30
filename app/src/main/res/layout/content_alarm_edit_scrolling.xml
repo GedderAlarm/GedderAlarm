@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.gedder.gedderalarm.AlarmEditScrollingActivity"
+    tools:context="com.gedder.gedderalarm.AddEditAlarmScrollingActivity"
     tools:showIn="@layout/activity_alarm_edit_scrolling">
 
     <TextView

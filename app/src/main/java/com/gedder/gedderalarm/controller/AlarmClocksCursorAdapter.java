@@ -3,7 +3,7 @@
  * DATE: 3/15/17
  */
 
-package com.gedder.gedderalarm.alarm;
+package com.gedder.gedderalarm.controller;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -36,7 +36,6 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // TODO: Implement a CursorWrapper to more easily retrieve an AlarmClock from a cursor.
         // Get our views; we will populate them.
         TextView time = (TextView) view.findViewById(R.id.alarm_clock_time);
         TextView repeat = (TextView) view.findViewById(R.id.alarm_clock_repeat_dates);

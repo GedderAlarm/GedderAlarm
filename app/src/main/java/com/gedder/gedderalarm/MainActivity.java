@@ -7,25 +7,24 @@ package com.gedder.gedderalarm;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.gedder.gedderalarm.alarm.AlarmClock;
-import com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter;
+import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
-import com.gedder.gedderalarm.db.AlarmClockDBSchema;
-
-import java.util.UUID;
+import com.gedder.gedderalarm.model.AlarmClock;
 
 
 public class MainActivity extends AppCompatActivity {
-    // TODO: See todo in com.gedder.gedderalarm.alarm.AlarmClocksCursorAdapter.
+    // TODO: Stop handling UI in this activity. Move it to a view class in the view package.
+    // See http://www.techyourchance.com/mvp-mvc-android-2/
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    public static final String PARCEL_ALARM_CLOCK = "_GEDDER_PARCEL_ALARM_CLOCK_";
 
     private final int intentId = 31582;
 
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: bring to the alarm edit activity.
             }
         });
-
         db.close();
     }
 
@@ -71,74 +69,11 @@ public class MainActivity extends AppCompatActivity {
      * Called by some view when a new alarm is to be made. Brings up some alarm creation activity.
      * @param view The view that references this function.
      */
-    public void newAlarm(View view) {
+    public void onClickNewAlarm(View view) {
         // Pass in new, default alarm.
-        Intent intent = new Intent(this, AlarmEditScrollingActivity.class);
-        intent.putExtra("alarm_clock", new AlarmClock(this));
+        Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
+        intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
         startActivity(intent);
-    }
-
-    /**
-     *
-     * @param alarmClock
-     */
-    private void addAlarm(AlarmClock alarmClock) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.addAlarmClock(alarmClock);
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     *
-     * @param alarmClock
-     */
-    private void removeAlarm(AlarmClock alarmClock) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.deleteAlarmClock(alarmClock.getUUID());
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     *
-     * @param uuid
-     */
-    private void removeAlarm(UUID uuid) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        AlarmClock alarmClock = db.getAlarmClock(this, uuid);
-        db.deleteAlarmClock(uuid);
-        db.close();
-
-        updateAlarmClockCursorAdapter();
-    }
-
-    /**
-     * Toggles the alarm. Does not reset any data.
-     * @param alarmClock
-     */
-    private void toggleAlarm(AlarmClock alarmClock) {
-        // TODO: Use updated updateAlarmClock function later.
-        // TODO: Make sure to turn off gedder functionality when toggling alarm.
-
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.updateAlarmClock(alarmClock.getUUID(), alarmClock.getAlarmTime(), !alarmClock.isSet());
-
-        // We notify the adapter to update the button text from "Unset" to "Set" and vice versa.
-        updateAlarmClockCursorAdapter();
-    }
-
-    private void updateAlarmClockCursorAdapter() {
-        // TODO: Need to find a nicer way to do this. Maybe CursorWrapper will do the trick, dunno.
-        AlarmClockDBHelper helper = new AlarmClockDBHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        mAlarmClockCursor = db.rawQuery(
-                "SELECT * FROM " + AlarmClockDBSchema.AlarmClockTable.TABLE_NAME, null);
-        mAlarmClocksCursorAdapter.changeCursor(mAlarmClockCursor);
-
-        db.close();
     }
 }
 
