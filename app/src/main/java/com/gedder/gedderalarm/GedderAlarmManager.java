@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.gedder.gedderalarm.model.AlarmClock;
-import com.gedder.gedderalarm.model.GedderEngine;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -67,11 +66,11 @@ public final class GedderAlarmManager {
             throw new IllegalArgumentException("missing required unique ID");
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
-        intent.putExtra(GedderEngine.PARAM_ORIGIN, alarmClock.getOrigin());
-        intent.putExtra(GedderEngine.PARAM_DESTINATION, alarmClock.getDestination());
-        intent.putExtra(GedderEngine.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
-        intent.putExtra(GedderEngine.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
-        intent.putExtra(GedderEngine.PARAM_UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_ORIGIN, alarmClock.getOrigin());
+        intent.putExtra(GedderReceiver.PARAM_DESTINATION, alarmClock.getDestination());
+        intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
         LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
                 .sendBroadcast(intent);
     }
