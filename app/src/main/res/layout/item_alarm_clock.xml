@@ -3,40 +3,53 @@
     android:tag="alarm_clock_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#E8EAF6"
+    android:padding="6dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
 
-    <TextView
-        android:id="@+id/alarm_clock_time"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_weight="1"
-        android:text="Time" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="2">
 
-    <TextView
-        android:id="@+id/alarm_clock_repeat_dates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_weight="1"
-        android:text="M T W T F S S" />
+        <TextClock
+            android:id="@+id/itemAlarmClock_WakeupTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="textStart"
+            android:textSize="26sp" />
 
-    <Button
-        android:id="@+id/gedder_alarm_toggle_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_weight="1"
-        android:focusable="false"
-        android:text="Toggle Gedder"/>
+        <TextView
+            android:id="@+id/itemAlarmClock_RepeatDates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="12dp"
+            android:text="S  M  T  W  T  F  S"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/alarm_clock_toggle_btn"
+    </LinearLayout>
+
+    <ToggleButton
+        android:id="@+id/itemAlarmClock_GedderAlarmToggleBtn"
+        style="@style/gedderToggleButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_weight="1"
-        android:focusable="false"
-        android:text="Toggle Alarm" />
+        android:layout_height="match_parent"
+        android:background="@drawable/gd_toggle_bg"
+        android:checked="false" />
+
+    <ToggleButton
+        android:id="@+id/itemAlarmClock_alarmClockToggleBtn"
+        style="@style/alarmToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/alrm_toggle_bg"
+        android:checked="false" />
+
 
 </LinearLayout>

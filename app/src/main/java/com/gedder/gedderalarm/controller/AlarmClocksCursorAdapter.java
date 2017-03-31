@@ -37,10 +37,10 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Get our views; we will populate them.
-        TextView time = (TextView) view.findViewById(R.id.alarm_clock_time);
-        TextView repeat = (TextView) view.findViewById(R.id.alarm_clock_repeat_dates);
-        Button gedderToggle = (Button) view.findViewById(R.id.gedder_alarm_toggle_btn);
-        Button alarmToggle = (Button) view.findViewById(R.id.alarm_clock_toggle_btn);
+        TextView time = (TextView) view.findViewById(R.id.itemAlarmClock_WakeupTime);
+        TextView repeat = (TextView) view.findViewById(R.id.itemAlarmClock_RepeatDates);
+        Button gedderToggle = (Button) view.findViewById(R.id.itemAlarmClock_GedderAlarmToggleBtn);
+        Button alarmToggle = (Button) view.findViewById(R.id.itemAlarmClock_alarmClockToggleBtn);
         // Get data from cursor.
         long alarmTime = cursor.getLong(cursor.getColumnIndexOrThrow(
                 AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_TIME));
@@ -48,6 +48,6 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
                 AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_SET));
         // Populate our views with that data.
         time.setText(String.valueOf(alarmTime));
-        alarmToggle.setText(alarmSet > 0 ? "Turn off" : "Turn on");
+//        alarmToggle.setText(alarmSet > 0 ? "Turn off" : "Turn on");
     }
 }

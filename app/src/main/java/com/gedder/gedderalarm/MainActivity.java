@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-//        db.addAlarmClock(new AlarmClock());
+        db.addAlarmClock(new AlarmClock());
 //        db.addAlarmClock(new AlarmClock());
         mAlarmClockCursor = db.getAllAlarmClocks();
 
