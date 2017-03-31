@@ -9,9 +9,14 @@ package com.gedder.gedderalarm;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
+
+import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.model.GedderEngine;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -24,6 +29,9 @@ import static android.content.Context.ALARM_SERVICE;
  */
 public final class GedderAlarmManager {
     private static final String TAG = GedderAlarmManager.class.getSimpleName();
+
+    public static final String PARAM_ALARM_CLOCK = "__PARAM_ALARM_CLOCK__";
+    public static final String PARAM_UNIQUE_ID = "__PARAM_UNIQUE_ID__";
 
     private static AlarmManager sAlarmManager =
             (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
@@ -50,7 +58,22 @@ public final class GedderAlarmManager {
      * @param gedderData
      */
     public static void setGedder(Bundle gedderData) {
+        AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
+        int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
+        if (alarmClock == null)
+            throw new IllegalArgumentException("missing required alarm clock");
+        else if (id == -1)
+            throw new IllegalArgumentException("missing required unique ID");
+
+        Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
+        intent.putExtra(GedderEngine.PARAM_ORIGIN, alarmClock.getOrigin());
+        intent.putExtra(GedderEngine.PARAM_DESTINATION, alarmClock.getDestination());
+        intent.putExtra(GedderEngine.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
+        intent.putExtra(GedderEngine.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
+        intent.putExtra(GedderEngine.PARAM_UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
+        LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
+                .sendBroadcast(intent);
     }
 
     /**

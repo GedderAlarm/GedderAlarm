@@ -41,10 +41,12 @@ public class AlarmClock implements Parcelable {
     private static final int DEFAULT_UPPER_BOUND_MINUTE = 0;
     private static final boolean DEFAULT_ALARM_SET = false;
     private static final boolean DEFAULT_GEDDER_SET = false;
-    private static final int INTENT_ID = 31582;
 
     // Required for universal uniqueness of each alarm.
     private UUID    mUuid;
+
+    // Unique number to identify this alarm in PendingIntents.
+    private int     mRequestCode;
 
     // Required for smart alarm.
     private String  mOrigin;
@@ -368,16 +370,18 @@ public class AlarmClock implements Parcelable {
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
-                        AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         GedderAlarmManager.setOptimal(
                 AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
 
         if (isGedderOn()) {
-            // We've set the normal alarm, but now we want to activate the Gedder Engine as a
-            // service to watch over our alarm. For that, we need to send it some required data.
-
-            // TODO: Implement communication details.
-            GedderAlarmManager.setGedder(new Bundle());
+            // We've set the normal alarm, and now we want to turn on the Gedder Engine.
+            // We're the passenger, and the GedderAlarmManager is the driver. Tell the driver to
+            // start the engine.
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
+            bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+            GedderAlarmManager.setGedder(bundle);
             mGedderSet = true;
         }
 
@@ -393,7 +397,7 @@ public class AlarmClock implements Parcelable {
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
-                AlarmClock.INTENT_ID, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         GedderAlarmManager.cancel(pendingIntent);
 
         if (isGedderOn()) {

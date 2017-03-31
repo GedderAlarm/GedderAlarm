@@ -57,11 +57,11 @@ package com.gedder.gedderalarm.model;
 public final class GedderEngine {
     private static final String TAG = GedderEngine.class.getSimpleName();
 
-    private static final String PARAM_ORIGIN = "__PARAM_ORIGIN__";
-    private static final String PARAM_DESTINATION = "__PARAM_DESTINATION__";
-    private static final String PARAM_ARRIVAL_TIME = "__PARAM_ARRIVAL_TIME__";
-    private static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
-    private static final String PARAM_UPPER_BOUND_TIME = "__PARAM_UPPER_BOUND_TIME__";
+    public static final String PARAM_ORIGIN = "__PARAM_ORIGIN__";
+    public static final String PARAM_DESTINATION = "__PARAM_DESTINATION__";
+    public static final String PARAM_ARRIVAL_TIME = "__PARAM_ARRIVAL_TIME__";
+    public static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
+    public static final String PARAM_UPPER_BOUND_TIME = "__PARAM_UPPER_BOUND_TIME__";
 
     private GedderEngine() {}
 }
