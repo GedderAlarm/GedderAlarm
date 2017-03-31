@@ -25,31 +25,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmActivity">
-
+        <activity
+            android:name=".AlarmActivity">
         </activity>
         <activity
             android:name=".AddEditAlarmScrollingActivity"
             android:label="@string/title_activity_edit_alarm_scrolling"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
 
         <receiver
             android:name=".AlarmReceiver"
             android:process=":remote">
         </receiver>
-
         <receiver
             android:name=".GedderReceiver"
             android:enabled="true"
             android:process=":remote"
             android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
         </receiver>
-
         <receiver
             android:name=".GedderRestartReceiver"
             android:enabled="true"
