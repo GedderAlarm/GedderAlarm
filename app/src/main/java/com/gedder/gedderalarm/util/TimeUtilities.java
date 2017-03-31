@@ -30,11 +30,12 @@ public final class TimeUtilities {
     private TimeUtilities() {}
 
     /**
-     * Gets the time until some specified day, hour, and minute combination, from today.
+     * Gets the time until some specified day, hour, and minute combination, from today. Recommended
+     * to instead use {@link #getMillisUntil(Calendar)} to avoid {@link IllegalArgumentException}.
      * @param day       A day number where 1 = Sunday, 2 = Monday, ..., 7 = Saturday.
      * @param hour      An hour between 0 and 23 for the 24-hour clock.
      * @param minute    A minute between 0 and 59.
-     * @return The milliseconds from now until the specified input.
+     * @return The milliseconds from now until the specified time in the future..
      */
     public static long getMillisUntil(int day, int hour, int minute) {
         if (day < 1 || day > 7 || hour < 0 || hour > 23 || minute < 0 || minute > 59)
@@ -50,6 +51,12 @@ public final class TimeUtilities {
         return then - now;
     }
 
+    /**
+     * Gets the time until some specified day, hour, and minute combination, from today.
+     * @param future A calendar containing the day, hour, and minute to calculate the number of
+     *               milliseconds up to.
+     * @return The milliseconds from now until the specified time in the future.
+     */
     public static long getMillisUntil(Calendar future) {
         Calendar calendar = Calendar.getInstance();
         long now = calendar.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
@@ -81,6 +88,53 @@ public final class TimeUtilities {
     public static long getMillisSinceMidnight(int hour, int minute) {
         if (hour < 0 || hour > 23 || minute < 0 || minute > 59)
             throw new IllegalArgumentException();
-        return (hour*60 + minute)*60*1000;
+        return hour*MILLIS_PER_HOUR + minute*MILLIS_PER_MINUTE;
+    }
+
+    /**
+     * Gets the milliseconds since midnight up to now (on function invocation).
+     * @return the milliseconds since midnight up to now.
+     */
+    public static long getMillisSinceMidnight() {
+        Calendar cal = Calendar.getInstance();
+        int hourNow = cal.get(Calendar.HOUR);
+        int minNow = cal.get(Calendar.MINUTE);
+        return hourNow*MILLIS_PER_HOUR + minNow*MILLIS_PER_MINUTE;
+    }
+
+    /**
+     * Gets the number of milliseconds in the specified number of hours.
+     * @param hours The number of hours to convert to milliseconds.
+     * @return The number of milliseconds in hours.
+     */
+    public static long hourToMillis(int hours) {
+        return hours*MILLIS_PER_HOUR;
+    }
+
+    /**
+     * Gets the number of seconds in the specified number of hours.
+     * @param hours The number of hours to convert to seconds.
+     * @return The number of seconds in hours.
+     */
+    public static long hourToSeconds(int hours) {
+        return hours*SECONDS_PER_HOUR;
+    }
+
+    /**
+     * Gets the number of milliseconds in the specified number of days.
+     * @param days The number of days to convert to milliseconds.
+     * @return The number of milliseconds in days.
+     */
+    public static long dayToMillis(int days) {
+        return days*MILLIS_PER_DAY;
+    }
+
+    /**
+     * Gets the number of seconds in the specified number of days.
+     * @param days The number of days to convert to seconds.
+     * @return The number of seconds in days.
+     */
+    public static long dayToSeconds(int days) {
+        return days*SECONDS_PER_DAY;
     }
 }
