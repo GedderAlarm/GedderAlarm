@@ -5,11 +5,13 @@
 
 package com.gedder.gedderalarm.google;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.except.RequiredParamMissingException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 
 /**
@@ -223,6 +225,20 @@ public class UrlGenerator {
             this.url += "avoid=highways";
     }
 
+    @Override
+    public String toString() {
+        return url;
+    }
+
+    public URL getUrl() {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException");
+        }
+        return null;
+    }
+
     /**
      * Builds a URL and instantiates it with <code>build()</code>.
      */
@@ -248,12 +264,11 @@ public class UrlGenerator {
          *         Google Maps API required that we have an origin, destination, and API key in the
          *         HTTP request, at the least.
          */
-        public UrlBuilder(String origin, String destination, String apiKey)
-                throws RequiredParamMissingException {
-            if (origin == null || destination == null || apiKey == null)
-                throw new RequiredParamMissingException(SUB_TAG + "::UrlBuilder: null input.");
-
+        public UrlBuilder(String origin, String destination, String apiKey) {
             try {
+                if (origin == null || destination == null
+                        || origin.equals("") || destination.equals(""))
+                    throw new RequiredParamMissingException();
                 this.origin = URLEncoder.encode(origin, "UTF-8");
                 this.destination = URLEncoder.encode(destination, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -274,6 +289,11 @@ public class UrlGenerator {
             return this;
         }
 
+        public UrlBuilder arrivalTime(long arrivalTime) {
+            this.arrivalTime = String.valueOf(arrivalTime);
+            return this;
+        }
+
         /**
          *
          *
@@ -282,6 +302,11 @@ public class UrlGenerator {
          */
         public UrlBuilder departureTime(String departureTime) {
             this.departureTime = toUnixTime(departureTime);
+            return this;
+        }
+
+        public UrlBuilder departureTime(long departureTime) {
+            this.departureTime = String.valueOf(departureTime);
             return this;
         }
 

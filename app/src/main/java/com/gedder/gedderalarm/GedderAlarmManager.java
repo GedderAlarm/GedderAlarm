@@ -60,10 +60,10 @@ public final class GedderAlarmManager {
         AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
-        if (alarmClock == null)
-            throw new IllegalArgumentException("missing required alarm clock");
-        else if (id == -1)
-            throw new IllegalArgumentException("missing required unique ID");
+        if (alarmClock == null || id == -1)
+            throw new IllegalArgumentException(
+                    "alarmClock = " + alarmClock
+                    + "id = " + id);
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
         intent.putExtra(GedderReceiver.PARAM_ORIGIN, alarmClock.getOrigin());

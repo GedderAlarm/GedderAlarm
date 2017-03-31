@@ -6,6 +6,16 @@
 package com.gedder.gedderalarm.model;
 
 
+import android.os.Bundle;
+
+import com.gedder.gedderalarm.google.JsonParser;
+import com.gedder.gedderalarm.google.UrlGenerator;
+import com.gedder.gedderalarm.util.HttpRequest;
+import com.gedder.gedderalarm.util.except.GoogleMapsAPIException;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 /**
  * The engine goes through the following pipeline:
  *
@@ -57,5 +67,55 @@ package com.gedder.gedderalarm.model;
 public final class GedderEngine {
     private static final String TAG = GedderEngine.class.getSimpleName();
 
+    public static final String RESULT_DURATION = "__GEDDER_ENGINE_RESULT_DURATION__";
+    public static final String RESULT_DURATION_IN_TRAFFIC =
+            "__GEDDER_ENGINE_RESULT_DURATION_IN_TRAFFIC__";
+    public static final String RESULT_WARNINGS = "__GEDDER_ENGINE_WARNINGS__";
+
+    // We get this in some secret way. For development, just keep a local API key in a file that
+    // is ignored by git.
+    private static final String apiKey = "qweoihuihuyhuyfbyu this isn't an api key";
+
     private GedderEngine() {}
+
+    public static Bundle start(String origin, String destination,
+                               long arrivalTime, long prepTime, long upperBoundTime) {
+        String url  = ""
+             , json = ""
+             , err  = "";
+        int duration          = -1
+          , durationInTraffic = -1;
+        ArrayList<String> warnings;
+
+        // Generate URL
+        url = new UrlGenerator.UrlBuilder(origin, destination, apiKey)
+                .arrivalTime(arrivalTime)
+                .departureTime(upperBoundTime + prepTime)
+                .build().toString();
+
+        // Query API
+        try {
+            json = new HttpRequest().execute(url).get();
+        } catch (ExecutionException e) {
+            // TODO: Handle exception.
+        } catch (InterruptedException e) {
+            // TODO: Handle exception.
+        }
+
+        // Parse the relevant variables.
+        JsonParser parser = new JsonParser(json);
+        err = parser.errorMessage();
+        if (err.equals(""))
+            throw new GoogleMapsAPIException();
+
+        duration = parser.duration();
+        durationInTraffic = parser.durationInTraffic();
+        warnings = parser.warnings();
+
+        Bundle results = new Bundle();
+        results.putInt(RESULT_DURATION, duration);
+        results.putInt(RESULT_DURATION_IN_TRAFFIC, durationInTraffic);
+        results.putSerializable(RESULT_WARNINGS, warnings);
+        return results;
+    }
 }
