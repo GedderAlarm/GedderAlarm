@@ -28,6 +28,19 @@ import java.util.UUID;
 public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
+    // Default values for certain private variables.
+    private static final String DEFAULT_ORIGIN = "";
+    private static final String DEFAULT_DESTINATION = "";
+    private static final int DEFAULT_ALARM_HOUR = 6;
+    private static final int DEFAULT_ALARM_MINUTE = 0;
+    private static final int DEFAULT_ARRIVAL_HOUR = 7;
+    private static final int DEFAULT_ARRIVAL_MINUTE = 0;
+    private static final int DEFAULT_PREP_HOUR = 0;
+    private static final int DEFAULT_PREP_MINUTE = 0;
+    private static final int DEFAULT_UPPER_BOUND_HOUR = 6;
+    private static final int DEFAULT_UPPER_BOUND_MINUTE = 0;
+    private static final boolean DEFAULT_ALARM_SET = false;
+    private static final boolean DEFAULT_GEDDER_SET = false;
     private static final int INTENT_ID = 31582;
 
     // Required for universal uniqueness of each alarm.
@@ -78,37 +91,37 @@ public class AlarmClock implements Parcelable {
 
         mUuid = UUID.randomUUID();
 
-        mOrigin      = "";         // If we find device location, that should be the default.
-        mDestination = "";
+        mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
 
         // Not repeating by default.
         mRepeatDays = new DaysOfWeek();
 
         // Tomorrow 6:00am
         mAlarmDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mAlarmHour   = 6;
-        mAlarmMinute = 0;
+        mAlarmHour   = DEFAULT_ALARM_HOUR;
+        mAlarmMinute = DEFAULT_ALARM_MINUTE;
         setAlarmTime(mAlarmDay, mAlarmHour, mAlarmMinute);
 
         // Tomorrow 7:00am
-        mArrivalDay     = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mArrivalHour    = 7;
-        mArrivalMinute  = 0;
+        mArrivalDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
+        mArrivalHour   = DEFAULT_ARRIVAL_HOUR;
+        mArrivalMinute = DEFAULT_ARRIVAL_MINUTE;
         setArrivalTime(mArrivalDay, mArrivalHour, mArrivalMinute);
 
         // No prep by default.
-        mPrepHour   = 0;
-        mPrepMinute = 0;
+        mPrepHour   = DEFAULT_PREP_HOUR;
+        mPrepMinute = DEFAULT_PREP_MINUTE;
         setPrepTime(mPrepHour, mPrepMinute);
 
         // Tomorrow 6:00am
-        mUpperBoundDay      = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mUpperBoundHour     = 6;
-        mUpperBoundMinute   = 0;
+        mUpperBoundDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
+        mUpperBoundHour   = DEFAULT_UPPER_BOUND_HOUR;
+        mUpperBoundMinute = DEFAULT_UPPER_BOUND_MINUTE;
         setUpperBoundTime(mUpperBoundDay, mUpperBoundHour, mUpperBoundMinute);
 
-        mAlarmSet  = false;
-        mGedderSet = false;
+        mAlarmSet  = DEFAULT_ALARM_SET;
+        mGedderSet = DEFAULT_GEDDER_SET;
     }
 
     /**
@@ -118,31 +131,31 @@ public class AlarmClock implements Parcelable {
     public AlarmClock(AlarmClock alarmClock) {
         mUuid = alarmClock.mUuid;
 
-        mOrigin = alarmClock.mOrigin;
+        mOrigin      = alarmClock.mOrigin;
         mDestination = alarmClock.mDestination;
 
         mRepeatDays = alarmClock.mRepeatDays;
 
-        mAlarmDay = alarmClock.mAlarmDay;
-        mAlarmHour = alarmClock.mAlarmHour;
+        mAlarmDay    = alarmClock.mAlarmDay;
+        mAlarmHour   = alarmClock.mAlarmHour;
         mAlarmMinute = alarmClock.mAlarmMinute;
-        mAlarmTime = alarmClock.mAlarmTime;
+        mAlarmTime   = alarmClock.mAlarmTime;
 
-        mArrivalDay = alarmClock.mArrivalDay;
-        mArrivalHour = alarmClock.mArrivalHour;
+        mArrivalDay    = alarmClock.mArrivalDay;
+        mArrivalHour   = alarmClock.mArrivalHour;
         mArrivalMinute = alarmClock.mArrivalMinute;
-        mArrivalTime = alarmClock.mArrivalTime;
+        mArrivalTime   = alarmClock.mArrivalTime;
 
-        mPrepHour = alarmClock.mPrepHour;
+        mPrepHour   = alarmClock.mPrepHour;
         mPrepMinute = alarmClock.mPrepMinute;
-        mPrepTime = alarmClock.mPrepTime;
+        mPrepTime   = alarmClock.mPrepTime;
 
-        mUpperBoundDay = alarmClock.mUpperBoundDay;
-        mUpperBoundHour = alarmClock.mUpperBoundHour;
+        mUpperBoundDay    = alarmClock.mUpperBoundDay;
+        mUpperBoundHour   = alarmClock.mUpperBoundHour;
         mUpperBoundMinute = alarmClock.mUpperBoundMinute;
-        mUpperBoundTime = alarmClock.mUpperBoundTime;
+        mUpperBoundTime   = alarmClock.mUpperBoundTime;
 
-        mAlarmSet = alarmClock.mAlarmSet;
+        mAlarmSet  = alarmClock.mAlarmSet;
         mGedderSet = alarmClock.mGedderSet;
     }
 
@@ -159,8 +172,8 @@ public class AlarmClock implements Parcelable {
         setArrivalTime(arrivalTime);
         setPrepTime(prepHour, prepMinute);
         setUpperBoundTime(upperBoundTime);
-        mAlarmSet = false;
-        mGedderSet = false;
+        mAlarmSet = DEFAULT_ALARM_SET;
+        mGedderSet = DEFAULT_GEDDER_SET;
     }
 
     public AlarmClock(String origin, String destination,
@@ -187,8 +200,8 @@ public class AlarmClock implements Parcelable {
         mUpperBoundHour     = upperBoundHour;
         mUpperBoundMinute   = upperBoundMinute;
         setUpperBoundTime(mUpperBoundDay, mUpperBoundHour, mUpperBoundMinute);
-        mAlarmSet           = false;
-        mGedderSet          = false;
+        mAlarmSet           = DEFAULT_ALARM_SET;
+        mGedderSet          = DEFAULT_GEDDER_SET;
     }
 
     /**
@@ -197,30 +210,33 @@ public class AlarmClock implements Parcelable {
     public void defaultAlarmSettings() {
         Calendar calendar = Calendar.getInstance();
 
-        mOrigin      = "";         // If we find device location, that should be the default.
-        mDestination = "";
+        mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
+
+        // Not repeating by default.
+        mRepeatDays = new DaysOfWeek();
 
         // Tomorrow 6:00am
         mAlarmDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mAlarmHour   = 6;
-        mAlarmMinute = 0;
+        mAlarmHour   = DEFAULT_ALARM_HOUR;
+        mAlarmMinute = DEFAULT_ALARM_MINUTE;
         setAlarmTime(mAlarmDay, mAlarmHour, mAlarmMinute);
 
         // Tomorrow 7:00am
-        mArrivalDay     = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mArrivalHour    = 7;
-        mArrivalMinute  = 0;
+        mArrivalDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
+        mArrivalHour   = DEFAULT_ARRIVAL_HOUR;
+        mArrivalMinute = DEFAULT_ARRIVAL_MINUTE;
         setArrivalTime(mArrivalDay, mArrivalHour, mArrivalMinute);
 
         // No prep by default.
-        mPrepHour   = 0;
-        mPrepMinute = 0;
+        mPrepHour   = DEFAULT_PREP_HOUR;
+        mPrepMinute = DEFAULT_PREP_MINUTE;
         setPrepTime(mPrepHour, mPrepMinute);
 
         // Tomorrow 6:00am
-        mUpperBoundDay      = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
-        mUpperBoundHour     = 6;
-        mUpperBoundMinute   = 0;
+        mUpperBoundDay    = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7;
+        mUpperBoundHour   = DEFAULT_UPPER_BOUND_HOUR;
+        mUpperBoundMinute = DEFAULT_UPPER_BOUND_MINUTE;
         setUpperBoundTime(mUpperBoundDay, mUpperBoundHour, mUpperBoundMinute);
 
         if (isOn())
