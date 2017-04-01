@@ -19,11 +19,9 @@ import com.gedder.gedderalarm.model.AlarmClock;
 import static android.content.Context.ALARM_SERVICE;
 
 /**
- * A reimplementation of AlarmManager (because we can't extend it), to manage Gedder Alarms.
- * All documentation can be found at Android's official documentation repositories.
- * Search for 'AlarmManager'.
- *
+ * A reimplementation of {@link AlarmManager} (because we can't extend it), to manage Gedder Alarms.
  * All modified/added functionality is documented.
+ * @see AlarmManager
  */
 
 public final class GedderAlarmManager {
@@ -53,8 +51,8 @@ public final class GedderAlarmManager {
     }
 
     /**
-     *
-     * @param gedderData
+     * Sets the Gedder service to work for the alarm that sent the bundle of data.
+     * @param gedderData The data the Gedder services require for any alarm clock.
      */
     public static void setGedder(Bundle gedderData) {
         AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
@@ -77,24 +75,37 @@ public final class GedderAlarmManager {
     }
 
     /**
-     *
-     * @param gedderData
+     * Cancels the Gedder service for the alarm that sent this bundle of data.
+     * @param gedderData The data that Gedder services require for any alarm clock.
      */
     public static void cancelGedder(Bundle gedderData) {
+        // TODO: Implement.
         AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
     }
 
+    /**
+     * Copy of {@link AlarmManager#cancel(PendingIntent)}.
+     * @see AlarmManager#cancel(PendingIntent)
+     */
     public static void cancel(PendingIntent operation) {
         sAlarmManager.cancel(operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#cancel(AlarmManager.OnAlarmListener)}.
+     * @see AlarmManager#cancel(AlarmManager.OnAlarmListener)
+     */
     @TargetApi(24)
     public static void cancel(AlarmManager.OnAlarmListener listener) {
         if (Build.VERSION.SDK_INT >= 24)
             sAlarmManager.cancel(listener);
     }
 
+    /**
+     * Copy of {@link AlarmManager#getNextAlarmClock()}.
+     * @see AlarmManager#getNextAlarmClock()
+     */
     @TargetApi(21)
     public static AlarmManager.AlarmClockInfo getNextAlarmClock() {
         if (Build.VERSION.SDK_INT >= 21)
@@ -102,10 +113,18 @@ public final class GedderAlarmManager {
         return null;
     }
 
+    /**
+     * Copy of {@link AlarmManager#set(int, long, PendingIntent)}.
+     * @see AlarmManager#set(int, long, PendingIntent)
+     */
     public static void set(int type, long triggerAtMillis, PendingIntent operation) {
         sAlarmManager.set(type, triggerAtMillis, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#set(int, long, String, AlarmManager.OnAlarmListener, Handler)}.
+     * @see AlarmManager#set(int, long, String, AlarmManager.OnAlarmListener, Handler)
+     */
     @TargetApi(24)
     public static void set(int type, long triggerAtMillis, String tag,
                     AlarmManager.OnAlarmListener listener, Handler targetHandler) {
@@ -113,12 +132,20 @@ public final class GedderAlarmManager {
             sAlarmManager.set(type, triggerAtMillis, tag, listener, targetHandler);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setAlarmClock(AlarmManager.AlarmClockInfo, PendingIntent)}.
+     * @see AlarmManager#setAlarmClock(AlarmManager.AlarmClockInfo, PendingIntent)
+     */
     @TargetApi(21)
     public static void setAlarmClock(AlarmManager.AlarmClockInfo info, PendingIntent operation) {
         if (Build.VERSION.SDK_INT >= 21)
             sAlarmManager.setAlarmClock(info, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setAndAllowWhileIdle(int, long, PendingIntent)}.
+     * @see AlarmManager#setAndAllowWhileIdle(int, long, PendingIntent)
+     */
     @TargetApi(23)
     public static void setAndAllowWhileIdle(int type, long triggerAtMillis,
                                             PendingIntent operation) {
@@ -126,10 +153,19 @@ public final class GedderAlarmManager {
             sAlarmManager.setAndAllowWhileIdle(type, triggerAtMillis, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setExact(int, long, PendingIntent)}.
+     * @see AlarmManager#setExact(int, long, PendingIntent)
+     */
     public static void setExact(int type, long triggerAtMillis, PendingIntent operation) {
         sAlarmManager.setExact(type, triggerAtMillis, operation);
     }
 
+    /**
+     * Copy of {@link
+     * AlarmManager#setExact(int, long, String, AlarmManager.OnAlarmListener, Handler)}.
+     * @see AlarmManager#setExact(int, long, String, AlarmManager.OnAlarmListener, Handler)
+     */
     @TargetApi(24)
     public static void setExact(int type, long triggerAtMillis, String tag,
                          AlarmManager.OnAlarmListener listener, Handler targetHandler) {
@@ -137,6 +173,10 @@ public final class GedderAlarmManager {
             sAlarmManager.setExact(type, triggerAtMillis, tag, listener, targetHandler);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setExactAndAllowWhileIdle(int, long, PendingIntent)}.
+     * @see AlarmManager#setExactAndAllowWhileIdle(int, long, PendingIntent)
+     */
     @TargetApi(23)
     public static void setExactAndAllowWhileIdle(int type, long triggerAtMillis,
                                                  PendingIntent operation) {
@@ -144,29 +184,54 @@ public final class GedderAlarmManager {
             sAlarmManager.setAndAllowWhileIdle(type, triggerAtMillis, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setInexactRepeating(int, long, long, PendingIntent)}.
+     * @see AlarmManager#setInexactRepeating(int, long, long, PendingIntent)
+     */
     public static void setInexactRepeating(int type, long triggerAtMillis, long intervalMillis,
                                     PendingIntent operation) {
         sAlarmManager.setInexactRepeating(type, triggerAtMillis, intervalMillis, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setRepeating(int, long, long, PendingIntent)}.
+     * @see AlarmManager#setRepeating(int, long, long, PendingIntent)
+     */
     public static void setRepeating(int type, long triggerAtMillis, long intervalMillis,
                              PendingIntent operation) {
         sAlarmManager.setRepeating(type, triggerAtMillis, intervalMillis, operation);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setTime(long)}.
+     * @see AlarmManager#setTime(long)
+     */
     public static void setTime(long millis) {
         sAlarmManager.setTime(millis);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setTimeZone(String)}.
+     * @see AlarmManager#setTimeZone(String)
+     */
     public static void setTimeZone(String timeZone) {
         sAlarmManager.setTimeZone(timeZone);
     }
 
+    /**
+     * Copy of {@link AlarmManager#setWindow(int, long, long, PendingIntent)}.
+     * @see AlarmManager#setWindow(int, long, long, PendingIntent)
+     */
     public static void setWindow(int type, long windowStartMillis, long windowLengthMillis,
                           PendingIntent operation) {
         sAlarmManager.setWindow(type, windowStartMillis, windowLengthMillis, operation);
     }
 
+    /**
+     * Copy of {@link
+     * AlarmManager#setWindow(int, long, long, String, AlarmManager.OnAlarmListener, Handler)}.
+     * @see AlarmManager#setWindow(int, long, long, String, AlarmManager.OnAlarmListener, Handler)}
+     */
     @TargetApi(24)
     public static void setWindow(int type, long windowStartMillis, long windowLengthMillis,
                                  String tag, AlarmManager.OnAlarmListener listener,
