@@ -19,8 +19,11 @@ import com.gedder.gedderalarm.model.AlarmClock;
 import static android.content.Context.ALARM_SERVICE;
 
 /**
- * A reimplementation of {@link AlarmManager} (because we can't extend it), to manage Gedder Alarms.
- * All modified/added functionality is documented.
+ * <p>A reimplementation of {@link AlarmManager} (because we can't extend it), to manage Gedder
+ * Alarms.</p>
+ *
+ * <p>All modified/added functionality is documented.</p>
+ *
  * @see AlarmManager
  */
 

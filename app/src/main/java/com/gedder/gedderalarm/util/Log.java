@@ -6,10 +6,10 @@
 package com.gedder.gedderalarm.util;
 
 /**
- * <a href="http://stackoverflow.com/a/4592958">Online source.</a>
+ * <p><a href="http://stackoverflow.com/a/4592958">Online source.</a></p>
  *
- * A wrapper on android.util.Log's functionality, to make it easier to disable/enable logging (i.e.
- * for pushing to production, or debugging).
+ * <p>A wrapper on android.util.Log's functionality, to make it easier to disable/enable logging
+ * (i.e. for pushing to production, or debugging).</p>
  *
  * @see android.util.Log
  */

@@ -16,15 +16,16 @@ import java.util.ArrayList;
 
 
 /**
- * Serves as the entry point for the Gedder algorithm.
+ * <p>Serves as the entry point for the Gedder algorithm.</p>
  *
- * After gathering data from the intent that was broadcast, it starts up the {@link GedderEngine}.
- * The {@link GedderEngine} sends back some of the relevant data after flowing through its pipeline.
+ * <p>After gathering data from the intent that was broadcast, it starts up the
+ * {@link GedderEngine}. The {@link GedderEngine} sends back some of the relevant data after flowing
+ * through its pipeline.</p>
  *
- * It then analyzes the response from the {@link GedderEngine}.
+ * <p>It then analyzes the response from the {@link GedderEngine}.</p>
  *
- * During and after the analysis of the result data, it determines what action to take. It may do
- * one of the following:
+ * <p>During and after the analysis of the result data, it determines what action to take. It may do
+ * one of the following:</p>
  *
  * <ul>
  *     <li>Reschedule itself to start up the {@link GedderEngine} for some default set time in the
@@ -32,34 +33,38 @@ import java.util.ArrayList;
  *     <li>Reschedule itself to start up the {@link GedderEngine} for some adjusted time in the
  *     future.</li>
  *     <li>Trigger the alarm.</li>
- * </ul>
+ * </ul><br>
  *
- * <u><strong>Case 1</strong></u><br>
- * In the first case, the algorithm sees no reason for concern, and just carries on rescheduling
- * itself for future analysis at some default rate.
+ * <u><strong>Case 1</strong></u>
  *
- * <u><strong>Case 2</strong></u><br>
- * In the second case, the algorithm picks up a possible delay, but it is not urgent enough that
+ * <p>In the first case, the algorithm sees no reason for concern, and just carries on rescheduling
+ * itself for future analysis at some default rate.</p>
+ *
+ * <u><strong>Case 2</strong></u>
+ *
+ * <p>In the second case, the algorithm picks up a possible delay, but it is not urgent enough that
  * the user needs to wake up right now. It'll reschedule itself for future analysis, but at a
  * tighter bound (how much tighter depends on the severity of the delay relative to the "wish"
- * alarm time).
+ * alarm time).</p>
  *
- * <u><strong>Case 3</strong></u><br>
- * In the last case, the algorithm makes the decision to wake the user up right away: it caught a
+ * <u><strong>Case 3</strong></u>
+ *
+ * <p>In the last case, the algorithm makes the decision to wake the user up right away: it caught a
  * delay significant enough that if the user doesn't take action now, they'll be late to their
- * destination.
+ * destination.</p>
  *
- * Each time the algorithm sets itself up for a future flow through the pipeline, it checks how
+ * <p>Each time the algorithm sets itself up for a future flow through the pipeline, it checks how
  * close it is to the currently planned alarm time. The closer it gets, the more often it queries
  * for updates on traffic and possible delays. This carries on until the algorithm notices that
  * now the user must wake up as soon as possible, otherwise the delay can be detrimental to reaching
- * the destination at the planned arrival time.
+ * the destination at the planned arrival time.</p>
  *
- * To sum, the algorithm can either reschedule itself for a default rate of analysis, or a tighter
- * rate, or trigger the alarm, all depending on information it has previously received and analyzed.
+ * <p>To sum, the algorithm can either reschedule itself for a default rate of analysis, or a
+ * tighter rate, or trigger the alarm, all depending on information it has previously received and
+ * analyzed.</p>
  *
- * In this way, the algorithm ensures it's awake and aware of any delays at all times, and becomes
- * increasingly active when there's a concern, i.e. when delays are present.
+ * <p>In this way, the algorithm ensures it's awake and aware of any delays at all times, and
+ * becomes increasingly active when there's a concern, i.e. when delays are present.</p>
  */
 
 public class GedderReceiver extends BroadcastReceiver {

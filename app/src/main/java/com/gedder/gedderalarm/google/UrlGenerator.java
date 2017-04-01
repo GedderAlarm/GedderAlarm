@@ -15,10 +15,11 @@ import java.net.URLEncoder;
 
 
 /**
- * Class to generate URLs for Google Maps API.
+ * <p>Class to generate URLs for Google Maps API.</p>
  *
- * Example usage:
+ * <p>Example usage:</p>
  *
+ * <code><pre>
  * public UrlGenerator url = new UrlGenerator.UrlBuilder("origin", "destination", "apiKey") // required
  *                      .arrivalTime("arrivalTime")     // optional
  *                      .departureTime("departureTime") // optional
@@ -26,7 +27,9 @@ import java.net.URLEncoder;
  *                      .avoidToll()                    // optional
  *                      .avoidHighways()                // optional
  *                      .build(); // must call this to get back a Url
+ * </pre></code>
  */
+
 public class UrlGenerator {
     private static final String TAG = UrlGenerator.class.getSimpleName();
 
@@ -43,7 +46,6 @@ public class UrlGenerator {
     private String url = baseUrl;
 
     /**
-     *
      *
      * @param builder
      */
@@ -69,7 +71,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @return
      */
     public String getBaseUrl() {
@@ -77,7 +78,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @return
      */
@@ -87,7 +87,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @return
      */
     public String getDestination() {
@@ -95,7 +94,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @return
      */
@@ -105,7 +103,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @return
      */
     public String getArrivalTime() {
@@ -113,7 +110,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @return
      */
@@ -123,7 +119,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @return
      */
     public String getTravelMode() {
@@ -131,7 +126,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @return
      */
@@ -141,7 +135,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @return
      */
     public boolean avoidHighways() {
@@ -149,7 +142,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @param origin
      */
@@ -159,7 +151,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @param destination
      */
     private void addDestination(String destination) {
@@ -168,7 +159,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @param apiKey
      */
     private void addApiKey(String apiKey) {
@@ -176,7 +166,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @param arrivalTime
      */
@@ -187,7 +176,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @param departureTime
      */
     private void addDepartureTime(String departureTime) {
@@ -196,7 +184,6 @@ public class UrlGenerator {
     }
 
     /**
-     *
      *
      * @param travelMode
      */
@@ -207,7 +194,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @param avoidToll
      */
     private void addAvoidToll(boolean avoidToll) {
@@ -217,7 +203,6 @@ public class UrlGenerator {
 
     /**
      *
-     *
      * @param avoidHighways
      */
     private void addAvoidHighways(boolean avoidHighways) {
@@ -225,11 +210,19 @@ public class UrlGenerator {
             this.url += "avoid=highways";
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return url;
     }
 
+    /**
+     *
+     * @return
+     */
     public URL getUrl() {
         try {
             return new URL(url);
@@ -239,9 +232,7 @@ public class UrlGenerator {
         return null;
     }
 
-    /**
-     * Builds a URL and instantiates it with <code>build()</code>.
-     */
+    /** Builds a URL and instantiates it with {@link #build()}. */
     public static class UrlBuilder {
         private static final String SUB_TAG = UrlBuilder.class.getSimpleName();
 
@@ -256,13 +247,11 @@ public class UrlGenerator {
 
         /**
          * Initializes required parameters for the URL.
-         *
          * @param origin
          * @param destination
          * @param apiKey
-         * @throws RequiredParamMissingException
-         *         Google Maps API required that we have an origin, destination, and API key in the
-         *         HTTP request, at the least.
+         * @throws RequiredParamMissingException Google Maps API required that we have an origin,
+         * destination, and API key in the HTTP request, at the least.
          */
         public UrlBuilder(String origin, String destination, String apiKey) {
             try {
@@ -280,7 +269,6 @@ public class UrlGenerator {
 
         /**
          *
-         *
          * @param arrivalTime
          * @return
          */
@@ -289,13 +277,17 @@ public class UrlGenerator {
             return this;
         }
 
+        /**
+         *
+         * @param arrivalTime
+         * @return
+         */
         public UrlBuilder arrivalTime(long arrivalTime) {
             this.arrivalTime = String.valueOf(arrivalTime);
             return this;
         }
 
         /**
-         *
          *
          * @param departureTime
          * @return
@@ -305,13 +297,17 @@ public class UrlGenerator {
             return this;
         }
 
+        /**
+         *
+         * @param departureTime
+         * @return
+         */
         public UrlBuilder departureTime(long departureTime) {
             this.departureTime = String.valueOf(departureTime);
             return this;
         }
 
         /**
-         *
          *
          * @param travelMode
          * @return
@@ -327,7 +323,6 @@ public class UrlGenerator {
 
         /**
          *
-         *
          * @return
          */
         public UrlBuilder avoidToll() {
@@ -336,7 +331,6 @@ public class UrlGenerator {
         }
 
         /**
-         *
          *
          * @return
          */
@@ -347,7 +341,6 @@ public class UrlGenerator {
 
         /**
          *
-         *
          * @return A built UrlGenerator class.
          */
         public UrlGenerator build() {
@@ -356,7 +349,6 @@ public class UrlGenerator {
 
         /**
          * Turns time into unix time format, appropriate for Google Maps API.
-         *
          * @param time
          * @return
          */
@@ -367,7 +359,6 @@ public class UrlGenerator {
 
         /**
          * Convenience function to check whether the mode string is valid.
-         *
          * @param mode The intended mode of travel.
          * @return whether the intended mode of travel is valid for Google Maps API.
          */

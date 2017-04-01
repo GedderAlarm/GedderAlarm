@@ -18,25 +18,23 @@ import com.gedder.gedderalarm.R;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
 
 /**
- * Provides a custom ArrayAdapter for the AlarmClock class.
- * Can be used, for example, to populate ListViews with alarm clocks.
+ * <p>Provides a custom ArrayAdapter for the AlarmClock class.</p>
+ *
+ * <p>Can be used, for example, to populate ListViews with alarm clocks.</p>
  */
 
 public class AlarmClocksCursorAdapter extends CursorAdapter {
     private static final String TAG = AlarmClocksCursorAdapter.class.getSimpleName();
 
-    /** {@inheritDoc} */
     public AlarmClocksCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
     }
 
-    /** {@inheritDoc} */
     @Override
     public View newView(final Context context, final Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.item_alarm_clock, parent, false);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Get our views; we will populate them.

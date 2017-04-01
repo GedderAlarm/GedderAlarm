@@ -16,13 +16,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Class to request data from Google Maps Directions API
- *  Example usage:
- *  In MainActivity.java
- *      // Use urlGenerator class to create/encode url.
- *      url.build();
- *      String mainTest = new HTTPRequest().execute(url).get();
- *      JsonParser test = new JsonParser(mainTest);
+ * <p>Class to request data from Google Maps Directions API.</p>
+ * <p>Example usage:</p>
+ *
+ * <code><pre>
+ * // Use urlGenerator class to create/encode url.
+ * url.build();
+ * String mainTest = new HTTPRequest().execute(url).get();
+ * JsonParser test = new JsonParser(mainTest);
+ * </pre></code>
  */
 
 public class HttpRequest extends AsyncTask<String, String, String> {

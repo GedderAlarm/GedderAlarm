@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * The engine goes through the following pipeline:
+ * <p>The engine goes through the following pipeline:</p>
  *
  * <ol>
  *     <li>Generate a URL to query Google Maps API using (Origin, Destination, Arrival Time,
@@ -25,17 +25,20 @@ import java.util.concurrent.ExecutionException;
  *     <li>Query Google Maps API using the generated URL.</li>
  *     <li>Store the response JSON and parse it.</li>
  *     <li>Send back relevant data.</li>
- * </ol>
+ * </ol><br>
  *
- * It essentially serves as a service to anything looking to utilize this flow.
+ * <p>It essentially serves as a service to anything looking to utilize this flow.</p>
  */
 
 public final class GedderEngine {
     private static final String TAG = GedderEngine.class.getSimpleName();
 
+    /**  */
     public static final String RESULT_DURATION = "__GEDDER_ENGINE_RESULT_DURATION__";
+    /**  */
     public static final String RESULT_DURATION_IN_TRAFFIC =
             "__GEDDER_ENGINE_RESULT_DURATION_IN_TRAFFIC__";
+    /**  */
     public static final String RESULT_WARNINGS = "__GEDDER_ENGINE_WARNINGS__";
 
     // We get this in some secret way. For development, just keep a local API key in a file that
@@ -45,7 +48,7 @@ public final class GedderEngine {
     private GedderEngine() {}
 
     /**
-     * Flows through the following pipeline once:
+     * <p>Flows through the following pipeline once:</p>
      *
      * <ol>
      *     <li>Generate URL.</li>

@@ -86,9 +86,7 @@ public class AlarmClock implements Parcelable {
     private boolean mAlarmSet;
     private boolean mGedderSet;
 
-    /**
-     * Initializes an unset alarm clock with default parameters.
-     */
+    /** Initializes an unset alarm clock with default parameters. */
     public AlarmClock() {
         Calendar calendar = Calendar.getInstance();
 
@@ -555,6 +553,10 @@ public class AlarmClock implements Parcelable {
         return calendar;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getArrivalTimeMillis() {
         return mArrivalTime;
     }
@@ -570,6 +572,10 @@ public class AlarmClock implements Parcelable {
         return calendar;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getPrepTimeMillis() {
         return mPrepTime;
     }
@@ -586,6 +592,10 @@ public class AlarmClock implements Parcelable {
         return calendar;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getUpperBoundTimeMillis() {
         return mUpperBoundTime;
     }

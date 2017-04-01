@@ -30,16 +30,16 @@ import java.util.Calendar;
 import java.util.EnumSet;
 
 /**
- * Pulled from Google source code. Their comments:
+ * <p>Pulled from Google source code. Their comments:</p>
  *
- * Days of week code as a single int.
- * 0x00: no day
- * 0x01: Monday
- * 0x02: Tuesday
- * 0x04: Wednesday
- * 0x08: Thursday
- * 0x10: Friday
- * 0x20: Saturday
+ * Days of week code as a single int.<br>
+ * 0x00: no day<br>
+ * 0x01: Monday<br>
+ * 0x02: Tuesday<br>
+ * 0x04: Wednesday<br>
+ * 0x08: Thursday<br>
+ * 0x10: Friday<br>
+ * 0x20: Saturday<br>
  * 0x40: Sunday
  */
 
