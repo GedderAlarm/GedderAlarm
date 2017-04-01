@@ -10,6 +10,7 @@ import java.util.Calendar;
 /**
  * Contains general time-related utilities.
  */
+
 public final class TimeUtilities {
     private static final String TAG = TimeUtilities.class.getSimpleName();
 

@@ -5,7 +5,6 @@
 
 package com.gedder.gedderalarm;
 
-
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,6 +25,7 @@ import static android.content.Context.ALARM_SERVICE;
  *
  * All modified/added functionality is documented.
  */
+
 public final class GedderAlarmManager {
     private static final String TAG = GedderAlarmManager.class.getSimpleName();
 

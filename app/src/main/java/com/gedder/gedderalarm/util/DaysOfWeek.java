@@ -42,9 +42,10 @@ import java.util.EnumSet;
  * 0x20: Saturday
  * 0x40: Sunday
  */
+
 public final class DaysOfWeek {
 
-    /**
+    /*
      * USER: mslm
      * DATE: 3/27/17
      */
@@ -91,7 +92,7 @@ public final class DaysOfWeek {
     // Bitmask of all repeating days
     private int mDays;
 
-    /**
+    /*
      * USER: mslm
      * DATE: 3/28/17
      */
@@ -103,7 +104,7 @@ public final class DaysOfWeek {
         mDays = days;
     }
 
-    /**
+    /*
      * MODIFIED BY: mslm
      */
     public String toString(boolean showNever) {

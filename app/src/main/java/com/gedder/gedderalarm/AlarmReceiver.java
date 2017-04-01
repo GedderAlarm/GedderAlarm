@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.gedder.gedderalarm.util.Log;
 
+/**
+ *
+ */
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String TAG = AlarmReceiver.class.getSimpleName();

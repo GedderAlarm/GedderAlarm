@@ -17,10 +17,10 @@ import com.gedder.gedderalarm.model.AlarmClock;
 import java.util.Calendar;
 import java.util.UUID;
 
-
 /**
  * A SQLite wrapper class to help in creating, reading, updating, and deleting Alarm Clocks.
  */
+
 public class AlarmClockDBHelper extends SQLiteOpenHelper {
     private static final String TAG = AlarmClockDBHelper.class.getSimpleName();
     private static final int DB_VERSION = 1;

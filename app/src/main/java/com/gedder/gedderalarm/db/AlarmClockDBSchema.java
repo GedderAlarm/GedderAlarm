@@ -5,14 +5,16 @@
 
 package com.gedder.gedderalarm.db;
 
-
 /**
  * Contains the schema for our application's database.
  */
+
 public class AlarmClockDBSchema {
+
     /**
      * Contains data for each alarm clock.
      */
+
     public static final class AlarmClockTable {
         public static final String TABLE_NAME = "alarmClocks";
 

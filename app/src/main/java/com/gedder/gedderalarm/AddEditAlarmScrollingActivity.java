@@ -11,10 +11,10 @@ import android.view.View;
 
 import com.gedder.gedderalarm.model.AlarmClock;
 
-
 /**
  * The activity where the user edits an alarm, new or old.
  */
+
 public class AddEditAlarmScrollingActivity extends AppCompatActivity {
     private static final String TAG = AddEditAlarmScrollingActivity.class.getSimpleName();
 
@@ -29,10 +29,18 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity {
         // Programmatically change settings of views to match this alarm clock's settings.
     }
 
+    /**
+     *
+     * @param view
+     */
     public void cancel(View view) {
         finish();
     }
 
+    /**
+     *
+     * @param view
+     */
     public void done(View view) {
         finish();
     }

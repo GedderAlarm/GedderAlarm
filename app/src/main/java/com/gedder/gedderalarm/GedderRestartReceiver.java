@@ -16,6 +16,9 @@ import com.gedder.gedderalarm.util.Log;
 
 import static android.content.Context.ALARM_SERVICE;
 
+/**
+ *
+ */
 
 public class GedderRestartReceiver extends BroadcastReceiver {
     private static final String TAG = GedderRestartReceiver.class.getSimpleName();

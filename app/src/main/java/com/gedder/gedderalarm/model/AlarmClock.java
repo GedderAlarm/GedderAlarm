@@ -25,6 +25,7 @@ import java.util.UUID;
  * An alarm clock class encapsulating all data for both a typical alarm clock and the specialized
  * Gedder alarm clock.
  */
+
 public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
@@ -161,6 +162,20 @@ public class AlarmClock implements Parcelable {
         mGedderSet = alarmClock.mGedderSet;
     }
 
+    /**
+     * A copy constructor with explicit variables.
+     * @param origin            The place the user is leaving from.
+     * @param destination       The place the user wants to get to.
+     * @param repeatDays        The days this alarm clock will repeat.
+     * @param alarmTime         The time for which this alarm is set (or going to be set for).
+     * @param arrivalTime       The time the user needs to get to their destination.
+     * @param prepHour          The hour portion of the time it takes the user to get prepared for
+     *                          travel after the alarm goes off.
+     * @param prepMinute        The minute portion of the time it takes the user to get prepared for
+     *                          travel after the alarm goes off.
+     * @param upperBoundTime    The user selected alarm time. If Gedder is activated, this may
+     *                          differ from the actual alarm time.
+     */
     public AlarmClock(String origin, String destination,
                       DaysOfWeek repeatDays,
                       Calendar alarmTime,
@@ -178,6 +193,28 @@ public class AlarmClock implements Parcelable {
         mGedderSet = DEFAULT_GEDDER_SET;
     }
 
+    /**
+     * A copy constructor with <em>very</em> explicit values.
+     * @param origin            The place the user is leaving from.
+     * @param destination       The place the user wants to get to.
+     * @param repeatDays        The days this alarm clock will repeat.
+     * @param alarmDay          The day portion of the time for which this alarm is to be set.
+     * @param alarmHour         The hour portion of the time for which this alarm is to be set.
+     * @param alarmMinute       The minute portion of the time for which this alarm is to be set.
+     * @param arrivalDay        The day portion of the time the user needs to get to their
+     *                          destination.
+     * @param arrivalHour       The hour portion of the time the user needs to get to their
+     *                          destination.
+     * @param arrivalMinute     The minute portion of the time the user needs to get to their
+     *                          destination.
+     * @param prepHour          The hour portion of the time it takes the user to get prepared for
+     *                          travel after the alarm goes off.
+     * @param prepMinute        The minute portion of the time it takes the user to get prepared for
+     *                          travel after the alarm goes off.
+     * @param upperBoundDay     The day portion of the user selected alarm time.
+     * @param upperBoundHour    The hour portion of the user selected alarm time.
+     * @param upperBoundMinute  The minute portion of the user selected alarm time.
+     */
     public AlarmClock(String origin, String destination,
                       DaysOfWeek repeatDays,
                       DaysOfWeek.DAY alarmDay, int alarmHour, int alarmMinute,
@@ -206,9 +243,7 @@ public class AlarmClock implements Parcelable {
         mGedderSet          = DEFAULT_GEDDER_SET;
     }
 
-    /**
-     * Defaults any current settings and turns off any running alarms.
-     */
+    /** Defaults any current settings and turns off any running alarms. */
     public void defaultAlarmSettings() {
         Calendar calendar = Calendar.getInstance();
 
@@ -246,8 +281,9 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param origin
+     * Sets origin for the purpose of the Gedder alarm.
+     * @param origin The origin to set to. Must be non-null.
+     * @throws IllegalArgumentException If origin is null.
      */
     public void setOrigin(String origin) {
         if (origin == null)
@@ -256,8 +292,9 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param destination
+     * Sets destination for the purpose of the Gedder alarm.
+     * @param destination The destination to set to. Must be non-null.
+     * @throws IllegalArgumentException If destination is null.
      */
     public void setDestination(String destination) {
         if (destination == null)
@@ -266,8 +303,11 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param future
+     * Sets the internal alarm time according to the Calendar's {@link Calendar#DAY_OF_WEEK},
+     * {@link Calendar#HOUR}, and {@link Calendar#MINUTE} keys.
+     * @param future A calendar that must have valid values for the keys
+     *               {@link Calendar#DAY_OF_WEEK}, {@link Calendar#HOUR}, and
+     *               {@link Calendar#MINUTE}.
      */
     public void setAlarmTime(Calendar future) {
         mAlarmTime = TimeUtilities.getMillisUntil(future);
@@ -277,15 +317,25 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param day
-     * @param hour
-     * @param minute
+     * Works the same as its public counterpart, {@link #setAlarmTime(Calendar)}, but uses explicit
+     * inputs.
+     * @param day       The day to set the internal alarm to.
+     * @param hour      The hour to set the internal alarm to.
+     * @param minute    The minute to set the internal alarm to.
+     * @see #setAlarmTime(Calendar)
      */
     public void setAlarmTime(DaysOfWeek.DAY day, int hour, int minute) {
         setAlarmTime(day.getInt(), hour, minute);
     }
 
+    /**
+     * Works the same as its public counterpart, {@link #setAlarmTime(Calendar)}, but uses explicit
+     * inputs.
+     * @param day       The day to set the internal alarm to.
+     * @param hour      The hour to set the internal alarm to.
+     * @param minute    The minute to set the internal alarm to.
+     * @see #setAlarmTime(Calendar)
+     */
     private void setAlarmTime(int day, int hour, int minute) {
         mAlarmTime = TimeUtilities.getMillisUntil(day, hour, minute);
         mAlarmDay = day;
@@ -294,8 +344,11 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param future
+     * Sets the arrival time according to the Calendar's {@link Calendar#DAY_OF_WEEK},
+     * {@link Calendar#HOUR}, and {@link Calendar#MINUTE} keys.
+     * @param future A calendar that must have valid values for the keys
+     *               {@link Calendar#DAY_OF_WEEK}, {@link Calendar#HOUR}, and
+     *               {@link Calendar#MINUTE}.
      */
     public void setArrivalTime(Calendar future) {
         mArrivalTime = TimeUtilities.getMillisUntil(future);
@@ -305,15 +358,25 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param day
-     * @param hour
-     * @param minute
+     * Works the same as its public counterpart, {@link #setArrivalTime(Calendar)}, but uses explicit
+     * inputs.
+     * @param day       The day to set the arrival time to.
+     * @param hour      The hour to set the arrival time to.
+     * @param minute    The minute to set the arrival time to.
+     * @see #setArrivalTime(Calendar)
      */
     public void setArrivalTime(DaysOfWeek.DAY day, int hour, int minute) {
         setArrivalTime(day.getInt(), hour, minute);
     }
 
+    /**
+     * Works the same as its public counterpart, {@link #setArrivalTime(Calendar)}, but uses explicit
+     * inputs.
+     * @param day       The day to set the arrival time to.
+     * @param hour      The hour to set the arrival time to.
+     * @param minute    The minute to set the arrival time to.
+     * @see #setArrivalTime(Calendar)
+     */
     private void setArrivalTime(int day, int hour, int minute) {
         mArrivalTime = TimeUtilities.getMillisUntil(day, hour, minute);
         mArrivalDay = day;
@@ -322,9 +385,9 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param hour
-     * @param minute
+     * Sets the time it takes to get prepared for departure after the alarm triggers.
+     * @param hour      The hours it takes to get prepared.
+     * @param minute    The minutes it takes to get prepared.
      */
     public void setPrepTime(int hour, int minute) {
         mPrepTime = TimeUtilities.getMillis(hour, minute);
@@ -333,8 +396,11 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param future
+     * Sets the user's selected time according to the Calendar's {@link Calendar#DAY_OF_WEEK},
+     * {@link Calendar#HOUR}, and {@link Calendar#MINUTE} keys.
+     * @param future A calendar that must have valid values for the keys
+     *               {@link Calendar#DAY_OF_WEEK}, {@link Calendar#HOUR}, and
+     *               {@link Calendar#MINUTE}.
      */
     public void setUpperBoundTime(Calendar future) {
         mUpperBoundTime = TimeUtilities.getMillisUntil(future);
@@ -344,15 +410,25 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @param day
-     * @param hour
-     * @param minute
+     * Works the same as its public counterpart, {@link #setUpperBoundTime(Calendar)}, but uses
+     * explicit inputs.
+     * @param day       The day the user selects for the alarm.
+     * @param hour      The hour the user selects for the alarm.
+     * @param minute    The minute the user selects for the alarm.
+     * @see #setUpperBoundTime(Calendar)
      */
     public void setUpperBoundTime(DaysOfWeek.DAY day, int hour, int minute) {
         setUpperBoundTime(day.getInt(), hour, minute);
     }
 
+    /**
+     * Works the same as its public counterpart, {@link #setUpperBoundTime(Calendar)}, but uses
+     * explicit inputs.
+     * @param day       The day the user selects for the alarm.
+     * @param hour      The hour the user selects for the alarm.
+     * @param minute    The minute the user selects for the alarm.
+     * @see #setUpperBoundTime(Calendar)
+     */
     private void setUpperBoundTime(int day, int hour, int minute) {
         mUpperBoundTime = TimeUtilities.getMillisUntil(day, hour, minute);
         mUpperBoundDay = day;
@@ -361,11 +437,13 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     * Sets a new alarm clock through intents to the Android OS.
-     * com.gedder.gedderalarm.AlarmReceiver will receive this intent.
+     * Sets a new alarm clock through intents to the Android OS. {@link AlarmReceiver} will receive
+     * this intent.
+     *
+     * If the Gedder alarm is also required, tells the {@link GedderAlarmManager} to set up the
+     * Gedder services for this particular alarm.
      */
     public void turnOn() {
-        // TODO: Adjust for GedderEngine.
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
@@ -389,8 +467,10 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     * Cancels any alarm associated with this alarm clock instance.
-     * NOTE: Does NOT reset alarm data; only cancels the alarm intent.
+     * Cancels any alarm associated with this alarm clock instance. Also terminates any associations
+     * with any Gedder services.
+     *
+     * <em><strong>NOTE:</strong></em> Does <em>not</em> reset alarm data; only cancels the alarm.
      */
     public void turnOff() {
         Intent alarmIntent =
@@ -412,40 +492,40 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @return
+     * Gets the universally unique identification associated with this particular alarm clock.
+     * @return The universally unique identifcation for this alarm clock.
      */
     public UUID getUUID() {
         return mUuid;
     }
 
     /**
-     *
-     * @return
+     * Gets the place the user is leaving from.
+     * @return The place the user is leaving from.
      */
     public String getOrigin() {
         return mOrigin;
     }
 
     /**
-     *
-     * @return
+     * Gets the place the user is going to.
+     * @return The place the user is going to.
      */
     public String getDestination() {
         return mDestination;
     }
 
     /**
-     *
-     * @return
+     * Gets the days that this alarm is set to repeat on.
+     * @return The days this alarm is set to repeat on.
      */
     public DaysOfWeek getRepeatDays() {
         return mRepeatDays;
     }
 
     /**
-     * Gets the current intended alarm clock time in milliseconds since the "epoch".
-     * @return The current time set for the alarm in milliseconds since the epoch.
+     * Gets the internal alarm time for this alarm clock.
+     * @return The internal alarm time.
      */
     public Calendar getAlarmTime() {
         Calendar calendar = Calendar.getInstance();
@@ -455,6 +535,10 @@ public class AlarmClock implements Parcelable {
         return calendar;
     }
 
+    /**
+     * Gets the internal alarm time for this alarm clock in milliseconds since the "epoch".
+     * @return The internal alarm time in milliseconds since the "epoch".
+     */
     public long getAlarmTimeMillis() {
         return mAlarmTime;
     }

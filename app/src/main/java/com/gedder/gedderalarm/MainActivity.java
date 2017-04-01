@@ -17,6 +17,9 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 
+/**
+ *
+ */
 
 public class MainActivity extends AppCompatActivity {
     // TODO: Stop handling UI in this activity. Move it to a view class in the view package.
@@ -32,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
     private Cursor mAlarmClockCursor;
 
-    /**
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
