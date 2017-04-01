@@ -71,6 +71,7 @@ public final class GedderAlarmManager {
         intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_ID, id);
         LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
                 .sendBroadcast(intent);
     }
@@ -80,7 +81,8 @@ public final class GedderAlarmManager {
      * @param gedderData
      */
     public static void cancelGedder(Bundle gedderData) {
-
+        AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
+        int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
     }
 
     public static void cancel(PendingIntent operation) {
