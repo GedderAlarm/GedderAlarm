@@ -228,8 +228,7 @@ public final class GedderAlarmManager {
     }
 
     /**
-     * Copy of {@link
-     * AlarmManager#setWindow(int, long, long, String, AlarmManager.OnAlarmListener, Handler)}.
+     * Copy of {@link AlarmManager#setWindow(int, long, long, String, AlarmManager.OnAlarmListener, Handler)}.
      * @see AlarmManager#setWindow(int, long, long, String, AlarmManager.OnAlarmListener, Handler)}
      */
     @TargetApi(24)
