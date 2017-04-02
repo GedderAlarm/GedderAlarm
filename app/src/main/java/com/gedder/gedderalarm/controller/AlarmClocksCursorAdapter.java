@@ -17,11 +17,12 @@ import android.widget.TextView;
 import com.gedder.gedderalarm.R;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
 
-
 /**
- * Provides a custom ArrayAdapter for the AlarmClock class.
- * Can be used, for example, to populate ListViews with alarm clocks.
+ * <p>Provides a custom ArrayAdapter for the AlarmClock class.</p>
+ *
+ * <p>Can be used, for example, to populate ListViews with alarm clocks.</p>
  */
+
 public class AlarmClocksCursorAdapter extends CursorAdapter {
     private static final String TAG = AlarmClocksCursorAdapter.class.getSimpleName();
 

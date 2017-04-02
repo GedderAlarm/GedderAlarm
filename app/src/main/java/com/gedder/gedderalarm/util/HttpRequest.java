@@ -16,27 +16,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Class to request data from Google Maps Directions API
- *  Example usage:
- *  In MainActivity.java
- *      // Use urlGenerator class to create/encode url.
- *      url.build();
- *      String mainTest = new HTTPRequest().execute(url).get();
- *      JsonParser test = new JsonParser(mainTest);
+ * <p>Class to request data from Google Maps Directions API.</p>
+ * <p>Example usage:</p>
+ *
+ * <code><pre>
+ * // Use urlGenerator class to create/encode url.
+ * url.build();
+ * String mainTest = new HTTPRequest().execute(url).get();
+ * JsonParser test = new JsonParser(mainTest);
+ * </pre></code>
  */
+
 public class HttpRequest extends AsyncTask<String, String, String> {
     private static final String TAG = HttpRequest.class.getSimpleName();
 
     private HttpURLConnection mUrlConnection = null;
 
-    // TEST
-    // Need API key. Get your own on the Google Cloud Platform.
-    // https://maps.googleapis.com/maps/api/directions/json?origin=Yonkers,NY&destination=Bronx,NY&key=MY_KEY
-
     /**
-     * Sends a request to the Google website
-     * @param urlTest url to be sent out
-     * @return a string builder of jsonResults
+     * Sends a request to the Google website.
+     * @param urlTest Url to be sent out.
+     * @return A string builder of jsonResults.
      */
     protected String doInBackground(String... urlTest) {
 
@@ -74,8 +73,8 @@ public class HttpRequest extends AsyncTask<String, String, String> {
     }
 
     /**
-     * Sets a String to URL, exception is thrown if not an url
-     * @param url url to be sent out
+     * Sets a String to URL, exception is thrown if not an url.
+     * @param url Url to be sent out.
      */
     private void setURL(String url) {
         try {

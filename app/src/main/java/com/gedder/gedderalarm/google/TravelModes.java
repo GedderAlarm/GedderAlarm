@@ -6,9 +6,7 @@
 package com.gedder.gedderalarm.google;
 
 
-/**
- * Contains the available travel modes in Google Maps API.
- */
+/** Contains the available travel modes in Google Maps API. */
 public enum TravelModes {
     bus,
     subway,

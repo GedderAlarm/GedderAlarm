@@ -8,10 +8,10 @@ package com.gedder.gedderalarm;
 import android.app.Application;
 import android.content.Context;
 
-
 /**
- * Used solely as a way to get application context for alarms.
+ * <p>Used solely as a way to get application context for alarms.</p>
  */
+
 public class GedderAlarmApplication extends Application {
     private static final String TAG = GedderAlarmApplication.class.getSimpleName();
 

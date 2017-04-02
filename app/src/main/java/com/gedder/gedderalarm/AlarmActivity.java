@@ -16,6 +16,9 @@ import android.widget.Button;
 
 import com.gedder.gedderalarm.util.Log;
 
+/**
+ *
+ */
 
 public class AlarmActivity extends AppCompatActivity {
     private static final String TAG = AlarmActivity.class.getSimpleName();

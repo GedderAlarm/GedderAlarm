@@ -5,20 +5,21 @@
 
 package com.gedder.gedderalarm.google;
 
-import java.util.ArrayList;
+import com.gedder.gedderalarm.util.Log;
 
-import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.gedder.gedderalarm.util.Log;
+import java.util.ArrayList;
 
 
 /**
- * Class to parse the JSON received from Google Maps API.
- * <p>
- * Example usage:
- * <p>
+ * <p>Class to parse the JSON received from Google Maps API.</p>
+ *
+ * <p>Example usage:</p>
+ *
+ * <code><pre>
  * public String json = "put json string here";
  * public JsonParser jsonParser = new JsonParser(json);
  * private int duration = jsonParser.duration();
@@ -26,6 +27,7 @@ import com.gedder.gedderalarm.util.Log;
  * private String destination = jsonParser.destination();
  * private String route2_origin = jsonParser.origin(1);
  * private String route2_destination = jsonParser.destination(1);
+ * </pre></code>
  */
 public class JsonParser {
     // For mslm:
@@ -148,7 +150,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][0]['legs'][0]['duration_in_traffic']['value'].
-     * Only exists if the request specified a traffic model.
+     * <p>Only exists if the request specified a traffic model.</p>
      * @return duration in traffic in seconds.
      */
     public int durationInTraffic() {
@@ -157,7 +159,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route]['legs'][0]['duration_in_traffic']['value'].
-     * Only exists if the request specified a traffic model.
+     * <p>Only exists if the request specified a traffic model.</p>
      * @param route which route, if multiple. Starts from 0.
      * @return duration in traffic in seconds.
      */
@@ -167,7 +169,7 @@ public class JsonParser {
 
     /**
      * Grabs json['routes'][route]['legs'][leg]['duration_in_traffic']['value'].
-     * Only exists if the request specified a traffic model.
+     * <p>Only exists if the request specified a traffic model.</p>
      * @param route which route, if multiple. Starts from 0.
      * @param leg   which leg, if multiple. Starts from 0.
      * @return duration in traffic in seconds.
