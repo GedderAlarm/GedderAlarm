@@ -6,6 +6,8 @@ import android.view.View;
 import android.text.Html;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.gedder.gedderalarm.util.Log;
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +31,20 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks {
     private static final String TAG = AddEditAlarmScrollingActivity.class.getSimpleName();
 
+    private String mOriginAddressString;
+    private String mOriginIdString;
+    private String mDestinationAddressString;
+    private String mDestinationIdString;
+    private String mArrivalTimeString;
+    private String mPrepTimeString;
+    private int mHour;
+    private int mMinute;
+
+    //Variables for time-picker and textviews:
+    TimePicker mAlarmTimePicker;
+    EditText mArivalTimeEditText;
+    EditText mPrepTimeEditText;
+
     //Variables for auto-complete text boxes
     private static final String LOG_TAG = "AddEditAlarmScrollingActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
@@ -46,6 +62,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         // Get the alarm clock in question.
         AlarmClock alarmClock = getIntent().getParcelableExtra(MainActivity.PARCEL_ALARM_CLOCK);
         // Programmatically change settings of views to match this alarm clock's settings.
+
+        //Initialize variables for textviews and timepicker
+        mAlarmTimePicker = (TimePicker) findViewById(R.id
+                .generalAlarmTimePicker);
+        mArivalTimeEditText = (EditText) findViewById(R.id
+                .editAlarm_ArrivalTimePickerMonologBox);
+        mPrepTimeEditText = (EditText) findViewById(R.id
+                .editAlarm_PrepTimeTextBox);
 
         //Initialize auto-complete textviews
         mGoogleApiClient = new GoogleApiClient.Builder(AddEditAlarmScrollingActivity.this)
@@ -91,11 +115,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             // Selecting the first object buffer.
             final Place place = places.get(0);
 
-            //DO STUFF WITH THESE VARIABLES
-            //Yes I know these are depreciated, I will fix it later after
-            //we get things working
-            String mOriginAddressString = Html.fromHtml(place.getAddress() + "") + "";
-            String mOriginIdString = Html.fromHtml(place.getId() + "") + "";
+            //need to check API of device here, will do later
+            mOriginAddressString = Html.fromHtml(place.getAddress() + "") + "";
+            mOriginIdString = Html.fromHtml(place.getId() + "") + "";
 
             //THIS IS FOR TESTING TO MAKE SURE PARCING CORRECTLY
             Toast.makeText(getBaseContext(),
@@ -128,11 +150,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             // Selecting the first object buffer.
             final Place place = places.get(0);
 
-            //DO STUFF WITH THESE VARIABLES
-            //Yes I know these are depreciated, I will fix it later after
-            //we get things working
-            String mDestinationAddressString = Html.fromHtml(place.getAddress() + "") + "";
-            String mDestinationIdString = Html.fromHtml(place.getId() + "") + "";
+            //need to check API of device here, will do later
+            mDestinationAddressString = Html.fromHtml(place.getAddress() + "") + "";
+            mDestinationIdString = Html.fromHtml(place.getId() + "") + "";
 
             //THIS IS FOR TESTING TO MAKE SURE PARCING CORRECTLY
             Toast.makeText(getBaseContext(),
@@ -170,6 +190,21 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     }
 
     public void done(View view) {
+        mPrepTimeString = mPrepTimeEditText.getText() + "";
+        Toast.makeText(this, "Prep time: " + mPrepTimeString, Toast.LENGTH_SHORT).show();
+        mArrivalTimeString = mArivalTimeEditText.getText() + "";
+        Toast.makeText(this, "Arrival time: " + mArrivalTimeString, Toast.LENGTH_SHORT).show();
+        //need to check API of device here, will do later
+        mHour = mAlarmTimePicker.getCurrentHour();
+        mMinute = mAlarmTimePicker.getCurrentMinute();
+        String temp_for_toast = "Hour: " + Integer.toString(mHour) + "| Minute: " + Integer.toString(mMinute);
+        Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+        if (mOriginAddressString != null) {
+            Toast.makeText(this, "Origin: " + mOriginAddressString, Toast.LENGTH_SHORT).show();
+        }
+        if (mDestinationAddressString != null) {
+            Toast.makeText(this, "Destination: " + mDestinationAddressString, Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
 }
