@@ -38,7 +38,12 @@
         <receiver
             android:name=".AlarmReceiver"
             android:process=":remote">
-
+        </receiver>
+        <receiver
+            android:name=".GedderReceiver"
+            android:enabled="true"
+            android:process=":remote"
+            android:exported="false">
         </receiver>
         <receiver
             android:name=".GedderRestartReceiver"
