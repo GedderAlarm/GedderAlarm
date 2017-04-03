@@ -170,8 +170,9 @@ public class UrlGenerator {
      * @param arrivalTime
      */
     private void addArrivalTime(String arrivalTime) {
-        if (arrivalTime != null)
+        if (arrivalTime != null) {
             this.url += "arrival_time=" + arrivalTime;
+        }
     }
 
     /**
@@ -179,8 +180,9 @@ public class UrlGenerator {
      * @param departureTime
      */
     private void addDepartureTime(String departureTime) {
-        if (departureTime != null)
+        if (departureTime != null) {
             this.url += "departure_time=" + departureTime;
+        }
     }
 
     /**
@@ -188,8 +190,9 @@ public class UrlGenerator {
      * @param travelMode
      */
     private void addTravelMode(String travelMode) {
-        if (travelMode != null)
+        if (travelMode != null) {
             this.url += "mode=" + travelMode;
+        }
     }
 
     /**
@@ -197,8 +200,9 @@ public class UrlGenerator {
      * @param avoidToll
      */
     private void addAvoidToll(boolean avoidToll) {
-        if (avoidToll)
+        if (avoidToll) {
             this.url += "avoid=tolls";
+        }
     }
 
     /**
@@ -206,8 +210,9 @@ public class UrlGenerator {
      * @param avoidHighways
      */
     private void addAvoidHighways(boolean avoidHighways) {
-        if (avoidHighways)
+        if (avoidHighways) {
             this.url += "avoid=highways";
+        }
     }
 
     /**
@@ -238,7 +243,7 @@ public class UrlGenerator {
 
         private String origin;              // required
         private String destination;         // required
-        private final String apiKey;        // required
+        private String apiKey;              // required
         private String arrivalTime;         // optional
         private String departureTime;       // optional
         private String travelMode;          // optional
@@ -256,8 +261,9 @@ public class UrlGenerator {
         public UrlBuilder(String origin, String destination, String apiKey) {
             try {
                 if (origin == null || destination == null
-                        || origin.equals("") || destination.equals(""))
+                        || origin.equals("") || destination.equals("")) {
                     throw new RequiredParamMissingException();
+                }
                 this.origin = URLEncoder.encode(origin, "UTF-8");
                 this.destination = URLEncoder.encode(destination, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -313,9 +319,10 @@ public class UrlGenerator {
          * @return
          */
         public UrlBuilder travelMode(String travelMode) {
-            if (!isAvailableTravelMode(travelMode))
+            if (!isAvailableTravelMode(travelMode)) {
                 throw new IllegalArgumentException(
                         SUB_TAG + "::UrlBuilder::travelMode: travel mode not available.");
+            }
 
             this.travelMode = travelMode;
             return this;

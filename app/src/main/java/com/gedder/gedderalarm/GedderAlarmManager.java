@@ -45,12 +45,13 @@ public final class GedderAlarmManager {
      * @param operation         See AlarmManager documentation.
      */
     public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 23)
+        if (Build.VERSION.SDK_INT >= 23) {
             sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
-        else if (Build.VERSION.SDK_INT >= 19)
+        } else if (Build.VERSION.SDK_INT >= 19) {
             sAlarmManager.setExact(type, triggerAtMillis, operation);
-        else
+        } else {
             sAlarmManager.set(type, triggerAtMillis, operation);
+        }
     }
 
     /**
@@ -61,10 +62,11 @@ public final class GedderAlarmManager {
         AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
-        if (alarmClock == null || id == -1)
+        if (alarmClock == null || id == -1) {
             throw new IllegalArgumentException(
                     "alarmClock = " + alarmClock
-                    + "id = " + id);
+                          + "id = " + id);
+        }
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
         intent.putExtra(GedderReceiver.PARAM_ORIGIN, alarmClock.getOrigin());
@@ -101,8 +103,9 @@ public final class GedderAlarmManager {
      */
     @TargetApi(24)
     public static void cancel(AlarmManager.OnAlarmListener listener) {
-        if (Build.VERSION.SDK_INT >= 24)
+        if (Build.VERSION.SDK_INT >= 24) {
             sAlarmManager.cancel(listener);
+        }
     }
 
     /**
@@ -111,8 +114,9 @@ public final class GedderAlarmManager {
      */
     @TargetApi(21)
     public static AlarmManager.AlarmClockInfo getNextAlarmClock() {
-        if (Build.VERSION.SDK_INT >= 21)
+        if (Build.VERSION.SDK_INT >= 21) {
             return sAlarmManager.getNextAlarmClock();
+        }
         return null;
     }
 
@@ -131,8 +135,9 @@ public final class GedderAlarmManager {
     @TargetApi(24)
     public static void set(int type, long triggerAtMillis, String tag,
                     AlarmManager.OnAlarmListener listener, Handler targetHandler) {
-        if (Build.VERSION.SDK_INT >= 24)
+        if (Build.VERSION.SDK_INT >= 24) {
             sAlarmManager.set(type, triggerAtMillis, tag, listener, targetHandler);
+        }
     }
 
     /**
@@ -141,8 +146,9 @@ public final class GedderAlarmManager {
      */
     @TargetApi(21)
     public static void setAlarmClock(AlarmManager.AlarmClockInfo info, PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 21)
+        if (Build.VERSION.SDK_INT >= 21) {
             sAlarmManager.setAlarmClock(info, operation);
+        }
     }
 
     /**
@@ -152,8 +158,9 @@ public final class GedderAlarmManager {
     @TargetApi(23)
     public static void setAndAllowWhileIdle(int type, long triggerAtMillis,
                                             PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 23)
+        if (Build.VERSION.SDK_INT >= 23) {
             sAlarmManager.setAndAllowWhileIdle(type, triggerAtMillis, operation);
+        }
     }
 
     /**
@@ -172,8 +179,9 @@ public final class GedderAlarmManager {
     @TargetApi(24)
     public static void setExact(int type, long triggerAtMillis, String tag,
                          AlarmManager.OnAlarmListener listener, Handler targetHandler) {
-        if (Build.VERSION.SDK_INT >= 24)
+        if (Build.VERSION.SDK_INT >= 24) {
             sAlarmManager.setExact(type, triggerAtMillis, tag, listener, targetHandler);
+        }
     }
 
     /**
@@ -183,8 +191,9 @@ public final class GedderAlarmManager {
     @TargetApi(23)
     public static void setExactAndAllowWhileIdle(int type, long triggerAtMillis,
                                                  PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 23)
+        if (Build.VERSION.SDK_INT >= 23) {
             sAlarmManager.setAndAllowWhileIdle(type, triggerAtMillis, operation);
+        }
     }
 
     /**
@@ -238,8 +247,9 @@ public final class GedderAlarmManager {
     public static void setWindow(int type, long windowStartMillis, long windowLengthMillis,
                                  String tag, AlarmManager.OnAlarmListener listener,
                                  Handler targetHandler) {
-        if (Build.VERSION.SDK_INT >= 24)
+        if (Build.VERSION.SDK_INT >= 24) {
             sAlarmManager.setWindow(
                     type, windowStartMillis, windowLengthMillis, tag, listener, targetHandler);
+        }
     }
 }

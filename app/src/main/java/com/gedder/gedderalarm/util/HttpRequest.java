@@ -66,8 +66,9 @@ public class HttpRequest extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             // TODO: Handle exception.
         } finally {
-            if (mUrlConnection != null)
+            if (mUrlConnection != null) {
                 mUrlConnection.disconnect();
+            }
         }
         return jsonResults.toString();
     }

@@ -100,8 +100,9 @@ public class AlarmActivity extends AppCompatActivity {
     }
 
     private void stopAlarm() {
-        if (ringtone.isPlaying())
+        if (ringtone.isPlaying()) {
             ringtone.stop();
+        }
         finish();
     }
 

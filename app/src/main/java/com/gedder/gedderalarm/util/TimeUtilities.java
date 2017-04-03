@@ -37,8 +37,9 @@ public final class TimeUtilities {
      * @return The milliseconds from now until the specified time in the future..
      */
     public static long getMillisUntil(int day, int hour, int minute) {
-        if (day < 1 || day > 7 || hour < 0 || hour > 23 || minute < 0 || minute > 59)
+        if (day < 1 || day > 7 || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
             throw new IllegalArgumentException();
+        }
 
         Calendar calendar = Calendar.getInstance();
         long now = calendar.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
@@ -85,8 +86,9 @@ public final class TimeUtilities {
      * @return The time since midnight up to hour:minute in milliseconds.
      */
     public static long getMillisSinceMidnight(int hour, int minute) {
-        if (hour < 0 || hour > 23 || minute < 0 || minute > 59)
+        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
             throw new IllegalArgumentException();
+        }
         return hour*MILLIS_PER_HOUR + minute*MILLIS_PER_MINUTE;
     }
 

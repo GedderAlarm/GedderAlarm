@@ -93,7 +93,9 @@ public final class GedderEngine {
         // Parse the relevant variables.
         JsonParser parser = new JsonParser(json);
         err = parser.errorMessage();
-        if (err.equals("")) throw new GoogleMapsAPIException();
+        if (err.equals("")) {
+            throw new GoogleMapsAPIException();
+        }
 
         duration = parser.duration();
         durationInTraffic = parser.durationInTraffic();

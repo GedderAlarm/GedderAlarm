@@ -274,8 +274,9 @@ public class AlarmClock implements Parcelable {
         mUpperBoundMinute = DEFAULT_UPPER_BOUND_MINUTE;
         setUpperBoundTime(mUpperBoundDay, mUpperBoundHour, mUpperBoundMinute);
 
-        if (isOn())
+        if (isOn()) {
             turnOff();
+        }
     }
 
     /**
@@ -284,8 +285,9 @@ public class AlarmClock implements Parcelable {
      * @throws IllegalArgumentException If origin is null.
      */
     public void setOrigin(String origin) {
-        if (origin == null)
+        if (origin == null) {
             throw new IllegalArgumentException();
+        }
         mOrigin = origin;
     }
 
@@ -295,8 +297,9 @@ public class AlarmClock implements Parcelable {
      * @throws IllegalArgumentException If destination is null.
      */
     public void setDestination(String destination) {
-        if (destination == null)
+        if (destination == null) {
             throw new IllegalArgumentException();
+        }
         mDestination = destination;
     }
 
