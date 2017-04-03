@@ -437,6 +437,10 @@ public class AlarmClock implements Parcelable {
         mUpperBoundMinute = minute;
     }
 
+    public void toggleGedder() {
+        mGedderSet = !mGedderSet;
+    }
+
     /**
      * Sets a new alarm clock through intents to the Android OS. {@link AlarmReceiver} will receive
      * this intent.
