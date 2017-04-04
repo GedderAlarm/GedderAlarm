@@ -172,7 +172,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundTime().get(Calendar.HOUR));
         cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundTime().get(Calendar.MINUTE));
         cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isOn());
+        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isAlarmOn());
         cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
         return cv;
     }

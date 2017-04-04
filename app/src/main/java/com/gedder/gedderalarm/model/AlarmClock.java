@@ -281,8 +281,8 @@ public class AlarmClock implements Parcelable {
         mUpperBoundMinute = DEFAULT_UPPER_BOUND_MINUTE;
         setUpperBoundTime(mUpperBoundDay, mUpperBoundHour, mUpperBoundMinute);
 
-        if (isOn()) {
-            turnOff();
+        if (isAlarmOn()) {
+            toggleAlarm();
         }
     }
 
@@ -444,61 +444,44 @@ public class AlarmClock implements Parcelable {
         mUpperBoundMinute = minute;
     }
 
-    public void toggleGedder() {
-        mGedderSet = !mGedderSet;
-    }
-
     /**
-     * Sets a new alarm clock through intents to the Android OS. {@link AlarmReceiver} will receive
-     * this intent.
-     *
-     * If the Gedder alarm is also required, tells the {@link GedderAlarmManager} to set up the
-     * Gedder services for this particular alarm.
+     * Toggles the alarm on and off. <em><ul>If Gedder is running and we're toggling the alarm off,
+     * Gedder is also automatically toggled off.</ul></em>
      */
-    public void turnOn() {
+    public void toggleAlarm() {
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
                         mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        GedderAlarmManager.setOptimal(
-                AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
 
-        if (isGedderOn()) {
-            // We've set the normal alarm, and now we want to turn on the Gedder Engine.
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
-            bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
-            GedderAlarmManager.setGedder(bundle);
-            mGedderSet = true;
+        if (!isAlarmOn()) {
+            GedderAlarmManager.setOptimal(
+                    AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
+        } else {
+            GedderAlarmManager.cancel(pendingIntent);
         }
 
-        mAlarmSet = true;
+        // Gedder shouldn't remain on if the Alarm isn't.
+        if (isGedderOn()) {
+            toggleGedder();
+        }
+
+        mAlarmSet = !mAlarmSet;
     }
 
-    /**
-     * Cancels any alarm associated with this alarm clock instance. Also terminates any associations
-     * with any Gedder services.
-     *
-     * <em><strong>NOTE:</strong></em> Does <em>not</em> reset alarm data; only cancels the alarm.
-     */
-    public void turnOff() {
-        Intent alarmIntent =
-                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
-                mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        GedderAlarmManager.cancel(pendingIntent);
+    public void toggleGedder() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
+        bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
 
-        if (isGedderOn()) {
-            // We've canceled the normal alarm, but let's tell the manager to turn off the engine.
-
-            // TODO: Implement communication details.
-            GedderAlarmManager.cancelGedder(new Bundle());
-            mGedderSet = false;
+        if (!isGedderOn()) {
+            GedderAlarmManager.setGedder(bundle);
+        } else {
+            GedderAlarmManager.cancelGedder(bundle);
         }
 
-        mAlarmSet = false;
+        mGedderSet = !mGedderSet;
     }
 
     /**
@@ -625,7 +608,7 @@ public class AlarmClock implements Parcelable {
      * already gone off or has been explicitly canceled.
      * @return Whether the alarm is set or not.
      */
-    public boolean isOn() {
+    public boolean isAlarmOn() {
         return mAlarmSet;
     }
 
