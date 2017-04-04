@@ -138,4 +138,22 @@ public final class TimeUtilities {
     public static long dayToSeconds(int days) {
         return days*SECONDS_PER_DAY;
     }
+
+    /**
+     *
+     * @param minutes
+     * @return
+     */
+    public static long minToMillis(int minutes) {
+        return minutes*MILLIS_PER_MINUTE;
+    }
+
+    /**
+     *
+     * @param minutes
+     * @return
+     */
+    public static long minToSeconds(int minutes) {
+        return minutes*SECONDS_PER_MINUTE;
+    }
 }

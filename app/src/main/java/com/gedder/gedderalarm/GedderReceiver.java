@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.gedder.gedderalarm.model.GedderEngine;
+import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.ArrayList;
 
@@ -98,10 +99,6 @@ public class GedderReceiver extends BroadcastReceiver {
         long   upperBoundTime = intent.getLongExtra(PARAM_UPPER_BOUND_TIME, -1);
         int    id             = intent.getIntExtra(PARAM_ID, -1);
 
-        // We will need these calculations in the analysis.
-        long   plannedLeaveTime   = upperBoundTime + prepTime;
-        long   plannedTravelTime  = arrivalTime - plannedLeaveTime;
-
         if (origin == null || dest == null
                 || origin.equals("") || dest.equals("")
                 || arrivalTime == -1 || prepTime == -1 || upperBoundTime == -1
@@ -120,6 +117,11 @@ public class GedderReceiver extends BroadcastReceiver {
         ArrayList<String> warnings =
                 (ArrayList<String>) results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
+        /*
+        // We will need these calculations in the analysis.
+        long   plannedLeaveTime   = upperBoundTime + prepTime;
+        long   plannedTravelTime  = arrivalTime - plannedLeaveTime;
+
         // Is Google Maps API detecting a longer trip than before? Then we have a delay.
         if (duration > plannedTravelTime) {
             long increasedTravelTimeAmount = duration - plannedTravelTime;
@@ -135,6 +137,23 @@ public class GedderReceiver extends BroadcastReceiver {
         } else {
             // No delay. Just check back again in some default time.
             // TODO: Make a pending intent for this receiver to check back again later.
+        }
+        */
+
+        // PROBLEM: Say we plan to get up at 6am and it's currently 5am.
+        //          Gedder detects a delay big and dangerous enough that we have to get up NOW.
+        //          But in reality, this delay may end by 6am! So it's like Gedder woke up the user
+        //          for nothing. But this is what this algorithm does by the `if` check below.
+        //
+        // SOLUTION: ???
+        long durationMillis = TimeUtilities.minToMillis(duration);
+        if (arrivalTime - durationMillis - prepTime <= System.currentTimeMillis()) {
+            // There's a delay currently that's big enough that the user is forced to wake up now.
+            // Consider the problem above, though, which in reality may happen.
+        } else {
+            // No delay urgent enough, so just reschedule the alarm for a time that depends on how
+            // close the upper bound is. The closer the upper bound is, the less time we wait until
+            // we go through this algorithm again.
         }
 
         // TODO: Call the pending intent, which ever one was created/updated, here.
