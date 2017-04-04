@@ -84,10 +84,18 @@ public final class GedderAlarmManager {
      * @param gedderData The data that Gedder services require for any alarm clock.
      */
     public static void cancelGedder(Bundle gedderData) {
-        // TODO: Implement.
-        AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
+        if (id == -1) {
+            throw new IllegalArgumentException("id = " + id);
+        }
+
+        Intent alarmIntent =
+                new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
+                        id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        cancel(pendingIntent);
     }
 
     /**
