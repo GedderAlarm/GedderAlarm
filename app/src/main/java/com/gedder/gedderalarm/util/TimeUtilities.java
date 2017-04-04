@@ -28,6 +28,10 @@ public final class TimeUtilities {
 
     private TimeUtilities() {}
 
+    public static long getMillisUntil(DaysOfWeek.DAY day, int hour, int minute) {
+        return getMillisUntil(day.getInt(), hour, minute);
+    }
+
     /**
      * Gets the time until some specified day, hour, and minute combination, from today. Recommended
      * to instead use {@link #getMillisUntil(Calendar)} to avoid {@link IllegalArgumentException}.
@@ -75,7 +79,7 @@ public final class TimeUtilities {
      * @param minute
      * @return The amount of milliseconds in the hour and minute input.
      */
-    public static long getMillis(int hour, int minute) {
+    public static long getMillisIn(int hour, int minute) {
         return getMillisSinceMidnight(hour, minute);
     }
 
@@ -104,39 +108,75 @@ public final class TimeUtilities {
     }
 
     /**
-     * Gets the number of milliseconds in the specified number of hours.
-     * @param hours The number of hours to convert to milliseconds.
-     * @return The number of milliseconds in hours.
+     *
+     * @param millis
+     * @return
      */
-    public static long hourToMillis(int hours) {
-        return hours*MILLIS_PER_HOUR;
+    public static double millisToSeconds(long millis) {
+        return ((double) millis) / secondsToMillis(1);
     }
 
     /**
-     * Gets the number of seconds in the specified number of hours.
-     * @param hours The number of hours to convert to seconds.
-     * @return The number of seconds in hours.
+     *
+     * @param millis
+     * @return
      */
-    public static long hourToSeconds(int hours) {
-        return hours*SECONDS_PER_HOUR;
+    public static double millisToMinutes(long millis) {
+        return ((double) millis) / minutesToMillis(1);
     }
 
     /**
-     * Gets the number of milliseconds in the specified number of days.
-     * @param days The number of days to convert to milliseconds.
-     * @return The number of milliseconds in days.
+     *
+     * @param millis
+     * @return
      */
-    public static long dayToMillis(int days) {
-        return days*MILLIS_PER_DAY;
+    public static double millisToHours(long millis) {
+        return ((double) millis) / hoursToMillis(1);
     }
 
     /**
-     * Gets the number of seconds in the specified number of days.
-     * @param days The number of days to convert to seconds.
-     * @return The number of seconds in days.
+     *
+     * @param millis
+     * @return
      */
-    public static long dayToSeconds(int days) {
-        return days*SECONDS_PER_DAY;
+    public static double millisToDays(long millis) {
+        return ((double) millis) / daysToMillis(1);
+    }
+
+    /**
+     *
+     * @param seconds
+     * @return
+     */
+    public static long secondsToMillis(int seconds) {
+        return seconds*MILLIS_PER_SECOND;
+    }
+
+    /**
+     *
+     * @param seconds
+     * @return
+     */
+    public static double secondsToMinutes(int seconds) {
+        return ((double) seconds) / minutesToSeconds(1);
+    }
+
+    /**
+     *
+     * @param seconds
+     * @return
+     */
+    public static double secondsToHours(int seconds) {
+        return ((double) seconds) / hoursToSeconds(1);
+    }
+
+    /**
+     *
+     * @param seconds
+     * @return
+     */
+    public static double secondsToDays(int seconds) {
+        return ((double) seconds) / daysToSeconds(1);
     }
 
     /**
@@ -144,7 +184,7 @@ public final class TimeUtilities {
      * @param minutes
      * @return
      */
-    public static long minToMillis(int minutes) {
+    public static long minutesToMillis(int minutes) {
         return minutes*MILLIS_PER_MINUTE;
     }
 
@@ -153,7 +193,97 @@ public final class TimeUtilities {
      * @param minutes
      * @return
      */
-    public static long minToSeconds(int minutes) {
+    public static long minutesToSeconds(int minutes) {
         return minutes*SECONDS_PER_MINUTE;
+    }
+
+    /**
+     *
+     * @param minutes
+     * @return
+     */
+    public static double minutesToHours(int minutes) {
+        return ((double) minutes) / hoursToMinutes(1);
+    }
+
+    /**
+     *
+     * @param minutes
+     * @return
+     */
+    public static double minutesToDays(int minutes) {
+        return ((double) minutes) / daysToMinutes(1);
+    }
+
+    /**
+     * Gets the number of milliseconds in the specified number of hours.
+     * @param hours The number of hours to convert to milliseconds.
+     * @return The number of milliseconds in hours.
+     */
+    public static long hoursToMillis(int hours) {
+        return hours*MILLIS_PER_HOUR;
+    }
+
+    /**
+     * Gets the number of seconds in the specified number of hours.
+     * @param hours The number of hours to convert to seconds.
+     * @return The number of seconds in hours.
+     */
+    public static long hoursToSeconds(int hours) {
+        return hours*SECONDS_PER_HOUR;
+    }
+
+    /**
+     *
+     * @param hours
+     * @return
+     */
+    public static long hoursToMinutes(int hours) {
+        return hours*MINUTE_PER_HOUR;
+    }
+
+    /**
+     *
+     * @param hours
+     * @return
+     */
+    public static double hoursToDays(int hours) {
+        return ((double) hours) / daysToHours(1);
+    }
+
+    /**
+     * Gets the number of milliseconds in the specified number of days.
+     * @param days The number of days to convert to milliseconds.
+     * @return The number of milliseconds in days.
+     */
+    public static long daysToMillis(int days) {
+        return days*MILLIS_PER_DAY;
+    }
+
+    /**
+     * Gets the number of seconds in the specified number of days.
+     * @param days The number of days to convert to seconds.
+     * @return The number of seconds in days.
+     */
+    public static long daysToSeconds(int days) {
+        return days*SECONDS_PER_DAY;
+    }
+
+    /**
+     *
+     * @param days
+     * @return
+     */
+    public static long daysToMinutes(int days) {
+        return days*MINUTE_PER_DAY;
+    }
+
+    /**
+     *
+     * @param days
+     * @return
+     */
+    public static long daysToHours(int days) {
+        return days*HOUR_PER_DAY;
     }
 }

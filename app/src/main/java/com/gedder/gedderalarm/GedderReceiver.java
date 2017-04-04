@@ -5,6 +5,8 @@
 
 package com.gedder.gedderalarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -77,21 +79,11 @@ public class GedderReceiver extends BroadcastReceiver {
     public static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
     public static final String PARAM_UPPER_BOUND_TIME = "__PARAM_UPPER_BOUND_TIME__";
     public static final String PARAM_ID = "__PARAM_ID__";
+    public static final String ANALYSIS_CONSECUTIVE_DELAY_COUNT =
+            "__ANALYSIS_CONSECUTIVE_DELAY_COUNT__";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        /*
-         * 1. Start the engine on the above variables. It'll go through the pipeline.
-         * 2. Get back some result from it.
-         * 3. Analyze result.
-         *  3.1. If no delay, set a new alarm for x% of the time to alarm.
-         *       ex: 6 hours to the alarm and no delay right now, so set it for 36 minutes from now.
-         *  3.2. If delay, but not urgent, set for
-         *       ((x/2)% of time to alarm)*(# of times delay encountered consecutively).
-         *  3.3. If delay and urgent, sound the alarm through AlarmReceiver.
-        */
-
         String origin         = intent.getStringExtra(PARAM_ORIGIN);
         String dest           = intent.getStringExtra(PARAM_DESTINATION);
         long   arrivalTime    = intent.getLongExtra(PARAM_ARRIVAL_TIME, -1);
@@ -111,51 +103,107 @@ public class GedderReceiver extends BroadcastReceiver {
                     + "upperBoundTime = " + upperBoundTime
                     + "id = " + id);
 
+        // Turn on the engine, and get back the results.
         Bundle results = GedderEngine.start(origin, dest, arrivalTime, prepTime, upperBoundTime);
         int duration = results.getInt(GedderEngine.RESULT_DURATION, -1);
         int durationInTraffic = results.getInt(GedderEngine.RESULT_DURATION_IN_TRAFFIC, -1);
         ArrayList<String> warnings =
                 (ArrayList<String>) results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
-        /*
-        // We will need these calculations in the analysis.
-        long   plannedLeaveTime   = upperBoundTime + prepTime;
-        long   plannedTravelTime  = arrivalTime - plannedLeaveTime;
+        // Need this for a comprehensible analysis below.
+        long oldDuration           = arrivalTime - prepTime - upperBoundTime;
+        long delayAmount           = duration - oldDuration;
+        long timeUntilAlarm        = upperBoundTime - System.currentTimeMillis();
+        int  consecutiveDelayCount = intent.getIntExtra(ANALYSIS_CONSECUTIVE_DELAY_COUNT, 0);
 
-        // Is Google Maps API detecting a longer trip than before? Then we have a delay.
-        if (duration > plannedTravelTime) {
-            long increasedTravelTimeAmount = duration - plannedTravelTime;
-            long timeLeftToAlarm = upperBoundTime - System.currentTimeMillis();
-            // Is this delay going to force us to wake up?
-            if (increasedTravelTimeAmount > timeLeftToAlarm) {
+        // Initialize & declare intents and variables for our next action.
+        Intent nextAction = new Intent(
+                GedderAlarmApplication.getAppContext(), GedderReceiver.class);
+        long nextActionTime;
+
+        // Is Google Maps API detecting a longer trip than before?
+        if (duration > oldDuration) {
+            // Then we have a delay. Is this delay going to force us to wake up?
+            if (delayAmount > timeUntilAlarm) {
                 // Wake up the user!
-                // TODO: Update the pending intent of the alarm to trigger NOW!
+                nextAction.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+                nextActionTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
             } else {
-                // There's still a delay, but it's not as urgent. Let's keep polling.
-                // TODO: Make a pending intent for this receiver to check back again SOON!
+                // Not as urgent, but there's still a delay. Let's keep polling to stay updated.
+                nextAction.putExtra(ANALYSIS_CONSECUTIVE_DELAY_COUNT, ++consecutiveDelayCount);
+                nextActionTime = System.currentTimeMillis()
+                        + (getFrequencyDependendingOn(timeUntilAlarm) / (consecutiveDelayCount));
             }
         } else {
-            // No delay. Just check back again in some default time.
-            // TODO: Make a pending intent for this receiver to check back again later.
+            // No delay. Check back in a time dependent on how close we are to the alarm time.
+            nextActionTime = System.currentTimeMillis()
+                    + getFrequencyDependendingOn(timeUntilAlarm);
         }
-        */
 
-        // PROBLEM: Say we plan to get up at 6am and it's currently 5am.
-        //          Gedder detects a delay big and dangerous enough that we have to get up NOW.
-        //          But in reality, this delay may end by 6am! So it's like Gedder woke up the user
-        //          for nothing. But this is what this algorithm does by the `if` check below.
-        //
-        // SOLUTION: ???
-        long durationMillis = TimeUtilities.minToMillis(duration);
-        if (arrivalTime - durationMillis - prepTime <= System.currentTimeMillis()) {
-            // There's a delay currently that's big enough that the user is forced to wake up now.
-            // Consider the problem above, though, which in reality may happen.
+        // Whatever the analysis, we must set the intent.
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                GedderAlarmApplication.getAppContext(), id, nextAction, PendingIntent.FLAG_UPDATE_CURRENT);
+        GedderAlarmManager.setOptimal(
+                AlarmManager.RTC_WAKEUP, nextActionTime, pendingIntent);
+    }
+
+    /**
+     * Returns a requery frequency depending upon some time.
+     * <br>
+     * Uses the following intervals:
+     * <br>
+     * <table>
+     *     <thead>
+     *         <tr>
+     *             <th>Interval</th>
+     *             <th>Return</th>
+     *         </tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr>
+     *             <td>Hour > 5</td>
+     *             <td>1 hour 30 minutes</td>
+     *         </tr>
+     *         <tr>
+     *             <td>1 < Hour &le; 5</td>
+     *             <td>30 minutes</td>
+     *         </tr>
+     *         <tr>
+     *             <td>30 < Minutes &le; 60</td>
+     *             <td>10 minutes</td>
+     *         </tr>
+     *         <tr>
+     *             <td>15 < Minutes &le; 30</td>
+     *             <td>5 minutes</td>
+     *         </tr>
+     *         <tr>
+     *             <td>10 < Minutes &le; 15</td>
+     *             <td>2 minutes</td>
+     *         </tr>
+     *         <tr>
+     *             <td>Minutes &le; 10</td>
+     *             <td>1 minute</td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     * @param dependent The time to base the heuristics off of.
+     * @return The frequency to check based off of the dependent.
+     */
+    private long getFrequencyDependendingOn(long dependent) {
+        double hours = TimeUtilities.millisToHours(dependent);
+        double minutes = TimeUtilities.millisToMinutes(dependent);
+        if (hours > 5) {
+            return TimeUtilities.getMillisIn(1, 30);    // 1 hour 30 minutes
+        } else if (1 < hours && hours <= 5) {
+            return TimeUtilities.minutesToMillis(30);   // 30 minutes
+        } else if (30 < minutes && minutes <= 60) {
+            return TimeUtilities.minutesToMillis(10);   // 10 minutes
+        } else if (15 < minutes && minutes <= 30) {
+            return TimeUtilities.minutesToMillis(5);    // 5 minutes
+        } else if (10 < minutes && minutes <= 15) {
+            return TimeUtilities.minutesToMillis(2);    // 2 minutes
         } else {
-            // No delay urgent enough, so just reschedule the alarm for a time that depends on how
-            // close the upper bound is. The closer the upper bound is, the less time we wait until
-            // we go through this algorithm again.
+            return TimeUtilities.minutesToMillis(1);    // 1 minute
         }
-
-        // TODO: Call the pending intent, which ever one was created/updated, here.
     }
 }

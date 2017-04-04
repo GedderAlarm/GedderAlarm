@@ -19,6 +19,7 @@ import com.gedder.gedderalarm.util.DaysOfWeek;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.Calendar;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -56,7 +57,7 @@ public class AlarmClock implements Parcelable {
     // The days this alarm will repeat in its current form.
     private DaysOfWeek mRepeatDays;
 
-    // The real-time values for when this alarm is set, if it is set.
+    // The real-time internal values for when this alarm is set, if it is set.
     private int     mAlarmDay;          // 1-7 (Sunday, Monday, ..., Saturday)
     private int     mAlarmHour;         // 0-23 (24 hour clock)
     private int     mAlarmMinute;       // 0-59 (60 minutes)
@@ -91,6 +92,7 @@ public class AlarmClock implements Parcelable {
         Calendar calendar = Calendar.getInstance();
 
         mUuid = UUID.randomUUID();
+        mRequestCode = (new Random()).nextInt();
 
         mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
         mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
@@ -131,6 +133,7 @@ public class AlarmClock implements Parcelable {
      */
     public AlarmClock(AlarmClock alarmClock) {
         mUuid = alarmClock.mUuid;
+        mRequestCode = alarmClock.mRequestCode;
 
         mOrigin      = alarmClock.mOrigin;
         mDestination = alarmClock.mDestination;
@@ -180,6 +183,8 @@ public class AlarmClock implements Parcelable {
                       Calendar arrivalTime,
                       int prepHour, int prepMinute,
                       Calendar upperBoundTime) {
+        mUuid = UUID.randomUUID();
+        mRequestCode = (new Random()).nextInt();
         mOrigin = origin;
         mDestination = destination;
         mRepeatDays = repeatDays;
@@ -219,6 +224,8 @@ public class AlarmClock implements Parcelable {
                       DaysOfWeek.DAY arrivalDay, int arrivalHour, int arrivalMinute,
                       int prepHour, int prepMinute,
                       DaysOfWeek.DAY upperBoundDay, int upperBoundHour, int upperBoundMinute) {
+        mUuid = UUID.randomUUID();
+        mRequestCode = (new Random()).nextInt();
         mOrigin             = origin;
         mDestination        = destination;
         mRepeatDays         = repeatDays;
@@ -391,7 +398,7 @@ public class AlarmClock implements Parcelable {
      * @param minute    The minutes it takes to get prepared.
      */
     public void setPrepTime(int hour, int minute) {
-        mPrepTime = TimeUtilities.getMillis(hour, minute);
+        mPrepTime = TimeUtilities.getMillisIn(hour, minute);
         mPrepHour = hour;
         mPrepMinute = minute;
     }
@@ -459,8 +466,6 @@ public class AlarmClock implements Parcelable {
 
         if (isGedderOn()) {
             // We've set the normal alarm, and now we want to turn on the Gedder Engine.
-            // We're the passenger, and the GedderAlarmManager is the driver. Tell the driver to
-            // start the engine.
             Bundle bundle = new Bundle();
             bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
             bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
