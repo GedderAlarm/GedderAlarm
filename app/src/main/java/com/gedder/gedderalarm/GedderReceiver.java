@@ -189,7 +189,7 @@ public class GedderReceiver extends BroadcastReceiver {
      * @param dependent The time to base the heuristics off of.
      * @return The frequency to check based off of the dependent.
      */
-    private long getFrequencyDependendingOn(long dependent) {
+    protected long getFrequencyDependendingOn(long dependent) {
         double hours = TimeUtilities.millisToHours(dependent);
         double minutes = TimeUtilities.millisToMinutes(dependent);
         if (hours > 5) {
