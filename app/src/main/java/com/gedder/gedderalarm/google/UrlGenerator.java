@@ -146,7 +146,7 @@ public class UrlGenerator {
      * @param origin
      */
     private void addOrigin(String origin) {
-        this.url += "origin=" + origin;
+        this.url += "origin=place_id:" + origin;
     }
 
     /**
@@ -154,7 +154,7 @@ public class UrlGenerator {
      * @param destination
      */
     private void addDestination(String destination) {
-        this.url += "destination=" + destination;
+        this.url += "destination=place_id:" + destination;
     }
 
     /**

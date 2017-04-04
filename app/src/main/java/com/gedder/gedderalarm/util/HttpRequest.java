@@ -62,9 +62,9 @@ public class HttpRequest extends AsyncTask<String, String, String> {
             rd.close();
 
         } catch (MalformedURLException e) {
-            // TODO: Handle exception.
+            Log.e(TAG, "URL provided is of an incorrect format.");
         } catch (IOException e) {
-            // TODO: Handle exception.
+            Log.e(TAG, "Something went wrong in handling input from query.");
         } finally {
             if (mUrlConnection != null) {
                 mUrlConnection.disconnect();

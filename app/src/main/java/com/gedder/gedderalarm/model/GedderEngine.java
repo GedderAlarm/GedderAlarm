@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.gedder.gedderalarm.google.JsonParser;
 import com.gedder.gedderalarm.google.UrlGenerator;
 import com.gedder.gedderalarm.util.HttpRequest;
+import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.except.GoogleMapsAPIException;
 
 import java.util.ArrayList;
@@ -85,9 +86,9 @@ public final class GedderEngine {
         try {
             json = new HttpRequest().execute(url).get();
         } catch (ExecutionException e) {
-            // TODO: Handle exception.
+            Log.e(TAG, "Couldn't retrieve JSON from Google Maps API.");
         } catch (InterruptedException e) {
-            // TODO: Handle exception.
+            Log.e(TAG, "Query to Google Maps API taking too long.");
         }
 
         // Parse the relevant variables.
