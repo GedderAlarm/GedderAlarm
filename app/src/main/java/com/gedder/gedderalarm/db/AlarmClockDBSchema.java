@@ -18,6 +18,7 @@ public class AlarmClockDBSchema {
             /**  */
             public static final String ID = "_id";
             public static final String UUID = "uuid";
+            public static final String REQUEST_CODE = "requestCode";
 
             /**  */
             public static final String REPEAT_DAYS = "repeatDays";

@@ -44,6 +44,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + AlarmClockTable.TABLE_NAME + "("
                 + AlarmClockTable.Columns.ID    + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + AlarmClockTable.Columns.UUID  + " TEXT, "
+                + AlarmClockTable.Columns.REQUEST_CODE + " INTEGER, "
                 + AlarmClockTable.Columns.ORIGIN      + " TEXT, "
                 + AlarmClockTable.Columns.DESTINATION + " TEXT, "
                 + AlarmClockTable.Columns.REPEAT_DAYS + " SMALLINT, "
@@ -153,6 +154,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
 
     private ContentValues putAllExceptUuid(AlarmClock alarmClock) {
         ContentValues cv = new ContentValues();
+        cv.put(AlarmClockTable.Columns.REQUEST_CODE, alarmClock.getRequestCode());
         cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
         cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
         cv.put(AlarmClockTable.Columns.ALARM_DAY, alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));

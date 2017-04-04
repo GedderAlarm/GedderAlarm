@@ -510,6 +510,14 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
+     *
+     * @return
+     */
+    public int getRequestCode() {
+        return mRequestCode;
+    }
+
+    /**
      * Gets the place the user is leaving from.
      * @return The place the user is leaving from.
      */
