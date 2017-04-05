@@ -6,6 +6,7 @@
 package com.gedder.gedderalarm.google;
 
 import com.gedder.gedderalarm.util.Log;
+import com.gedder.gedderalarm.util.TimeUtilities;
 import com.gedder.gedderalarm.util.except.RequiredParamMissingException;
 
 import java.io.UnsupportedEncodingException;
@@ -46,8 +47,8 @@ public class UrlGenerator {
     private String url = baseUrl;
 
     /**
-     *
-     * @param builder
+     * Builder constructor.
+     * @param builder The builder to base the URL off of.
      */
     private UrlGenerator(UrlBuilder builder) {
         this.origin = builder.origin;
@@ -70,8 +71,8 @@ public class UrlGenerator {
     }
 
     /**
-     *
-     * @return
+     * Gets the base of the URL (regardless of what was built, it's always the same).
+     * @return The base url.
      */
     public String getBaseUrl() {
         return baseUrl;
@@ -79,7 +80,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The origin's place ID.
      */
     public String getOrigin() {
         return origin;
@@ -87,7 +88,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The destination's place ID.
      */
     public String getDestination() {
         return destination;
@@ -95,7 +96,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The API key associated with this URL.
      */
     public String getApiKey() {
         return apiKey;
@@ -103,7 +104,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The arrival time in milliseconds since the epoch.
      */
     public String getArrivalTime() {
         return arrivalTime;
@@ -111,7 +112,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The departure time in milliseconds since the epoch.
      */
     public String getDepartureTime() {
         return departureTime;
@@ -119,7 +120,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return The mode of travel.
      */
     public String getTravelMode() {
         return travelMode;
@@ -127,7 +128,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return Whether to avoid tolls.
      */
     public boolean avoidToll() {
         return avoidToll;
@@ -135,7 +136,7 @@ public class UrlGenerator {
 
     /**
      *
-     * @return
+     * @return Whether to avoid highways.
      */
     public boolean avoidHighways() {
         return avoidHighways;
@@ -252,9 +253,9 @@ public class UrlGenerator {
 
         /**
          * Initializes required parameters for the URL.
-         * @param origin
-         * @param destination
-         * @param apiKey
+         * @param origin        The starting location.
+         * @param destination   The ending location.
+         * @param apiKey        The API key with which to query Google Maps API.
          * @throws RequiredParamMissingException Google Maps API required that we have an origin,
          * destination, and API key in the HTTP request, at the least.
          */
@@ -274,49 +275,51 @@ public class UrlGenerator {
         }
 
         /**
-         *
-         * @param arrivalTime
-         * @return
+         * Set the arrival time for this URL.
+         * @param arrivalTime Arrival time in a milliseconds string since the epoch.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder arrivalTime(String arrivalTime) {
-            this.arrivalTime = toUnixTime(arrivalTime);
+            this.arrivalTime = String.valueOf(
+                    TimeUtilities.millisToSeconds(Long.valueOf(arrivalTime)));
             return this;
         }
 
         /**
-         *
-         * @param arrivalTime
-         * @return
+         * Set the arrival time for this URL.
+         * @param arrivalTime Arrival time in milliseconds since the epoch.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder arrivalTime(long arrivalTime) {
-            this.arrivalTime = String.valueOf(arrivalTime);
+            this.arrivalTime = String.valueOf(TimeUtilities.millisToSeconds(arrivalTime));
             return this;
         }
 
         /**
-         *
-         * @param departureTime
-         * @return
+         * Set the departure time for this URL.
+         * @param departureTime Departure time in a milliseconds string since the epoch.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder departureTime(String departureTime) {
-            this.departureTime = toUnixTime(departureTime);
+            this.departureTime = String.valueOf(
+                    TimeUtilities.millisToSeconds(Long.valueOf(departureTime)));
             return this;
         }
 
         /**
-         *
-         * @param departureTime
-         * @return
+         * Set the departure time for this URL.
+         * @param departureTime Departure time in milliseconds since the epoch.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder departureTime(long departureTime) {
-            this.departureTime = String.valueOf(departureTime);
+            this.departureTime = String.valueOf(TimeUtilities.millisToSeconds(departureTime));
             return this;
         }
 
         /**
-         *
+         * Set the mode of travel for this URL.
          * @param travelMode
-         * @return
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder travelMode(String travelMode) {
             if (!isAvailableTravelMode(travelMode)) {
@@ -329,8 +332,8 @@ public class UrlGenerator {
         }
 
         /**
-         *
-         * @return
+         * Set whether the query should return paths where we avoid tolls.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder avoidToll() {
             this.avoidToll = true;
@@ -338,8 +341,8 @@ public class UrlGenerator {
         }
 
         /**
-         *
-         * @return
+         * Set whether the query should return paths where we avoid highways.
+         * @return UrlBuilder to chain method calls off of.
          */
         public UrlBuilder avoidHighways() {
             this.avoidHighways = true;
@@ -347,21 +350,11 @@ public class UrlGenerator {
         }
 
         /**
-         *
+         * Builds the URL.
          * @return A built UrlGenerator class.
          */
         public UrlGenerator build() {
             return new UrlGenerator(this);
-        }
-
-        /**
-         * Turns time into unix time format, appropriate for Google Maps API.
-         * @param time
-         * @return
-         */
-        private String toUnixTime(String time) {
-            // TODO: Implement.
-            return time;
         }
 
         /**
