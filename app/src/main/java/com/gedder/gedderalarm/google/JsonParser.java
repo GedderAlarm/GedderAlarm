@@ -34,8 +34,6 @@ public class JsonParser {
     // TODO: Add origin() and destination() functionality.
     // TODO: Add originLatitude() and destinationLatitude() functionality.
     // TODO: Add originLongitude() and destinationLongitude() functionality.
-    // TODO: Add choose-your-step functionality for everything that is in the `steps` key.
-    // TODO: Add travelMode() functionality for individual steps.
 
     private static final String TAG = JsonParser.class.getSimpleName();
 
@@ -440,5 +438,56 @@ public class JsonParser {
         }
 
         return modes;
+    }
+
+    /**
+     *
+     * @param route
+     * @param leg
+     * @param step
+     * @return
+     */
+    public TravelMode travelMode(int route, int leg, int step) {
+        JSONArray routes;
+        JSONObject route_number;
+        JSONArray legs;
+        JSONObject leg_number;
+        JSONArray steps;
+        JSONObject step_number;
+        String travelModeStr = "";
+        TravelMode travelMode;
+
+        try {
+            routes = obj.getJSONArray("routes");
+            route_number = routes.getJSONObject(route);
+            legs = route_number.getJSONArray("legs");
+            leg_number = legs.getJSONObject(leg);
+            steps = leg_number.getJSONArray("steps");
+            step_number = steps.getJSONObject(step);
+            travelModeStr = step_number.getString("travel_mode");
+        } catch (JSONException e) {
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::durationInTraffic.");
+            return null;
+        }
+
+        switch (travelModeStr) {
+            case "DRIVING":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "WALKING":
+                travelMode = TravelMode.WALKING;
+                break;
+            case "BICYCLING":
+                travelMode = TravelMode.BICYCLING;
+                break;
+            case "TRANSIT":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            default:
+                travelMode = null;
+                break;
+        }
+
+        return travelMode;
     }
 }

@@ -363,11 +363,11 @@ public class UrlGenerator {
          * @return whether the intended mode of travel is valid for Google Maps API.
          */
         private boolean isAvailableTravelMode(String mode) {
-            return !mode.equals(TravelModes.bus.name())     &&
-                   !mode.equals(TravelModes.subway.name())  &&
-                   !mode.equals(TravelModes.train.name())   &&
-                   !mode.equals(TravelModes.tram.name())    &&
-                   !mode.equals(TravelModes.rail.name());
+            return !mode.equals(TransitMode.BUS.name())     &&
+                   !mode.equals(TransitMode.SUBWAY.name())  &&
+                   !mode.equals(TransitMode.TRAIN.name())   &&
+                   !mode.equals(TransitMode.TRAM.name())    &&
+                   !mode.equals(TransitMode.RAIL.name());
         }
     }
 }
