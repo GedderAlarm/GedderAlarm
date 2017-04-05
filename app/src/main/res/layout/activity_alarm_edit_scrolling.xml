@@ -108,13 +108,16 @@
                     android:layout_height="2dp"/>
 
 
-                <EditText
+                <TextView
                     android:id="@+id/editAlarm_ArrivalTimePickerMonologBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:onClick="done"
-                    android:hint='Arrival Time'/>
+                    android:background="?attr/editTextBackground"
+                    android:gravity="center_vertical"
+                    android:hint="Arrival Time"
+                    android:onClick="setArrivalTime"
+                    android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                    android:textColor="?attr/editTextColor" />
 
                 <Space
                     android:layout_width="1dp"

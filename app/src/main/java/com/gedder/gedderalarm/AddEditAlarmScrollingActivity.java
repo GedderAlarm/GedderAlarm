@@ -1,5 +1,7 @@
 package com.gedder.gedderalarm;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.text.Html;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.gedder.gedderalarm.util.Log;
@@ -22,6 +25,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import com.gedder.gedderalarm.model.AlarmClock;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+
 /** The activity where the user edits an alarm, new or old. */
 
 public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
@@ -35,12 +42,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     private String mDestinationIdString;
     private String mArrivalTimeString;
     private String mPrepTimeString;
+    private int mHourArrival;
+    private int mMinuteArrival;
     private int mHour;
     private int mMinute;
 
     //Variables for time-picker and textviews:
     TimePicker mAlarmTimePicker;
-    EditText mArivalTimeEditText;
+    TextView mArivalTimeEditText;
     EditText mPrepTimeEditText;
 
     //Variables for auto-complete text boxes
@@ -64,7 +73,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         //Initialize variables for textviews and timepicker
         mAlarmTimePicker = (TimePicker) findViewById(R.id
                 .generalAlarmTimePicker);
-        mArivalTimeEditText = (EditText) findViewById(R.id
+        mArivalTimeEditText = (TextView) findViewById(R.id
                 .editAlarm_ArrivalTimePickerMonologBox);
         mPrepTimeEditText = (EditText) findViewById(R.id
                 .editAlarm_PrepTimeTextBox);
@@ -200,10 +209,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         Toast.makeText(this, "Prep time: " + mPrepTimeString, Toast.LENGTH_SHORT).show();
         mArrivalTimeString = mArivalTimeEditText.getText() + "";
         Toast.makeText(this, "Arrival time: " + mArrivalTimeString, Toast.LENGTH_SHORT).show();
+        if (! mArrivalTimeString.equals("")) {
+            String temp_for_toast = "Arrival Hour: " + Integer.toString(mHourArrival) + " | Arrival Minute: " + Integer.toString(mMinuteArrival);
+            Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+        }
         //need to check API of device here, will do later
         mHour = mAlarmTimePicker.getCurrentHour();
         mMinute = mAlarmTimePicker.getCurrentMinute();
-        String temp_for_toast = "Hour: " + Integer.toString(mHour) + "| Minute: " + Integer.toString(mMinute);
+        String temp_for_toast = "Alarm Hour: " + Integer.toString(mHour) + " | Alarm Minute: " + Integer.toString(mMinute);
         Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
         if (mOriginAddressString != null) {
             Toast.makeText(this, "Origin: " + mOriginAddressString, Toast.LENGTH_SHORT).show();
@@ -212,5 +225,41 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             Toast.makeText(this, "Destination: " + mDestinationAddressString, Toast.LENGTH_SHORT).show();
         }
         finish();
+    }
+
+    public void setArrivalTime(View view){
+        // Get Current Time
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                AlertDialog.THEME_HOLO_DARK,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        mHourArrival = hourOfDay;
+                        mMinuteArrival = minute;
+                        String am_or_pm;
+                        if (hourOfDay > 12) {
+                            am_or_pm = "pm";
+                            hourOfDay = hourOfDay - 12;
+                        } else {
+                            am_or_pm = "am";
+                        }
+                        String hour_string = Integer.toString(hourOfDay);
+                        if(hourOfDay < 10) {
+                            hour_string = "0" + hour_string;
+                        }
+                        String minute_string = Integer.toString(minute);
+                        if(minute < 10) {
+                            minute_string = "0" + minute_string;
+                        }
+                        mArivalTimeEditText.setText(hour_string + ":" + minute_string + " " + am_or_pm);
+                    }
+                }, hour, min, false);
+        timePickerDialog.show();
     }
 }
