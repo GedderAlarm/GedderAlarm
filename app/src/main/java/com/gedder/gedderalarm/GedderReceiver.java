@@ -132,12 +132,12 @@ public class GedderReceiver extends BroadcastReceiver {
                 // Not as urgent, but there's still a delay. Let's keep polling to stay updated.
                 nextAction.putExtra(ANALYSIS_CONSECUTIVE_DELAY_COUNT, ++consecutiveDelayCount);
                 nextActionTime = System.currentTimeMillis()
-                        + (getFrequencyDependendingOn(timeUntilAlarm) / (consecutiveDelayCount));
+                        + (getFrequencyDependingOn(timeUntilAlarm) / (consecutiveDelayCount));
             }
         } else {
             // No delay. Check back in a time dependent on how close we are to the alarm time.
             nextActionTime = System.currentTimeMillis()
-                    + getFrequencyDependendingOn(timeUntilAlarm);
+                    + getFrequencyDependingOn(timeUntilAlarm);
         }
 
         // Whatever the analysis, we must set the intent.
@@ -189,7 +189,7 @@ public class GedderReceiver extends BroadcastReceiver {
      * @param dependent The time to base the heuristics off of.
      * @return The frequency to check based off of the dependent.
      */
-    protected long getFrequencyDependendingOn(long dependent) {
+    protected long getFrequencyDependingOn(long dependent) {
         double hours = TimeUtilities.millisToHours(dependent);
         double minutes = TimeUtilities.millisToMinutes(dependent);
         if (hours > 5) {
