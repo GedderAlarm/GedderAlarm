@@ -1,8 +1,10 @@
+/*
+ * USER: jameskluz
+ * DATE: 4/2/17
+ */
+
 package com.gedder.gedderalarm;
 
-/**
- * Created by jameskluz on 4/2/17.
- */
 import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -23,7 +25,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutocomplete> implements Filterable {
+/**
+ *
+ */
+
+public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutocomplete>
+        implements Filterable {
     private static final String TAG = "PlaceArrayAdapter";
     private GoogleApiClient mGoogleApiClient;
     private AutocompleteFilter mPlaceFilter;
@@ -31,12 +38,11 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
     private ArrayList<PlaceAutocomplete> mResultList;
 
     /**
-     * Constructor
-     *
-     * @param context  Context
-     * @param resource Layout resource
-     * @param bounds   Used to specify the search bounds
-     * @param filter   Used to specify place types
+     * Constructor.
+     * @param context  Context.
+     * @param resource Layout resource.
+     * @param bounds   Used to specify the search bounds.
+     * @param filter   Used to specify place types.
      */
     public PlaceArrayAdapter(Context context, int resource, LatLngBounds bounds,
                              AutocompleteFilter filter) {
@@ -45,6 +51,10 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
         mPlaceFilter = filter;
     }
 
+    /**
+     *
+     * @param googleApiClient
+     */
     public void setGoogleApiClient(GoogleApiClient googleApiClient) {
         if (googleApiClient == null || !googleApiClient.isConnected()) {
             mGoogleApiClient = null;
@@ -63,6 +73,11 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
         return mResultList.get(position);
     }
 
+    /**
+     *
+     * @param constraint
+     * @return
+     */
     private ArrayList<PlaceAutocomplete> getPredictions(CharSequence constraint) {
         if (mGoogleApiClient != null) {
             Log.i(TAG, "Executing autocomplete query for: " + constraint);
@@ -132,11 +147,19 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
         return filter;
     }
 
+    /**
+     *
+     */
     class PlaceAutocomplete {
 
         public CharSequence placeId;
         public CharSequence description;
 
+        /**
+         *
+         * @param placeId
+         * @param description
+         */
         PlaceAutocomplete(CharSequence placeId, CharSequence description) {
             this.placeId = placeId;
             this.description = description;

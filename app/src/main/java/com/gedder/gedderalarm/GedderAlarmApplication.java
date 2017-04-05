@@ -23,6 +23,10 @@ public class GedderAlarmApplication extends Application {
         GedderAlarmApplication.mContext = getApplicationContext();
     }
 
+    /**
+     *
+     * @return
+     */
     public static Context getAppContext() {
         return GedderAlarmApplication.mContext;
     }

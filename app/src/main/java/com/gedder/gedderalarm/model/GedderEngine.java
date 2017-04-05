@@ -69,6 +69,9 @@ public final class GedderEngine {
      */
     public static Bundle start(String origin, String destination,
                                long arrivalTime, long prepTime, long upperBoundTime) {
+        // TODO: Fix up some of the "style" of the code.
+        // TODO: Move parts to different functions.
+
         String url
              , json = ""
              , err;

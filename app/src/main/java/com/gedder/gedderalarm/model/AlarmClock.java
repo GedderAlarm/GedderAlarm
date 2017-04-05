@@ -31,57 +31,57 @@ public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     // Default values for certain private variables.
-    private static final String DEFAULT_ORIGIN = "";
-    private static final String DEFAULT_DESTINATION = "";
-    private static final int DEFAULT_ALARM_HOUR = 6;
-    private static final int DEFAULT_ALARM_MINUTE = 0;
-    private static final int DEFAULT_ARRIVAL_HOUR = 7;
-    private static final int DEFAULT_ARRIVAL_MINUTE = 0;
-    private static final int DEFAULT_PREP_HOUR = 0;
-    private static final int DEFAULT_PREP_MINUTE = 0;
-    private static final int DEFAULT_UPPER_BOUND_HOUR = 6;
-    private static final int DEFAULT_UPPER_BOUND_MINUTE = 0;
-    private static final boolean DEFAULT_ALARM_SET = false;
-    private static final boolean DEFAULT_GEDDER_SET = false;
+    private static final String  DEFAULT_ORIGIN             = "";
+    private static final String  DEFAULT_DESTINATION        = "";
+    private static final int     DEFAULT_ALARM_HOUR         = 6;
+    private static final int     DEFAULT_ALARM_MINUTE       = 0;
+    private static final int     DEFAULT_ARRIVAL_HOUR       = 7;
+    private static final int     DEFAULT_ARRIVAL_MINUTE     = 0;
+    private static final int     DEFAULT_PREP_HOUR          = 0;
+    private static final int     DEFAULT_PREP_MINUTE        = 0;
+    private static final int     DEFAULT_UPPER_BOUND_HOUR   = 6;
+    private static final int     DEFAULT_UPPER_BOUND_MINUTE = 0;
+    private static final boolean DEFAULT_ALARM_SET          = false;
+    private static final boolean DEFAULT_GEDDER_SET         = false;
 
     // Required for universal uniqueness of each alarm.
-    private UUID    mUuid;
+    private UUID mUuid;
 
     // Unique number to identify this alarm in PendingIntents.
-    private int     mRequestCode;
+    private int mRequestCode;
 
     // Required for smart alarm.
-    private String  mOrigin;
-    private String  mDestination;
+    private String mOrigin;
+    private String mDestination;
 
     // The days this alarm will repeat in its current form.
     private DaysOfWeek mRepeatDays;
 
     // The real-time internal values for when this alarm is set, if it is set.
-    private int     mAlarmDay;          // 1-7 (Sunday, Monday, ..., Saturday)
-    private int     mAlarmHour;         // 0-23 (24 hour clock)
-    private int     mAlarmMinute;       // 0-59 (60 minutes)
-    private long    mAlarmTime;         // Milliseconds since the epoch.
+    private int  mAlarmDay;          // 1-7 (Sunday, Monday, ..., Saturday)
+    private int  mAlarmHour;         // 0-23 (24 hour clock)
+    private int  mAlarmMinute;       // 0-59 (60 minutes)
+    private long mAlarmTime;         // Milliseconds since the epoch.
 
     // The user-planned arrival time to mDestination from mOrigin.
     // Required for smart alarm.
-    private int     mArrivalDay;        // 1-7 (Sunday, Monday, ..., Saturday)
-    private int     mArrivalHour;       // 0-23 (24 hour clock)
-    private int     mArrivalMinute;     // 0-59 (60 minutes)
-    private long    mArrivalTime;       // Milliseconds since the epoch.
+    private int  mArrivalDay;        // 1-7 (Sunday, Monday, ..., Saturday)
+    private int  mArrivalHour;       // 0-23 (24 hour clock)
+    private int  mArrivalMinute;     // 0-59 (60 minutes)
+    private long mArrivalTime;       // Milliseconds since the epoch.
 
     // The user-inputted or smart-adjusted time it takes to get prepared in the morning.
     // Required for smart alarm.
-    private int     mPrepHour;          // 0-23 (24 hour clock)
-    private int     mPrepMinute;        // 0-59 (60 minutes)
-    private long    mPrepTime;          // Milliseconds since the epoch.
+    private int  mPrepHour;          // 0-23 (24 hour clock)
+    private int  mPrepMinute;        // 0-59 (60 minutes)
+    private long mPrepTime;          // Milliseconds since the epoch.
 
     // The user-inputted "wish" time to wake up: do not set an alarm past this time, only before.
     // Required for smart alarm.
-    private int     mUpperBoundDay;     // 1-7 (Sunday, Monday, ..., Saturday)
-    private int     mUpperBoundHour;    // 0-23 (24 hour clock)
-    private int     mUpperBoundMinute;  // 0-59 (60 minutes)
-    private long    mUpperBoundTime;    // Milliseconds since the epoch.
+    private int  mUpperBoundDay;     // 1-7 (Sunday, Monday, ..., Saturday)
+    private int  mUpperBoundHour;    // 0-23 (24 hour clock)
+    private int  mUpperBoundMinute;  // 0-59 (60 minutes)
+    private long mUpperBoundTime;    // Milliseconds since the epoch.
 
     // The different types of alarms available.
     private boolean mAlarmSet;
@@ -91,7 +91,7 @@ public class AlarmClock implements Parcelable {
     public AlarmClock() {
         Calendar calendar = Calendar.getInstance();
 
-        mUuid = UUID.randomUUID();
+        mUuid        = UUID.randomUUID();
         mRequestCode = Math.abs((new Random()).nextInt());
 
         mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
@@ -158,17 +158,17 @@ public class AlarmClock implements Parcelable {
                       Calendar arrivalTime,
                       int prepHour, int prepMinute,
                       Calendar upperBoundTime) {
-        mUuid        = UUID.randomUUID();
-        mRequestCode = Math.abs((new Random()).nextInt());
-        mOrigin      = origin;
-        mDestination = destination;
-        mRepeatDays  = repeatDays;
-        setAlarmTime(alarmTime);
-        setArrivalTime(arrivalTime);
-        setPrepTime(prepHour, prepMinute);
-        setUpperBoundTime(upperBoundTime);
-        mAlarmSet    = DEFAULT_ALARM_SET;
-        mGedderSet   = DEFAULT_GEDDER_SET;
+        mUuid             = UUID.randomUUID();
+        mRequestCode      = Math.abs((new Random()).nextInt());
+        mOrigin           = origin;
+        mDestination      = destination;
+        mRepeatDays       = repeatDays;
+        setAlarmTime      (alarmTime);
+        setArrivalTime    (arrivalTime);
+        setPrepTime       (prepHour, prepMinute);
+        setUpperBoundTime (upperBoundTime);
+        mAlarmSet         = DEFAULT_ALARM_SET;
+        mGedderSet        = DEFAULT_GEDDER_SET;
     }
 
     /**
@@ -199,17 +199,17 @@ public class AlarmClock implements Parcelable {
                       DaysOfWeek.DAY arrivalDay, int arrivalHour, int arrivalMinute,
                       int prepHour, int prepMinute,
                       DaysOfWeek.DAY upperBoundDay, int upperBoundHour, int upperBoundMinute) {
-        mUuid               = UUID.randomUUID();
-        mRequestCode        = Math.abs((new Random()).nextInt());
-        mOrigin             = origin;
-        mDestination        = destination;
-        mRepeatDays         = repeatDays;
-        setAlarmTime        (alarmDay, alarmHour, alarmMinute);
-        setArrivalTime      (arrivalDay, arrivalHour, arrivalMinute);
-        setPrepTime         (prepHour, prepMinute);
-        setUpperBoundTime   (upperBoundDay, upperBoundHour, upperBoundMinute);
-        mAlarmSet           = DEFAULT_ALARM_SET;
-        mGedderSet          = DEFAULT_GEDDER_SET;
+        mUuid             = UUID.randomUUID();
+        mRequestCode      = Math.abs((new Random()).nextInt());
+        mOrigin           = origin;
+        mDestination      = destination;
+        mRepeatDays       = repeatDays;
+        setAlarmTime      (alarmDay, alarmHour, alarmMinute);
+        setArrivalTime    (arrivalDay, arrivalHour, arrivalMinute);
+        setPrepTime       (prepHour, prepMinute);
+        setUpperBoundTime (upperBoundDay, upperBoundHour, upperBoundMinute);
+        mAlarmSet         = DEFAULT_ALARM_SET;
+        mGedderSet        = DEFAULT_GEDDER_SET;
     }
 
     /**
@@ -319,9 +319,9 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setAlarmTime(Calendar future) {
-        mAlarmTime = TimeUtilities.getMillisUntil(future);
-        mAlarmDay = future.get(Calendar.DAY_OF_WEEK);
-        mAlarmHour = future.get(Calendar.HOUR);
+        mAlarmTime   = TimeUtilities.getMillisUntil(future);
+        mAlarmDay    = future.get(Calendar.DAY_OF_WEEK);
+        mAlarmHour   = future.get(Calendar.HOUR);
         mAlarmMinute = future.get(Calendar.MINUTE);
     }
 
@@ -346,9 +346,9 @@ public class AlarmClock implements Parcelable {
      * @see #setAlarmTime(Calendar)
      */
     private void setAlarmTime(int day, int hour, int minute) {
-        mAlarmTime = TimeUtilities.getMillisUntil(day, hour, minute);
-        mAlarmDay = day;
-        mAlarmHour = hour;
+        mAlarmTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mAlarmDay    = day;
+        mAlarmHour   = hour;
         mAlarmMinute = minute;
     }
 
@@ -360,9 +360,9 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setArrivalTime(Calendar future) {
-        mArrivalTime = TimeUtilities.getMillisUntil(future);
-        mArrivalDay = future.get(Calendar.DAY_OF_WEEK);
-        mArrivalHour = future.get(Calendar.HOUR);
+        mArrivalTime   = TimeUtilities.getMillisUntil(future);
+        mArrivalDay    = future.get(Calendar.DAY_OF_WEEK);
+        mArrivalHour   = future.get(Calendar.HOUR);
         mArrivalMinute = future.get(Calendar.MINUTE);
     }
 
@@ -387,9 +387,9 @@ public class AlarmClock implements Parcelable {
      * @see #setArrivalTime(Calendar)
      */
     private void setArrivalTime(int day, int hour, int minute) {
-        mArrivalTime = TimeUtilities.getMillisUntil(day, hour, minute);
-        mArrivalDay = day;
-        mArrivalHour = hour;
+        mArrivalTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mArrivalDay    = day;
+        mArrivalHour   = hour;
         mArrivalMinute = minute;
     }
 
@@ -399,8 +399,8 @@ public class AlarmClock implements Parcelable {
      * @param minute    The minutes it takes to get prepared.
      */
     public void setPrepTime(int hour, int minute) {
-        mPrepTime = TimeUtilities.getMillisIn(hour, minute);
-        mPrepHour = hour;
+        mPrepTime   = TimeUtilities.getMillisIn(hour, minute);
+        mPrepHour   = hour;
         mPrepMinute = minute;
     }
 
@@ -412,9 +412,9 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setUpperBoundTime(Calendar future) {
-        mUpperBoundTime = TimeUtilities.getMillisUntil(future);
-        mUpperBoundDay = future.get(Calendar.DAY_OF_WEEK);
-        mUpperBoundHour = future.get(Calendar.HOUR);
+        mUpperBoundTime   = TimeUtilities.getMillisUntil(future);
+        mUpperBoundDay    = future.get(Calendar.DAY_OF_WEEK);
+        mUpperBoundHour   = future.get(Calendar.HOUR);
         mUpperBoundMinute = future.get(Calendar.MINUTE);
     }
 
@@ -439,9 +439,9 @@ public class AlarmClock implements Parcelable {
      * @see #setUpperBoundTime(Calendar)
      */
     private void setUpperBoundTime(int day, int hour, int minute) {
-        mUpperBoundTime = TimeUtilities.getMillisUntil(day, hour, minute);
-        mUpperBoundDay = day;
-        mUpperBoundHour = hour;
+        mUpperBoundTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mUpperBoundDay    = day;
+        mUpperBoundHour   = hour;
         mUpperBoundMinute = minute;
     }
 
@@ -450,6 +450,8 @@ public class AlarmClock implements Parcelable {
      * Gedder is also automatically toggled off.</ul></em>
      */
     public void toggleAlarm() {
+        // TODO: Move this intent business out of here. The AlarmClock shouldn't be coupled to it.
+
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
         PendingIntent pendingIntent =
@@ -457,8 +459,7 @@ public class AlarmClock implements Parcelable {
                         mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (!isAlarmOn()) {
-            GedderAlarmManager.setOptimal(
-                    AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
+            GedderAlarmManager.setOptimal(AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
         } else {
             GedderAlarmManager.cancel(pendingIntent);
         }
@@ -471,6 +472,7 @@ public class AlarmClock implements Parcelable {
         mAlarmSet = !mAlarmSet;
     }
 
+    /** Toggle the Gedder service for this alarm on and off. */
     public void toggleGedder() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
@@ -494,8 +496,8 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     *
-     * @return
+     * Gets the unique number used to identify this alarm in PendingIntents.
+     * @return The unique number used to identify this alarm in PendingIntents.
      */
     public int getRequestCode() {
         return mRequestCode;

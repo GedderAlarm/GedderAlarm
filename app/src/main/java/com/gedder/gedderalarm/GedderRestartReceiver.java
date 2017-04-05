@@ -21,6 +21,8 @@ import static android.content.Context.ALARM_SERVICE;
  */
 
 public class GedderRestartReceiver extends BroadcastReceiver {
+    // TODO: Adopt AlarmClock and everything new into this!
+
     private static final String TAG = GedderRestartReceiver.class.getSimpleName();
 
     private static long sScheduledAlarmTimeInMs;

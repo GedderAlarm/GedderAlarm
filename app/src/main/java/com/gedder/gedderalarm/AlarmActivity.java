@@ -21,6 +21,9 @@ import com.gedder.gedderalarm.util.Log;
  */
 
 public class AlarmActivity extends AppCompatActivity {
+    // TODO: @gil - UI.
+    // TODO: Adopt all new changes into this.
+
     private static final String TAG = AlarmActivity.class.getSimpleName();
 
     private Ringtone ringtone;

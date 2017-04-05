@@ -17,6 +17,8 @@ import com.gedder.gedderalarm.util.Log;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
+    // TODO: Look to see if this needs adjustment for all of past additions.
+
     private static final String TAG = AlarmReceiver.class.getSimpleName();
 
     @Override

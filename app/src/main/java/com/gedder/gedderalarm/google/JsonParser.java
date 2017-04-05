@@ -466,7 +466,7 @@ public class JsonParser {
             step_number = steps.getJSONObject(step);
             travelModeStr = step_number.getString("travel_mode");
         } catch (JSONException e) {
-            Log.e(TAG, "Invalid JSON string in function " + TAG + "::durationInTraffic.");
+            Log.e(TAG, "Invalid JSON string in function " + TAG + "::travelMode.");
             return null;
         }
 
