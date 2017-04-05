@@ -157,6 +157,7 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         cv.put(AlarmClockTable.Columns.REQUEST_CODE, alarmClock.getRequestCode());
         cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
         cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
+        cv.put(AlarmClockTable.Columns.REPEAT_DAYS, alarmClock.getRepeatDays().getCoded());
         cv.put(AlarmClockTable.Columns.ALARM_DAY, alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));
         cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmTime().get(Calendar.HOUR));
         cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmTime().get(Calendar.MINUTE));

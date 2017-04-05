@@ -21,11 +21,11 @@ public class AlarmClockDBSchema {
             public static final String REQUEST_CODE = "requestCode";
 
             /**  */
-            public static final String REPEAT_DAYS = "repeatDays";
-
-            /**  */
             public static final String ORIGIN = "origin";
             public static final String DESTINATION = "destination";
+
+            /**  */
+            public static final String REPEAT_DAYS = "repeatDays";
 
             /**  */
             public static final String ALARM_DAY = "alarmDay";
