@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PARCEL_ALARM_CLOCK = "_GEDDER_PARCEL_ALARM_CLOCK_";
 
-    private final int intentId = 31582;
+    private final int mIntentRequestCode = 31582;
 
     private ListView alarmClocksListView;
     private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
@@ -45,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        db.addAlarmClock(new AlarmClock());
-//        db.addAlarmClock(new AlarmClock());
         mAlarmClockCursor = db.getAllAlarmClocks();
 
         // Make an adapter based off of the cursor.
@@ -57,18 +56,20 @@ public class MainActivity extends AppCompatActivity {
         alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
         db.close();
 
-        // When an alarm in the list is touched, we go to the alarm edit activity.
+        // When an alarm in the list is clicked, go to the add/edit activity with that alarm's info.
         alarmClocksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AlarmClockDBHelper db = new AlarmClockDBHelper(
                         GedderAlarmApplication.getAppContext());
-                Cursor cursor = db.getAlarmClock(UUID.fromString(view.getTag().toString()));
+                AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(
+                        db.getAlarmClock(UUID.fromString(view.getTag().toString())));
                 cursor.moveToFirst();
-                cursor.
                 Intent intent = new Intent(GedderAlarmApplication.getAppContext(),
                         AddEditAlarmScrollingActivity.class);
-                intent.putExtra(PARCEL_ALARM_CLOCK, )
+                intent.putExtra(PARCEL_ALARM_CLOCK, cursor.getAlarmClock());
+                startActivityForResult(intent, mIntentRequestCode);
+                db.close();
             }
         });
     }
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
-        startActivity(intent);
+        startActivityForResult(intent, mIntentRequestCode);
     }
 }
 
