@@ -17,6 +17,8 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 
+import java.util.UUID;
+
 /**
  *
  */
@@ -53,16 +55,22 @@ public class MainActivity extends AppCompatActivity {
         // Attach the adapter to the list view which we'll populate.
         alarmClocksListView = (ListView) findViewById(R.id.alarm_clocks_list);
         alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
+        db.close();
 
         // When an alarm in the list is touched, we go to the alarm edit activity.
         alarmClocksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // Some alarm clock item on the list of alarms is clicked.
-                // TODO: bring to the alarm edit activity.
+                AlarmClockDBHelper db = new AlarmClockDBHelper(
+                        GedderAlarmApplication.getAppContext());
+                Cursor cursor = db.getAlarmClock(UUID.fromString(view.getTag().toString()));
+                cursor.moveToFirst();
+                cursor.
+                Intent intent = new Intent(GedderAlarmApplication.getAppContext(),
+                        AddEditAlarmScrollingActivity.class);
+                intent.putExtra(PARCEL_ALARM_CLOCK, )
             }
         });
-        db.close();
     }
 
     /**

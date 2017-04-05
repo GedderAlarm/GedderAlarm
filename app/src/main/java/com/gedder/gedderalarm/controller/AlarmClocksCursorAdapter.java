@@ -50,5 +50,7 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
         // Populate our views with that data.
         time.setText(String.valueOf(alarmTime));
 //        alarmToggle.setText(alarmSet > 0 ? "Turn off" : "Turn on");
+        view.setTag(cursor.getString(cursor.getColumnIndexOrThrow(
+                AlarmClockDBSchema.AlarmClockTable.Columns.UUID)));
     }
 }
