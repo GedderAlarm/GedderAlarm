@@ -21,27 +21,23 @@ import java.util.ArrayList;
 /**
  * <p>Serves as the entry point for the Gedder algorithm.</p>
  *
- * <p>After gathering data from the intent that was broadcast, it starts up the
+ * <p>After gathering data from whatever started up this activity, it starts up the
  * {@link GedderEngine}. The {@link GedderEngine} sends back some of the relevant data after flowing
- * through its pipeline.</p>
+ * through its pipeline. It then analyzes the response.</p>
  *
- * <p>It then analyzes the response from the {@link GedderEngine}.</p>
- *
- * <p>During and after the analysis of the result data, it determines what action to take. It may do
- * one of the following:</p>
+ * <p>From going through the analysis, it determines what action to take. It may either:</p>
  *
  * <ul>
- *     <li>Reschedule itself to start up the {@link GedderEngine} for some default set time in the
- *     future.</li>
- *     <li>Reschedule itself to start up the {@link GedderEngine} for some adjusted time in the
- *     future.</li>
+ *     <li>Reschedule itself to start the {@link GedderEngine} up for some time in the future
+ *     depending on how much time we have until the alarm.</li>
  *     <li>Trigger the alarm.</li>
  * </ul><br>
  *
  * <u><strong>Case 1</strong></u>
  *
  * <p>In the first case, the algorithm sees no reason for concern, and just carries on rescheduling
- * itself for future analysis at some default rate.</p>
+ * itself for future analysis at some rate it determines based off of how much time there currently
+ * is until the alarm is supposed to ring.</p>
  *
  * <u><strong>Case 2</strong></u>
  *
@@ -113,13 +109,15 @@ public class GedderReceiver extends BroadcastReceiver {
 
         // Need this for a comprehensible analysis below.
         long optimalWakeUpTime = arrivalTime - duration - prepTime;
-        long timeUntilAlarm    = upperBoundTime - System.currentTimeMillis();
+        long wishWakeUpTime    = arrivalTime - prepTime - upperBoundTime;
+        long timeUntilAlarm    = optimalWakeUpTime - System.currentTimeMillis();
 
         // Initialize & declare intents and variables for our next action.
         Intent next = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
         long nextTime;
 
-        if (System.currentTimeMillis() > optimalWakeUpTime) {
+        if (System.currentTimeMillis() > optimalWakeUpTime
+                || System.currentTimeMillis() > wishWakeUpTime) {
             // Wake up the user!
             next.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
             nextTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
