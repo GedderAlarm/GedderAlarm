@@ -1,5 +1,5 @@
 /*
- * USER: jameskluz
+ * USER: jameskluz, mslm
  * DATE: 2/24/17.
  */
 
@@ -14,13 +14,15 @@ import android.content.Intent;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
-    // TODO: Look to see if this needs adjustment for all of past additions.
-
     private static final String TAG = AlarmReceiver.class.getSimpleName();
+
+    public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent alarmActivity = new Intent(context.getApplicationContext(), AlarmActivity.class);
+        alarmActivity.putExtra(AlarmActivity.PARAM_ALARM_UUID,
+                intent.getSerializableExtra(PARAM_ALARM_UUID));
         alarmActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);

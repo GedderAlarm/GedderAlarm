@@ -5,15 +5,10 @@
 
 package com.gedder.gedderalarm.model;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.gedder.gedderalarm.AlarmReceiver;
-import com.gedder.gedderalarm.GedderAlarmApplication;
 import com.gedder.gedderalarm.GedderAlarmManager;
 import com.gedder.gedderalarm.util.DaysOfWeek;
 import com.gedder.gedderalarm.util.Log;
@@ -453,18 +448,14 @@ public class AlarmClock implements Parcelable {
      * Toggles the alarm on and off.
      */
     public void toggleAlarm() {
-        // TODO: Move this intent business out of here. The AlarmClock shouldn't be coupled to it.
-
-        Intent alarmIntent =
-                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
-                        mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Bundle bundle = new Bundle();
+        bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+        bundle.putLong(GedderAlarmManager.PARAM_ALARM_TIME, mAlarmTime);
 
         if (!isAlarmOn()) {
-            GedderAlarmManager.setOptimal(AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
+            GedderAlarmManager.setAlarm(bundle);
         } else {
-            GedderAlarmManager.cancel(pendingIntent);
+            GedderAlarmManager.cancelAlarm(bundle);
         }
 
         mAlarmSet = !mAlarmSet;

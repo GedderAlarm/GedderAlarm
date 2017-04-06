@@ -16,6 +16,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.gedder.gedderalarm.model.AlarmClock;
 
+import java.util.UUID;
+
 import static android.content.Context.ALARM_SERVICE;
 
 /**
@@ -32,6 +34,8 @@ public final class GedderAlarmManager {
 
     public static final String PARAM_ALARM_CLOCK = "__PARAM_ALARM_CLOCK__";
     public static final String PARAM_UNIQUE_ID = "__PARAM_UNIQUE_ID__";
+    public static final String PARAM_ALARM_TIME = "__PARAM_ALARM_TIME__";
+    public static final String PARAM_UUID = "__PARAM_UUID__";
 
     private static AlarmManager sAlarmManager =
             (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
@@ -39,19 +43,47 @@ public final class GedderAlarmManager {
     private GedderAlarmManager() {}
 
     /**
-     * Checks build version to decide which set functionality to use.
-     * @param type              See AlarmManager documentation.
-     * @param triggerAtMillis   See AlarmManager documentation.
-     * @param operation         See AlarmManager documentation.
+     *
+     * @param alarmData
      */
-    public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            sAlarmManager.setExact(type, triggerAtMillis, operation);
-        } else {
-            sAlarmManager.set(type, triggerAtMillis, operation);
+    public static void setAlarm(Bundle alarmData) {
+        UUID uuid = (UUID) alarmData.getSerializable(PARAM_UUID);
+        int id = alarmData.getInt(PARAM_UNIQUE_ID, -1);
+        long time = alarmData.getLong(PARAM_ALARM_TIME, -1);
+
+        if (uuid == null || id == -1 || time == -1) {
+            throw new IllegalArgumentException(
+                    "id = " + id
+                    + " time = " + time
+                    + " uuid = " + uuid);
         }
+
+        Intent alarmIntent =
+                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+        alarmIntent.putExtra(AlarmReceiver.PARAM_ALARM_UUID, uuid);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
+                        id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        setOptimal(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+    }
+
+    /**
+     *
+     * @param alarmData
+     */
+    public static void cancelAlarm(Bundle alarmData) {
+        int id = alarmData.getInt(PARAM_UNIQUE_ID, -1);
+
+        if (id == -1) {
+            throw new IllegalArgumentException("id = " + id);
+        }
+
+        Intent alarmIntent =
+                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
+                        id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        cancel(pendingIntent);
     }
 
     /**
@@ -65,7 +97,7 @@ public final class GedderAlarmManager {
         if (alarmClock == null || id == -1) {
             throw new IllegalArgumentException(
                     "alarmClock = " + alarmClock
-                          + "id = " + id);
+                          + " id = " + id);
         }
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
@@ -96,6 +128,22 @@ public final class GedderAlarmManager {
                 PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
                         id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         cancel(pendingIntent);
+    }
+
+    /**
+     * Checks build version to decide which set functionality to use.
+     * @param type              See AlarmManager documentation.
+     * @param triggerAtMillis   See AlarmManager documentation.
+     * @param operation         See AlarmManager documentation.
+     */
+    public static void setOptimal(int type, long triggerAtMillis, PendingIntent operation) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            sAlarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            sAlarmManager.setExact(type, triggerAtMillis, operation);
+        } else {
+            sAlarmManager.set(type, triggerAtMillis, operation);
+        }
     }
 
     /**
