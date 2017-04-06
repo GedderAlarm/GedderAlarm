@@ -53,6 +53,9 @@ public class AlarmClock implements Parcelable {
     private String mOrigin;
     private String mDestination;
 
+    private String mOriginAddress;
+    private String mDestinationAddress;
+
     // The days this alarm will repeat in its current form.
     private DaysOfWeek mRepeatDays;
 
@@ -95,6 +98,8 @@ public class AlarmClock implements Parcelable {
 
         mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
         mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
+        mOriginAddress      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mDestinationAddress = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
 
         // Not repeating by default.
         mRepeatDays = new DaysOfWeek();
@@ -262,6 +267,8 @@ public class AlarmClock implements Parcelable {
 
         mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
         mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
+        mOriginAddress      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mDestinationAddress = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
 
         // Not repeating by default.
         mRepeatDays = new DaysOfWeek();
@@ -299,6 +306,18 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
+     * Sets origin address for the purpose of the Gedder alarm.
+     * @param origin The origin to set to. Must be non-null.
+     * @throws IllegalArgumentException If origin is null.
+     */
+    public void setOriginAddress(String origin) {
+        if (origin == null) {
+            throw new IllegalArgumentException();
+        }
+        mOriginAddress = origin;
+    }
+
+    /**
      * Sets destination for the purpose of the Gedder alarm.
      * @param destination The destination to set to. Must be non-null.
      * @throws IllegalArgumentException If destination is null.
@@ -308,6 +327,18 @@ public class AlarmClock implements Parcelable {
             throw new IllegalArgumentException();
         }
         mDestination = destination;
+    }
+
+    /**
+     * Sets destination for the purpose of the Gedder alarm.
+     * @param destination The destination to set to. Must be non-null.
+     * @throws IllegalArgumentException If destination is null.
+     */
+    public void setDestinationAddress(String destination) {
+        if (destination == null) {
+            throw new IllegalArgumentException();
+        }
+        mDestinationAddress = destination;
     }
 
     /**
@@ -344,7 +375,7 @@ public class AlarmClock implements Parcelable {
      * @param minute    The minute to set the internal alarm to.
      * @see #setAlarmTime(Calendar)
      */
-    private void setAlarmTime(int day, int hour, int minute) {
+    public void setAlarmTime(int day, int hour, int minute) {
         mAlarmTime   = TimeUtilities.getMillisUntil(day, hour, minute);
         mAlarmDay    = day;
         mAlarmHour   = hour;
@@ -385,7 +416,7 @@ public class AlarmClock implements Parcelable {
      * @param minute    The minute to set the arrival time to.
      * @see #setArrivalTime(Calendar)
      */
-    private void setArrivalTime(int day, int hour, int minute) {
+    public void setArrivalTime(int day, int hour, int minute) {
         mArrivalTime   = TimeUtilities.getMillisUntil(day, hour, minute);
         mArrivalDay    = day;
         mArrivalHour   = hour;
@@ -437,7 +468,7 @@ public class AlarmClock implements Parcelable {
      * @param minute    The minute the user selects for the alarm.
      * @see #setUpperBoundTime(Calendar)
      */
-    private void setUpperBoundTime(int day, int hour, int minute) {
+    public void setUpperBoundTime(int day, int hour, int minute) {
         mUpperBoundTime   = TimeUtilities.getMillisUntil(day, hour, minute);
         mUpperBoundDay    = day;
         mUpperBoundHour   = hour;
@@ -529,11 +560,27 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
+     * Gets the address of the place the user is leaving from.
+     * @return The place the user is leaving from.
+     */
+    public String getOriginAddress() {
+        return mOriginAddress;
+    }
+
+    /**
      * Gets the place the user is going to.
      * @return The place the user is going to.
      */
     public String getDestination() {
         return mDestination;
+    }
+
+    /**
+     * Gets the address of the place place the user is going to.
+     * @return The place the user is going to.
+     */
+    public String getDestinationAddress() {
+        return mDestinationAddress;
     }
 
     /**

@@ -84,12 +84,6 @@ public class MainActivity extends AppCompatActivity {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
-        //for testing
-        AlarmClock testing_alarm_clock = new AlarmClock();
-        Calendar temp_cal = testing_alarm_clock.getAlarmTime();
-        String hour = Integer.toString(temp_cal.get(Calendar.HOUR_OF_DAY));
-        String minute = Integer.toString(temp_cal.get(Calendar.MINUTE));
-        Toast.makeText(this, "Hour: " + hour + " Minute: " + minute, Toast.LENGTH_SHORT).show();
         startActivityForResult(intent, mIntentRequestCode);
     }
 
