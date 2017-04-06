@@ -1,24 +1,27 @@
 /*
- * USER: mslm
- * DATE: 4/5/17
+ * USER: jameskluz, mslm
+ * DATE: 3/3/17
  */
 
 package com.gedder.gedderalarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.Log;
 
-/**  */
+/**
+ *
+ */
 
-public class GedderRestartReceiver extends BroadcastReceiver {
-    private static final String TAG = GedderRestartReceiver.class.getSimpleName();
+public class AlarmRestartReceiver extends BroadcastReceiver {
+    private static final String TAG = AlarmRestartReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,13 +41,14 @@ public class GedderRestartReceiver extends BroadcastReceiver {
             do {
                 AlarmClock alarmClock = cursor.getAlarmClock();
                 if (alarmClock.isAlarmOn() && alarmClock.getAlarmTimeMillis() > System.currentTimeMillis()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, alarmClock);
-                    bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, alarmClock.getRequestCode());
-                    GedderAlarmManager.setGedder(bundle);
+                    Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                            context, alarmClock.getRequestCode(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    GedderAlarmManager.setOptimal(
+                            AlarmManager.RTC_WAKEUP, alarmClock.getAlarmTimeMillis(), pendingIntent);
                 } else {
                     // We missed the alarm while the phone was off; appropriate alarm variables.
-                    alarmClock.setGedder(AlarmClock.OFF);
+                    alarmClock.setAlarm(AlarmClock.OFF);
                 }
             } while (cursor.moveToNext());
         }

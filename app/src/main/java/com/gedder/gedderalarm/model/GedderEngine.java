@@ -34,12 +34,9 @@ import java.util.concurrent.ExecutionException;
 public final class GedderEngine {
     private static final String TAG = GedderEngine.class.getSimpleName();
 
-    /**  */
     public static final String RESULT_DURATION = "__GEDDER_ENGINE_RESULT_DURATION__";
-    /**  */
     public static final String RESULT_DURATION_IN_TRAFFIC =
             "__GEDDER_ENGINE_RESULT_DURATION_IN_TRAFFIC__";
-    /**  */
     public static final String RESULT_WARNINGS = "__GEDDER_ENGINE_WARNINGS__";
 
     // We get this in some secret way. For development, just keep a local API key in a file that
@@ -68,21 +65,21 @@ public final class GedderEngine {
      * data by using keys like {@link #RESULT_DURATION}, {@link #RESULT_WARNINGS}, etc..
      */
     public static Bundle start(String origin, String destination,
-                               long arrivalTime, long prepTime, long upperBoundTime) {
+                               long arrivalTime) {
         // TODO: Fix up some of the "style" of the code.
         // TODO: Move parts to different functions.
+        // TODO: Make another `start` function with departureTime instead of arrival (use prep + upperBound).
 
-        String url
-             , json = ""
-             , err;
-        int    duration
-             , durationInTraffic;
+        String            url;
+        String            json = "";
+        String            err;
+        int               duration;
+        int               durationInTraffic;
         ArrayList<String> warnings;
 
         // Generate URL
         url = new UrlGenerator.UrlBuilder(origin, destination, sApiKey)
                 .arrivalTime(arrivalTime)
-                .departureTime(upperBoundTime + prepTime)
                 .build().toString();
 
         // Query API

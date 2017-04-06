@@ -1,10 +1,11 @@
 /*
- * USER: jameskluz
+ * USER: jameskluz, mslm
  * DATE: 3/1/17
  */
 
 package com.gedder.gedderalarm;
 
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,7 +15,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.gedder.gedderalarm.util.Log;
+import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
+import com.gedder.gedderalarm.db.AlarmClockDBHelper;
+import com.gedder.gedderalarm.model.AlarmClock;
+
+import java.util.UUID;
 
 /**
  *
@@ -22,96 +27,96 @@ import com.gedder.gedderalarm.util.Log;
 
 public class AlarmActivity extends AppCompatActivity {
     // TODO: @gil - UI.
-    // TODO: Adopt all new changes into this.
 
     private static final String TAG = AlarmActivity.class.getSimpleName();
 
-    private Ringtone ringtone;
+    public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
 
     // This is used to get the ringtone.
     private Uri alert;
-
-    // This links us to the "stop alarm" button.
-    private Button stopAlarmBtn;
-
-    private static long sScheduledAlarmTimeInMs;
-    private static boolean sAlarmSet;
-    private long mMsUntilAlarm;
+    private Ringtone ringtone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        initializeVariables();
-    }
 
-    @Override
-    protected void onPause() {
-        Log.v(TAG, "onPause()");
-        super.onPause();
+        // First thing's first: turn off the alarm internally.
+        Intent intent = getIntent();
+        UUID alarmUuid = (UUID) intent.getSerializableExtra(PARAM_ALARM_UUID);
+        turnOffAlarm(alarmUuid);
 
-        stopAlarm();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.v(TAG, "onDestroy()");
-        super.onDestroy();
-
-        stopAlarm();
-    }
-
-    /**
-     * This essentially disables the back button, if removed things will break
-     * unless someone addresses what should happen on back press
-     */
-    @Override
-    public void onBackPressed() {
-        Log.v(TAG, "onBackPressed()");
-    }
-
-    private void initializeVariables() {
-        Log.v(TAG, "initializeVariables()");
-
+        // Now play the alarm sound.
         alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alert == null) {
-            // Alert is null, using backup.
+            // Use backup.
             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             if (alert == null) {
-                // Alert backup is null, using 2nd backup.
+                // 2nd backup.
                 alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             }
         }
         ringtone = RingtoneManager.getRingtone(this, alert);
         ringtone.play();
-        stopAlarmBtn = (Button) findViewById(R.id.button_stop_alarm);
+
+        Button stopAlarmBtn = (Button) findViewById(R.id.button_stop_alarm);
         stopAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopAlarm();
+                turnOffAlarmSound();
+                finish();
             }
         });
-        sScheduledAlarmTimeInMs = -1L;
-        sAlarmSet = false;
-        mMsUntilAlarm = 0L;
-
-        updateSavedVariable();
     }
 
-    private void stopAlarm() {
-        if (ringtone.isPlaying()) {
-            ringtone.stop();
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        turnOffAlarmSound();
         finish();
     }
 
-    private void updateSavedVariable() {
-        Log.e(TAG, "updateSavedVariable()");
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        turnOffAlarmSound();
+        finish();
+    }
 
+    /** This disables the back button; the user should explicitly say what to do next. */
+    @Override
+    public void onBackPressed() {
+        /* Intentionally empty */
+    }
 
+    /**
+     * Turns off both the alarm clock and any associated services (i.e. Gedder).
+     * @param uuid The UUID of the alarm clock in question.
+     */
+    private void turnOffAlarm(UUID uuid) {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAlarmClock(uuid));
+        cursor.moveToFirst();
+        AlarmClock alarmClock = cursor.getAlarmClock();
+        // Since the alarm just went off, we need to now internally say it's off.
+        if (alarmClock.isAlarmOn()) {
+            alarmClock.toggleAlarm();
+        }
+        if (alarmClock.isGedderOn()) {
+            alarmClock.toggleGedder();
+        }
+        db.updateAlarmClock(alarmClock);
+        cursor.close();
+        db.close();
+    }
+
+    private void turnOffAlarmSound() {
+        if (ringtone.isPlaying()) {
+            ringtone.stop();
+        }
     }
 }

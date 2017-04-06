@@ -5,17 +5,13 @@
 
 package com.gedder.gedderalarm.model;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.gedder.gedderalarm.AlarmReceiver;
-import com.gedder.gedderalarm.GedderAlarmApplication;
 import com.gedder.gedderalarm.GedderAlarmManager;
 import com.gedder.gedderalarm.util.DaysOfWeek;
+import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.Calendar;
@@ -28,6 +24,9 @@ import java.util.UUID;
  */
 
 public class AlarmClock implements Parcelable {
+    public static final int ON  = 1;
+    public static final int OFF = 0;
+
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     // Default values for certain private variables.
@@ -446,27 +445,17 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     * Toggles the alarm on and off. <em><ul>If Gedder is running and we're toggling the alarm off,
-     * Gedder is also automatically toggled off.</ul></em>
+     * Toggles the alarm on and off.
      */
     public void toggleAlarm() {
-        // TODO: Move this intent business out of here. The AlarmClock shouldn't be coupled to it.
-
-        Intent alarmIntent =
-                new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(GedderAlarmApplication.getAppContext(),
-                        mRequestCode, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Bundle bundle = new Bundle();
+        bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+        bundle.putLong(GedderAlarmManager.PARAM_ALARM_TIME, mAlarmTime);
 
         if (!isAlarmOn()) {
-            GedderAlarmManager.setOptimal(AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
+            GedderAlarmManager.setAlarm(bundle);
         } else {
-            GedderAlarmManager.cancel(pendingIntent);
-        }
-
-        // Gedder shouldn't remain on if the Alarm isn't.
-        if (isGedderOn()) {
-            toggleGedder();
+            GedderAlarmManager.cancelAlarm(bundle);
         }
 
         mAlarmSet = !mAlarmSet;
@@ -485,6 +474,34 @@ public class AlarmClock implements Parcelable {
         }
 
         mGedderSet = !mGedderSet;
+    }
+
+    /**
+     *
+     * @param flag
+     */
+    public void setAlarm(int flag) {
+        if (flag == OFF) {
+            mAlarmSet = false;
+        } else if (flag == ON) {
+            mAlarmSet = true;
+        } else {
+            Log.e(TAG, "Unrecognized flag in setAlarm.");
+        }
+    }
+
+    /**
+     *
+     * @param flag
+     */
+    public void setGedder(int flag) {
+        if (flag == OFF) {
+            mGedderSet = false;
+        } else if (flag == ON) {
+            mGedderSet = true;
+        } else {
+            Log.e(TAG, "Unrecognized flag in setGedder.");
+        }
     }
 
     /**
@@ -620,7 +637,7 @@ public class AlarmClock implements Parcelable {
      * @return
      */
     public boolean isGedderOn() {
-        return mAlarmSet && mGedderSet;
+        return mGedderSet;
     }
 
     /**
@@ -635,8 +652,27 @@ public class AlarmClock implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(this.mUuid);
+        dest.writeInt(this.mRequestCode);
+        dest.writeString(this.mOrigin);
+        dest.writeString(this.mDestination);
+        dest.writeInt(this.mRepeatDays.getCoded());
+        dest.writeInt(this.mAlarmDay);
+        dest.writeInt(this.mAlarmHour);
+        dest.writeInt(this.mAlarmMinute);
         dest.writeLong(this.mAlarmTime);
+        dest.writeInt(this.mArrivalDay);
+        dest.writeInt(this.mArrivalHour);
+        dest.writeInt(this.mArrivalMinute);
+        dest.writeLong(this.mArrivalTime);
+        dest.writeInt(this.mPrepHour);
+        dest.writeInt(this.mPrepMinute);
+        dest.writeLong(this.mPrepTime);
+        dest.writeInt(this.mUpperBoundDay);
+        dest.writeInt(this.mUpperBoundHour);
+        dest.writeInt(this.mUpperBoundMinute);
+        dest.writeLong(this.mUpperBoundTime);
         dest.writeByte(this.mAlarmSet ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.mGedderSet ? (byte) 1 : (byte) 0);
     }
 
     /** {@inheritDoc} */
@@ -651,7 +687,25 @@ public class AlarmClock implements Parcelable {
      */
     protected AlarmClock(Parcel in) {
         this.mUuid = (UUID) in.readSerializable();
+        this.mRequestCode = in.readInt();
+        this.mOrigin = in.readString();
+        this.mDestination = in.readString();
+        this.mRepeatDays = new DaysOfWeek(in.readInt());
+        this.mAlarmDay = in.readInt();
+        this.mAlarmHour = in.readInt();
+        this.mAlarmMinute = in.readInt();
         this.mAlarmTime = in.readLong();
+        this.mArrivalDay = in.readInt();
+        this.mArrivalHour = in.readInt();
+        this.mArrivalMinute = in.readInt();
+        this.mArrivalTime = in.readLong();
+        this.mPrepHour = in.readInt();
+        this.mPrepMinute = in.readInt();
+        this.mPrepTime = in.readLong();
+        this.mUpperBoundDay = in.readInt();
+        this.mUpperBoundHour = in.readInt();
+        this.mUpperBoundMinute = in.readInt();
+        this.mUpperBoundTime = in.readLong();
         this.mAlarmSet = in.readByte() != 0;
         this.mGedderSet = in.readByte() != 0;
     }
