@@ -636,8 +636,6 @@ public class AlarmClock implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(this.mUuid);
         dest.writeLong(this.mAlarmTime);
-        dest.writeInt(this.mAlarmHour);
-        dest.writeInt(this.mAlarmMinute);
         dest.writeByte(this.mAlarmSet ? (byte) 1 : (byte) 0);
     }
 
@@ -654,8 +652,6 @@ public class AlarmClock implements Parcelable {
     protected AlarmClock(Parcel in) {
         this.mUuid = (UUID) in.readSerializable();
         this.mAlarmTime = in.readLong();
-        this.mAlarmHour = in.readInt();
-        this.mAlarmMinute = in.readInt();
         this.mAlarmSet = in.readByte() != 0;
         this.mGedderSet = in.readByte() != 0;
     }
