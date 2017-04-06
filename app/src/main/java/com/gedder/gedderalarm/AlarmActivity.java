@@ -103,7 +103,9 @@ public class AlarmActivity extends AppCompatActivity {
         cursor.moveToFirst();
         AlarmClock alarmClock = cursor.getAlarmClock();
         // Since the alarm just went off, we need to now internally say it's off.
-        alarmClock.setAlarm(AlarmClock.OFF);
+        if (alarmClock.isAlarmOn()) {
+            alarmClock.toggleAlarm();
+        }
         if (alarmClock.isGedderOn()) {
             alarmClock.toggleGedder();
         }

@@ -79,8 +79,6 @@ public class GedderReceiver extends BroadcastReceiver {
     public static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
     public static final String PARAM_UPPER_BOUND_TIME = "__PARAM_UPPER_BOUND_TIME__";
     public static final String PARAM_ID = "__PARAM_ID__";
-    public static final String ANALYSIS_CONSECUTIVE_DELAY_COUNT =
-            "__ANALYSIS_CONSECUTIVE_DELAY_COUNT__";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -94,57 +92,47 @@ public class GedderReceiver extends BroadcastReceiver {
         if (origin == null || dest == null
                 || origin.equals("") || dest.equals("")
                 || arrivalTime == -1 || prepTime == -1 || upperBoundTime == -1
-                || id == -1)
-            throw new IllegalArgumentException(
-                    "origin = " + origin
-                    + "dest = " + dest
-                    + "arrivalTime = " + arrivalTime
-                    + "prepTime = " + prepTime
-                    + "upperBoundTime = " + upperBoundTime
-                    + "id = " + id);
+                || id == -1) {
+            throw new IllegalArgumentException("origin = " + origin
+                            + " dest = " + dest
+                            + " arrivalTime = " + arrivalTime
+                            + " prepTime = " + prepTime
+                            + " upperBoundTime = " + upperBoundTime
+                            + " id = " + id);
+        }
 
         // Turn on the engine, and get back the results.
-        Bundle results = GedderEngine.start(origin, dest, arrivalTime, prepTime, upperBoundTime);
-        int duration = results.getInt(GedderEngine.RESULT_DURATION, -1);
-        int durationInTraffic = results.getInt(GedderEngine.RESULT_DURATION_IN_TRAFFIC, -1);
-        ArrayList<String> warnings =
-                (ArrayList<String>) results.getSerializable(GedderEngine.RESULT_WARNINGS);
+        Bundle results = GedderEngine.start(origin, dest, arrivalTime);
+        long duration = TimeUtilities.secondsToMillis(
+                results.getInt(GedderEngine.RESULT_DURATION, -1));
+        long durationInTraffic = TimeUtilities.secondsToMillis(
+                results.getInt(GedderEngine.RESULT_DURATION_IN_TRAFFIC, -1));
+        @SuppressWarnings("unchecked")
+        ArrayList<String> warnings = (ArrayList<String>)
+                results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
         // Need this for a comprehensible analysis below.
-        long oldDuration           = arrivalTime - prepTime - upperBoundTime;
-        long delayAmount           = duration - oldDuration;
-        long timeUntilAlarm        = upperBoundTime - System.currentTimeMillis();
-        int  consecutiveDelayCount = intent.getIntExtra(ANALYSIS_CONSECUTIVE_DELAY_COUNT, 0);
+        long optimalWakeUpTime = arrivalTime - duration - prepTime;
+        long timeUntilAlarm    = upperBoundTime - System.currentTimeMillis();
 
         // Initialize & declare intents and variables for our next action.
-        Intent nextAction = new Intent(
-                GedderAlarmApplication.getAppContext(), GedderReceiver.class);
-        long nextActionTime;
+        Intent next = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
+        long nextTime;
 
-        // Is Google Maps API detecting a longer trip than before?
-        if (duration > oldDuration) {
-            // Then we have a delay. Is this delay going to force us to wake up?
-            if (delayAmount > timeUntilAlarm) {
-                // Wake up the user!
-                nextAction.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
-                nextActionTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
-            } else {
-                // Not as urgent, but there's still a delay. Let's keep polling to stay updated.
-                nextAction.putExtra(ANALYSIS_CONSECUTIVE_DELAY_COUNT, ++consecutiveDelayCount);
-                nextActionTime = System.currentTimeMillis()
-                        + (getFrequencyDependingOn(timeUntilAlarm) / (consecutiveDelayCount));
-            }
+        if (System.currentTimeMillis() > optimalWakeUpTime) {
+            // Wake up the user!
+            next.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+            nextTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
         } else {
-            // No delay. Check back in a time dependent on how close we are to the alarm time.
-            nextActionTime = System.currentTimeMillis()
-                    + getFrequencyDependingOn(timeUntilAlarm);
+            // Check back in a time dependent on how close we are to the alarm time.
+            nextTime = System.currentTimeMillis() + getFrequencyDependingOn(timeUntilAlarm);
         }
 
         // Whatever the analysis, we must set the intent.
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                GedderAlarmApplication.getAppContext(), id, nextAction, PendingIntent.FLAG_UPDATE_CURRENT);
+                GedderAlarmApplication.getAppContext(), id, next, PendingIntent.FLAG_UPDATE_CURRENT);
         GedderAlarmManager.setOptimal(
-                AlarmManager.RTC_WAKEUP, nextActionTime, pendingIntent);
+                AlarmManager.RTC_WAKEUP, nextTime, pendingIntent);
     }
 
     /**
