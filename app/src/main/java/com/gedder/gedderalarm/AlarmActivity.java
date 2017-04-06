@@ -40,18 +40,17 @@ public class AlarmActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         initializeVariables();
     }
 
     @Override
     protected void onPause() {
-        Log.v(TAG, "onPause()");
         super.onPause();
 
         stopAlarm();
@@ -59,19 +58,17 @@ public class AlarmActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.v(TAG, "onDestroy()");
         super.onDestroy();
 
         stopAlarm();
     }
 
     /**
-     * This essentially disables the back button, if removed things will break
-     * unless someone addresses what should happen on back press
+     * This essentially disables the back button; the user should explicitly say what to do next.
      */
     @Override
     public void onBackPressed() {
-        Log.v(TAG, "onBackPressed()");
+        /* Intentionally empty */
     }
 
     private void initializeVariables() {
@@ -98,8 +95,6 @@ public class AlarmActivity extends AppCompatActivity {
         sScheduledAlarmTimeInMs = -1L;
         sAlarmSet = false;
         mMsUntilAlarm = 0L;
-
-        updateSavedVariable();
     }
 
     private void stopAlarm() {
@@ -107,11 +102,5 @@ public class AlarmActivity extends AppCompatActivity {
             ringtone.stop();
         }
         finish();
-    }
-
-    private void updateSavedVariable() {
-        Log.e(TAG, "updateSavedVariable()");
-
-
     }
 }
