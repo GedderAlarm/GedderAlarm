@@ -1,19 +1,20 @@
 package com.gedder.gedderalarm;
 
-import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.text.Html;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.gedder.gedderalarm.db.AlarmClockDBHelper;
+import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,10 +25,6 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-
-import com.gedder.gedderalarm.model.AlarmClock;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 /** The activity where the user edits an alarm, new or old. */
@@ -271,10 +268,10 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             mAlarmClock.setDestination(mDestinationIdString);
             mAlarmClock.setOriginAddress(mOriginAddressString);
             if (! mAlarmClock.isAlarmOn()) {
-                //mAlarmClock.toggleAlarm();
+                mAlarmClock.toggleAlarm();
             }
             if (! mAlarmClock.isGedderOn()) {
-                //mAlarmClock.toggleGedder();
+                mAlarmClock.toggleGedder();
             }
             Toast.makeText(this, "Gedder Alarm Set!", Toast.LENGTH_SHORT).show();
         } else {
@@ -284,14 +281,20 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
             mAlarmClock.setUpperBoundTime(alarmDay, mHour, mMinute);
             if (! mAlarmClock.isAlarmOn()) {
-                //mAlarmClock.toggleAlarm();
+                mAlarmClock.toggleAlarm();
             }
             //Turn off Gedder if it was on
             if (mAlarmClock.isGedderOn()) {
-                //mAlarmClock.toggleGedder();
+                mAlarmClock.toggleGedder();
             }
             Toast.makeText(this, "Regular Alarm Set!", Toast.LENGTH_SHORT).show();
         }
+
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        if (db.updateAlarmClock(mAlarmClock) != 1) {
+            db.addAlarmClock(mAlarmClock);
+        }
+        db.close();
 
         Intent data = new Intent();
         //set the data to pass back

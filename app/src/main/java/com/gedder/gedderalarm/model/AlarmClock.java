@@ -480,6 +480,7 @@ public class AlarmClock implements Parcelable {
      */
     public void toggleAlarm() {
         Bundle bundle = new Bundle();
+        bundle.putSerializable(GedderAlarmManager.PARAM_UUID, mUuid);
         bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
         bundle.putLong(GedderAlarmManager.PARAM_ALARM_TIME, mAlarmTime);
 
