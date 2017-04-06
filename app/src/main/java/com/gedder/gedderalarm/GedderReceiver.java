@@ -41,16 +41,8 @@ import java.util.ArrayList;
  *
  * <u><strong>Case 2</strong></u>
  *
- * <p>In the second case, the algorithm picks up a possible delay, but it is not urgent enough that
- * the user needs to wake up right now. It'll reschedule itself for future analysis, but at a
- * tighter bound (how much tighter depends on the severity of the delay relative to the "wish"
- * alarm time).</p>
- *
- * <u><strong>Case 3</strong></u>
- *
- * <p>In the last case, the algorithm makes the decision to wake the user up right away: it caught a
- * delay significant enough that if the user doesn't take action now, they'll be late to their
- * destination.</p>
+ * <p>In the second case, the algorithm makes the decision to wake the user up right away: it caught
+ * a delay and the current time is past the optimal wake up time, so there's no time to lose.</p>
  *
  * <p>Each time the algorithm sets itself up for a future flow through the pipeline, it checks how
  * close it is to the currently planned alarm time. The closer it gets, the more often it queries
@@ -58,12 +50,8 @@ import java.util.ArrayList;
  * now the user must wake up as soon as possible, otherwise the delay can be detrimental to reaching
  * the destination at the planned arrival time.</p>
  *
- * <p>To sum, the algorithm can either reschedule itself for a default rate of analysis, or a
- * tighter rate, or trigger the alarm, all depending on information it has previously received and
- * analyzed.</p>
- *
- * <p>In this way, the algorithm ensures it's awake and aware of any delays at all times, and
- * becomes increasingly active when there's a concern, i.e. when delays are present.</p>
+ * <p>To sum, the algorithm either reschedules itself for a rate of analysis dependent on how
+ * much time is left until the alarm, or triggers the alarm because there's no time to lose.</p>
  */
 
 public class GedderReceiver extends BroadcastReceiver {
