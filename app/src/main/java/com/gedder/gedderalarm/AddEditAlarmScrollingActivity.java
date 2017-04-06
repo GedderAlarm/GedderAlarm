@@ -2,6 +2,8 @@ package com.gedder.gedderalarm;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,7 +30,6 @@ import com.gedder.gedderalarm.model.AlarmClock;
 import org.w3c.dom.Text;
 
 import java.util.Calendar;
-
 /** The activity where the user edits an alarm, new or old. */
 
 public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
@@ -61,18 +62,27 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private static final LatLngBounds NEW_YORK_CITY = new LatLngBounds(
             new LatLng(40.477399, -74.259090), new LatLng(40.917577, -73.700272));
+    private AlarmClock alarmClock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_edit_scrolling);
         // Get the alarm clock in question.
-        AlarmClock alarmClock = getIntent().getParcelableExtra(MainActivity.PARCEL_ALARM_CLOCK);
+        alarmClock = (AlarmClock) getIntent().getParcelableExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK);
         // Programmatically change settings of views to match this alarm clock's settings.
 
         //Initialize variables for textviews and timepicker
         mAlarmTimePicker = (TimePicker) findViewById(R.id
                 .generalAlarmTimePicker);
+        Calendar temp_cal = alarmClock.getAlarmTime();
+        String hour = Integer.toString(temp_cal.get(Calendar.HOUR_OF_DAY));
+        String minute = Integer.toString(temp_cal.get(Calendar.MINUTE));
+        Toast.makeText(this, "Hour: " + hour + " Minute: " + minute, Toast.LENGTH_SHORT).show();
+        //mAlarmTimePicker.setCurrentHour(temp_cal.get(Calendar.HOUR_OF_DAY));
+        //mAlarmTimePicker.setCurrentMinute(temp_cal.get(Calendar.MINUTE));
+        mAlarmTimePicker.setCurrentHour(11);
+        mAlarmTimePicker.setCurrentMinute(11);
         mArivalTimeEditText = (TextView) findViewById(R.id
                 .editAlarm_ArrivalTimePickerMonologBox);
         mPrepTimeEditText = (EditText) findViewById(R.id
@@ -205,25 +215,53 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
      * @param view
      */
     public void done(View view) {
+        boolean arrival_time_set = false;
+        boolean origin_set = false;
+        boolean destination_set = false;
+        boolean prep_time_set = false;
         mPrepTimeString = mPrepTimeEditText.getText() + "";
-        Toast.makeText(this, "Prep time: " + mPrepTimeString, Toast.LENGTH_SHORT).show();
         mArrivalTimeString = mArivalTimeEditText.getText() + "";
-        Toast.makeText(this, "Arrival time: " + mArrivalTimeString, Toast.LENGTH_SHORT).show();
-        if (! mArrivalTimeString.equals("")) {
-            String temp_for_toast = "Arrival Hour: " + Integer.toString(mHourArrival) + " | Arrival Minute: " + Integer.toString(mMinuteArrival);
-            Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+        if (! mPrepTimeString.equals("")) {
+            prep_time_set = true;
         }
-        //need to check API of device here, will do later
-        mHour = mAlarmTimePicker.getCurrentHour();
-        mMinute = mAlarmTimePicker.getCurrentMinute();
-        String temp_for_toast = "Alarm Hour: " + Integer.toString(mHour) + " | Alarm Minute: " + Integer.toString(mMinute);
-        Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+        if (! mArrivalTimeString.equals("")) {
+            arrival_time_set = true;
+        }
         if (mOriginAddressString != null) {
-            Toast.makeText(this, "Origin: " + mOriginAddressString, Toast.LENGTH_SHORT).show();
+            origin_set = true;
         }
         if (mDestinationAddressString != null) {
-            Toast.makeText(this, "Destination: " + mDestinationAddressString, Toast.LENGTH_SHORT).show();
+            destination_set = true;
         }
+
+        if (arrival_time_set && origin_set && destination_set && prep_time_set) {
+            Toast.makeText(this, "Gedder Alarm Set!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Regular Alarm Set!", Toast.LENGTH_SHORT).show();
+        }
+//        mPrepTimeString = mPrepTimeEditText.getText() + "";
+//        Toast.makeText(this, "Prep time: " + mPrepTimeString, Toast.LENGTH_SHORT).show();
+//        mArrivalTimeString = mArivalTimeEditText.getText() + "";
+//        Toast.makeText(this, "Arrival time: " + mArrivalTimeString, Toast.LENGTH_SHORT).show();
+//        if (! mArrivalTimeString.equals("")) {
+//            String temp_for_toast = "Arrival Hour: " + Integer.toString(mHourArrival) + " | Arrival Minute: " + Integer.toString(mMinuteArrival);
+//            Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+//        }
+//        //need to check API of device here, will do later
+//        mHour = mAlarmTimePicker.getCurrentHour();
+//        mMinute = mAlarmTimePicker.getCurrentMinute();
+//        String temp_for_toast = "Alarm Hour: " + Integer.toString(mHour) + " | Alarm Minute: " + Integer.toString(mMinute);
+//        Toast.makeText(this, temp_for_toast, Toast.LENGTH_SHORT).show();
+//        if (mOriginAddressString != null) {
+//            Toast.makeText(this, "Origin: " + mOriginAddressString, Toast.LENGTH_SHORT).show();
+//        }
+//        if (mDestinationAddressString != null) {
+//            Toast.makeText(this, "Destination: " + mDestinationAddressString, Toast.LENGTH_SHORT).show();
+//        }
+        Intent data = new Intent();
+//---set the data to pass back---
+        data.putExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK, alarmClock);
+        setResult(RESULT_OK, data);
         finish();
     }
 

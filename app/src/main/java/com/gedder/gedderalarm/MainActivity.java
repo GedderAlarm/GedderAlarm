@@ -12,12 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -82,7 +84,26 @@ public class MainActivity extends AppCompatActivity {
         // Pass in new, default alarm.
         Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
+        //for testing
+        AlarmClock testing_alarm_clock = new AlarmClock();
+        Calendar temp_cal = testing_alarm_clock.getAlarmTime();
+        String hour = Integer.toString(temp_cal.get(Calendar.HOUR_OF_DAY));
+        String minute = Integer.toString(temp_cal.get(Calendar.MINUTE));
+        Toast.makeText(this, "Hour: " + hour + " Minute: " + minute, Toast.LENGTH_SHORT).show();
         startActivityForResult(intent, mIntentRequestCode);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == mIntentRequestCode) {
+            if (resultCode == RESULT_OK) {
+                AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
+                //For testing
+                Calendar temp_cal = alarmClock.getAlarmTime();
+                String hour = Integer.toString(temp_cal.get(Calendar.HOUR_OF_DAY));
+                String minute = Integer.toString(temp_cal.get(Calendar.MINUTE));
+                Toast.makeText(this, "Hour: " + hour + " Minute: " + minute, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
 
