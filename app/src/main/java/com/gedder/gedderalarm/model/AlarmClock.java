@@ -351,7 +351,7 @@ public class AlarmClock implements Parcelable {
     public void setAlarmTime(Calendar future) {
         mAlarmTime   = TimeUtilities.getMillisUntil(future);
         mAlarmDay    = future.get(Calendar.DAY_OF_WEEK);
-        mAlarmHour   = future.get(Calendar.HOUR);
+        mAlarmHour   = future.get(Calendar.HOUR_OF_DAY);
         mAlarmMinute = future.get(Calendar.MINUTE);
     }
 
@@ -392,7 +392,7 @@ public class AlarmClock implements Parcelable {
     public void setArrivalTime(Calendar future) {
         mArrivalTime   = TimeUtilities.getMillisUntil(future);
         mArrivalDay    = future.get(Calendar.DAY_OF_WEEK);
-        mArrivalHour   = future.get(Calendar.HOUR);
+        mArrivalHour   = future.get(Calendar.HOUR_OF_DAY);
         mArrivalMinute = future.get(Calendar.MINUTE);
     }
 
@@ -444,7 +444,7 @@ public class AlarmClock implements Parcelable {
     public void setUpperBoundTime(Calendar future) {
         mUpperBoundTime   = TimeUtilities.getMillisUntil(future);
         mUpperBoundDay    = future.get(Calendar.DAY_OF_WEEK);
-        mUpperBoundHour   = future.get(Calendar.HOUR);
+        mUpperBoundHour   = future.get(Calendar.HOUR_OF_DAY);
         mUpperBoundMinute = future.get(Calendar.MINUTE);
     }
 
@@ -599,7 +599,7 @@ public class AlarmClock implements Parcelable {
     public Calendar getAlarmTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, mAlarmDay);
-        calendar.set(Calendar.HOUR, mAlarmHour);
+        calendar.set(Calendar.HOUR_OF_DAY, mAlarmHour);
         calendar.set(Calendar.MINUTE, mAlarmMinute);
         return calendar;
     }
@@ -619,7 +619,7 @@ public class AlarmClock implements Parcelable {
     public Calendar getArrivalTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, mArrivalDay);
-        calendar.set(Calendar.HOUR, mArrivalHour);
+        calendar.set(Calendar.HOUR_OF_DAY, mArrivalHour);
         calendar.set(Calendar.MINUTE, mArrivalMinute);
         return calendar;
     }
@@ -638,7 +638,7 @@ public class AlarmClock implements Parcelable {
      */
     public Calendar getPrepTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR, mPrepHour);
+        calendar.set(Calendar.HOUR_OF_DAY, mPrepHour);
         calendar.set(Calendar.MINUTE, mPrepMinute);
         return calendar;
     }
@@ -658,7 +658,7 @@ public class AlarmClock implements Parcelable {
     public Calendar getUpperBoundTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, mUpperBoundDay);
-        calendar.set(Calendar.HOUR, mUpperBoundHour);
+        calendar.set(Calendar.HOUR_OF_DAY, mUpperBoundHour);
         calendar.set(Calendar.MINUTE, mUpperBoundMinute);
         return calendar;
     }
