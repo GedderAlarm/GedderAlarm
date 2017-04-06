@@ -635,8 +635,27 @@ public class AlarmClock implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(this.mUuid);
+        dest.writeInt(this.mRequestCode);
+        dest.writeString(this.mOrigin);
+        dest.writeString(this.mDestination);
+        dest.writeInt(this.mRepeatDays.getCoded());
+        dest.writeInt(this.mAlarmDay);
+        dest.writeInt(this.mAlarmHour);
+        dest.writeInt(this.mAlarmMinute);
         dest.writeLong(this.mAlarmTime);
+        dest.writeInt(this.mArrivalDay);
+        dest.writeInt(this.mArrivalHour);
+        dest.writeInt(this.mArrivalMinute);
+        dest.writeLong(this.mArrivalTime);
+        dest.writeInt(this.mPrepHour);
+        dest.writeInt(this.mPrepMinute);
+        dest.writeLong(this.mPrepTime);
+        dest.writeInt(this.mUpperBoundDay);
+        dest.writeInt(this.mUpperBoundHour);
+        dest.writeInt(this.mUpperBoundMinute);
+        dest.writeLong(this.mUpperBoundTime);
         dest.writeByte(this.mAlarmSet ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.mGedderSet ? (byte) 1 : (byte) 0);
     }
 
     /** {@inheritDoc} */
@@ -651,7 +670,25 @@ public class AlarmClock implements Parcelable {
      */
     protected AlarmClock(Parcel in) {
         this.mUuid = (UUID) in.readSerializable();
+        this.mRequestCode = in.readInt();
+        this.mOrigin = in.readString();
+        this.mDestination = in.readString();
+        this.mRepeatDays = new DaysOfWeek(in.readInt());
+        this.mAlarmDay = in.readInt();
+        this.mAlarmHour = in.readInt();
+        this.mAlarmMinute = in.readInt();
         this.mAlarmTime = in.readLong();
+        this.mArrivalDay = in.readInt();
+        this.mArrivalHour = in.readInt();
+        this.mArrivalMinute = in.readInt();
+        this.mArrivalTime = in.readLong();
+        this.mPrepHour = in.readInt();
+        this.mPrepMinute = in.readInt();
+        this.mPrepTime = in.readLong();
+        this.mUpperBoundDay = in.readInt();
+        this.mUpperBoundHour = in.readInt();
+        this.mUpperBoundMinute = in.readInt();
+        this.mUpperBoundTime = in.readLong();
         this.mAlarmSet = in.readByte() != 0;
         this.mGedderSet = in.readByte() != 0;
     }
