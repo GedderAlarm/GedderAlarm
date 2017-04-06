@@ -450,8 +450,7 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     * Toggles the alarm on and off. <em><ul>If Gedder is running and we're toggling the alarm off,
-     * Gedder is also automatically toggled off.</ul></em>
+     * Toggles the alarm on and off.
      */
     public void toggleAlarm() {
         // TODO: Move this intent business out of here. The AlarmClock shouldn't be coupled to it.
@@ -466,11 +465,6 @@ public class AlarmClock implements Parcelable {
             GedderAlarmManager.setOptimal(AlarmManager.RTC_WAKEUP, mAlarmTime, pendingIntent);
         } else {
             GedderAlarmManager.cancel(pendingIntent);
-        }
-
-        // Gedder shouldn't remain on if the Alarm isn't.
-        if (isGedderOn()) {
-            toggleGedder();
         }
 
         mAlarmSet = !mAlarmSet;
@@ -491,6 +485,10 @@ public class AlarmClock implements Parcelable {
         mGedderSet = !mGedderSet;
     }
 
+    /**
+     *
+     * @param flag
+     */
     public void setAlarm(int flag) {
         if (flag == OFF) {
             mAlarmSet = false;
@@ -501,6 +499,10 @@ public class AlarmClock implements Parcelable {
         }
     }
 
+    /**
+     *
+     * @param flag
+     */
     public void setGedder(int flag) {
         if (flag == OFF) {
             mGedderSet = false;
@@ -644,7 +646,7 @@ public class AlarmClock implements Parcelable {
      * @return
      */
     public boolean isGedderOn() {
-        return mAlarmSet && mGedderSet;
+        return mGedderSet;
     }
 
     /**
