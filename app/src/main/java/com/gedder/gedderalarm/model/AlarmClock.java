@@ -16,6 +16,7 @@ import com.gedder.gedderalarm.AlarmReceiver;
 import com.gedder.gedderalarm.GedderAlarmApplication;
 import com.gedder.gedderalarm.GedderAlarmManager;
 import com.gedder.gedderalarm.util.DaysOfWeek;
+import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.Calendar;
@@ -28,6 +29,9 @@ import java.util.UUID;
  */
 
 public class AlarmClock implements Parcelable {
+    public static final int ON  = 1;
+    public static final int OFF = 0;
+
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     // Default values for certain private variables.
@@ -485,6 +489,26 @@ public class AlarmClock implements Parcelable {
         }
 
         mGedderSet = !mGedderSet;
+    }
+
+    public void setAlarm(int flag) {
+        if (flag == OFF) {
+            mAlarmSet = false;
+        } else if (flag == ON) {
+            mAlarmSet = true;
+        } else {
+            Log.e(TAG, "Unrecognized flag in setAlarm.");
+        }
+    }
+
+    public void setGedder(int flag) {
+        if (flag == OFF) {
+            mGedderSet = false;
+        } else if (flag == ON) {
+            mGedderSet = true;
+        } else {
+            Log.e(TAG, "Unrecognized flag in setGedder.");
+        }
     }
 
     /**

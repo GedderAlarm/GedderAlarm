@@ -5,11 +5,15 @@
 
 package com.gedder.gedderalarm;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
+import com.gedder.gedderalarm.db.AlarmClockDBHelper;
+import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.Log;
 
 /**  */
 
@@ -26,13 +30,25 @@ public class GedderRestartReceiver extends BroadcastReceiver {
     }
 
     private void resetAlarms(Context context) {
-        // TODO: Get a cursor of all alarms and loop through them. Reactivate gedder if on before.
-
-        if (sAlarmSet && sScheduledAlarmTimeInMs > System.currentTimeMillis()) {
-            GedderAlarmManager.setGedder(new Bundle());
+        AlarmClockDBHelper db = new AlarmClockDBHelper(context);
+        AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAllAlarmClocks());
+        if (!cursor.moveToFirst()) {
+            Log.i(TAG, "No alarm clock in database upon restart.");
         } else {
-            // TODO: Turn Gedder variables off for this alarm.
-            // We missed the alarm while the phone was off; appropriate alarm variables.
+            do {
+                AlarmClock alarmClock = cursor.getAlarmClock();
+                if (alarmClock.isAlarmOn() && alarmClock.getAlarmTimeMillis() > System.currentTimeMillis()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, alarmClock);
+                    bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, alarmClock.getRequestCode());
+                    GedderAlarmManager.setGedder(bundle);
+                } else {
+                    // We missed the alarm while the phone was off; appropriate alarm variables.
+                    alarmClock.setGedder(AlarmClock.OFF);
+                }
+            } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
     }
 }
