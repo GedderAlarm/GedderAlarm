@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                // First make visible the delete button.
                findViewById(R.id.activityMain_DeleteAlarmBtn).setVisibility(View.VISIBLE);
-               AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
                // Now loop through all rows and make visible the checkboxes.
                for (int i = 0; i < parent.getCount(); ++i) {
                    View child = parent.getChildAt(i);
@@ -101,11 +100,27 @@ public class MainActivity extends AppCompatActivity {
                // Finally, the item initially long-clicked is checked.
                CheckBox cb = (CheckBox) view.findViewById(R.id.itemAlarmClock_removeCheckBox);
                cb.setChecked(true);
-
-               db.close();
                return true;
            }
        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Check to see if we're in alarm clock delete state.
+        if (findViewById(R.id.activityMain_DeleteAlarmBtn).getVisibility() != View.GONE) {
+            // Make the delete button invisible (gone).
+            findViewById(R.id.activityMain_DeleteAlarmBtn).setVisibility(View.GONE);
+            // Now loop through all rows and make hide the checkboxes.
+            for (int i = 0; i < alarmClocksListView.getCount(); ++i) {
+                View child = alarmClocksListView.getChildAt(i);
+                View item = child.findViewById(R.id.itemAlarmClock_removeCheckBox);
+                CheckBox cb = (CheckBox) item.findViewById(R.id.itemAlarmClock_removeCheckBox);
+                cb.setVisibility(View.GONE);
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
