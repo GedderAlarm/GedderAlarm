@@ -88,6 +88,8 @@ public class AlarmClock implements Parcelable {
     /** Initializes an unset alarm clock with default parameters. */
     public AlarmClock() {
         Calendar calendar = Calendar.getInstance();
+        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 != 0 ?
+                (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 : 1;
 
         mUuid        = UUID.randomUUID();
         mRequestCode = Math.abs((new Random()).nextInt());
@@ -101,18 +103,17 @@ public class AlarmClock implements Parcelable {
         mRepeatDays = new DaysOfWeek();
 
         // Tomorrow 6:00am
-        setAlarmTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
-                DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
+        setAlarmTime(tomorrow, DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
 
         // Tomorrow 7:00am
-        setArrivalTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
+        setArrivalTime(tomorrow,
                 DEFAULT_ARRIVAL_HOUR, DEFAULT_ARRIVAL_MINUTE);
 
         // No prep by default.
         setPrepTime(DEFAULT_PREP_HOUR, DEFAULT_PREP_MINUTE);
 
         // Tomorrow 6:00am
-        setUpperBoundTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
+        setUpperBoundTime(tomorrow,
                 DEFAULT_UPPER_BOUND_HOUR, DEFAULT_UPPER_BOUND_MINUTE);
 
         mAlarmSet  = DEFAULT_ALARM_SET;
@@ -272,6 +273,8 @@ public class AlarmClock implements Parcelable {
     /** Defaults any current settings and turns off any running alarms. */
     public void defaultAlarmSettings() {
         Calendar calendar = Calendar.getInstance();
+        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 != 0 ?
+                (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 : 1;
 
         mOriginId           = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
         mOriginAddress      = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
@@ -282,18 +285,17 @@ public class AlarmClock implements Parcelable {
         mRepeatDays = new DaysOfWeek();
 
         // Tomorrow 6:00am
-        setAlarmTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
-                DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
+        setAlarmTime(tomorrow, DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
 
         // Tomorrow 7:00am
-        setArrivalTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
+        setArrivalTime(tomorrow,
                 DEFAULT_ARRIVAL_HOUR, DEFAULT_ARRIVAL_MINUTE);
 
         // No prep by default.
         setPrepTime(DEFAULT_PREP_HOUR, DEFAULT_PREP_MINUTE);
 
         // Tomorrow 6:00am
-        setUpperBoundTime((calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7,
+        setUpperBoundTime(tomorrow,
                 DEFAULT_UPPER_BOUND_HOUR, DEFAULT_UPPER_BOUND_MINUTE);
 
         if (isAlarmOn()) {

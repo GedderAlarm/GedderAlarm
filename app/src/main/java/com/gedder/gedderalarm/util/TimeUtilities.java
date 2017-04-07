@@ -42,7 +42,11 @@ public final class TimeUtilities {
      */
     public static long getMillisUntil(int day, int hour, int minute) {
         if (day < 1 || day > 7 || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "day = " + day
+                    + " hour = " + hour
+                    + " minute = " + minute
+            );
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -91,7 +95,10 @@ public final class TimeUtilities {
      */
     public static long getMillisSinceMidnight(int hour, int minute) {
         if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "hour = " + hour
+                    + " minute = " + minute
+            );
         }
         return hour*MILLIS_PER_HOUR + minute*MILLIS_PER_MINUTE;
     }
