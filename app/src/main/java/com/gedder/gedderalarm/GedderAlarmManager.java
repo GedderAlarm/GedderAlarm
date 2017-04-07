@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.Log;
 
 import java.util.UUID;
 
@@ -57,6 +58,8 @@ public final class GedderAlarmManager {
                     + " time = " + time
                     + " uuid = " + uuid);
         }
+
+        Log.e(TAG, String.valueOf(id));
 
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);

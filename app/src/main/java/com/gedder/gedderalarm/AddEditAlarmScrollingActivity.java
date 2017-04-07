@@ -260,7 +260,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
 
         if (arrival_time_set && origin_set && destination_set && prep_time_set) {
             int arrivalDay = alarmDay;
-            if (hour < mHour || hour < mHourArrival || (hour == mHour && min <= mMinute)
+            if (mHour < hour || hour < mHourArrival || (hour == mHour && min <= mMinute)
                     || (hour == mHourArrival && min <= mMinuteArrival)) {
                 alarmDay = (alarmDay % 7) + 1;
                 arrivalDay = alarmDay;
@@ -287,7 +287,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             }
             Toast.makeText(this, "Gedder Alarm Set!", Toast.LENGTH_SHORT).show();
         } else {
-            if (hour < mHour || (hour == mHour && min <= mMinute)) {
+            if (mHour < hour || (mHour == hour && mMinute <= min)) {
                 alarmDay = (alarmDay % 7) + 1;
             }
             mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);

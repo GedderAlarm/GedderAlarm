@@ -494,11 +494,11 @@ public class AlarmClock implements Parcelable {
 
         if (!isAlarmOn()) {
             GedderAlarmManager.setAlarm(bundle);
+            mAlarmSet = true;
         } else {
             GedderAlarmManager.cancelAlarm(bundle);
+            mAlarmSet = false;
         }
-
-        mAlarmSet = !mAlarmSet;
     }
 
     /** Toggle the Gedder service for this alarm on and off. */
@@ -509,11 +509,11 @@ public class AlarmClock implements Parcelable {
 
         if (!isGedderOn()) {
             GedderAlarmManager.setGedder(bundle);
+            mGedderSet = true;
         } else {
             GedderAlarmManager.cancelGedder(bundle);
+            mGedderSet = false;
         }
-
-        mGedderSet = !mGedderSet;
     }
 
     /**

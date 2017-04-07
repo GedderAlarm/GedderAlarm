@@ -24,7 +24,7 @@ public class AlarmClockCursorWrapper extends CursorWrapper {
     }
 
     public AlarmClock getAlarmClock() {
-        return new AlarmClock(
+        AlarmClock alarmClock = new AlarmClock(
                 UUID.fromString(getString(getColumnIndexOrThrow(AlarmClockTable.Columns.UUID))),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.REQUEST_CODE)),
                 getString(getColumnIndexOrThrow(AlarmClockTable.Columns.ORIGIN_ID)),
@@ -44,5 +44,12 @@ public class AlarmClockCursorWrapper extends CursorWrapper {
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.UPPER_BOUND_HOUR)),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.UPPER_BOUND_MINUTE))
         );
+        if (getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_SET)) > 0) {
+            alarmClock.setAlarm(AlarmClock.ON);
+        }
+        if (getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.GEDDER_SET)) > 0) {
+            alarmClock.setGedder(AlarmClock.ON);
+        }
+        return alarmClock;
     }
 }
