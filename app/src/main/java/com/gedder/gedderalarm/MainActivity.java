@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,16 +39,26 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView alarmClocksListView;
     private AlarmClocksCursorAdapter mAlarmClocksCursorAdapter;
-    private Cursor mAlarmClockCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Cursor mAlarmClockCursor;
 
         // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+
+        /////////////////////////////
+        if (db.getAlarmClockCount() == 0) {
+            db.addAlarmClock(new AlarmClock());
+            db.addAlarmClock(new AlarmClock());
+            db.addAlarmClock(new AlarmClock());
+            db.addAlarmClock(new AlarmClock());
+        }
+        /////////////////////////////
+
         mAlarmClockCursor = db.getAllAlarmClocks();
 
         // Make an adapter based off of the cursor.
@@ -74,6 +85,27 @@ public class MainActivity extends AppCompatActivity {
                 db.close();
             }
         });
+        alarmClocksListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+           @Override
+           public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+               // First make visible the delete button.
+               findViewById(R.id.activityMain_DeleteAlarmBtn).setVisibility(View.VISIBLE);
+               AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
+               // Now loop through all rows and make visible the checkboxes.
+               for (int i = 0; i < parent.getCount(); ++i) {
+                   View child = parent.getChildAt(i);
+                   View item = child.findViewById(R.id.itemAlarmClock_removeCheckBox);
+                   CheckBox cb = (CheckBox) item.findViewById(R.id.itemAlarmClock_removeCheckBox);
+                   cb.setVisibility(View.VISIBLE);
+               }
+               // Finally, the item initially long-clicked is checked.
+               CheckBox cb = (CheckBox) view.findViewById(R.id.itemAlarmClock_removeCheckBox);
+               cb.setChecked(true);
+
+               db.close();
+               return true;
+           }
+       });
     }
 
     /**
@@ -85,6 +117,40 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddEditAlarmScrollingActivity.class);
         intent.putExtra(PARCEL_ALARM_CLOCK, new AlarmClock());
         startActivityForResult(intent, mIntentRequestCode);
+    }
+
+    public void onClickDeleteAlarm(View view) {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        for (int i = 0; i < alarmClocksListView.getCount(); ++i) {
+            // Get a row.
+            View child = alarmClocksListView.getChildAt(i);
+            CheckBox cb = (CheckBox) child.findViewById(R.id.itemAlarmClock_removeCheckBox);
+            cb.setVisibility(View.GONE);
+            if (cb.isChecked()) {
+                // Uncheck each.
+                cb.setChecked(false);
+
+                // Get the UUID for this item.
+                UUID uuid = UUID.fromString(child.getTag().toString());
+                AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(
+                        db.getAlarmClock(uuid));
+                cursor.moveToFirst();
+                AlarmClock alarmClock = cursor.getAlarmClock();
+                // Turn off any remaining alarms.
+                if (alarmClock.isAlarmOn()) {
+                    alarmClock.toggleAlarm();
+                }
+                if (alarmClock.isGedderOn()) {
+                    alarmClock.toggleGedder();
+                }
+                // Delete.
+                db.deleteAlarmClock(UUID.fromString(child.getTag().toString()));
+            }
+        }
+        // DB is presumably different, so tell the adapter that.
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        view.setVisibility(View.GONE);
+        db.close();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

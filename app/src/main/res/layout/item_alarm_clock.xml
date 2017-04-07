@@ -12,6 +12,17 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:id="@+id/itemAlarmClock_removeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="2">
