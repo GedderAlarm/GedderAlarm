@@ -88,8 +88,7 @@ public class AlarmClock implements Parcelable {
     /** Initializes an unset alarm clock with default parameters. */
     public AlarmClock() {
         Calendar calendar = Calendar.getInstance();
-        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 != 0 ?
-                (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 : 1;
+        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) % 7) + 1;
 
         mUuid        = UUID.randomUUID();
         mRequestCode = Math.abs((new Random()).nextInt());
@@ -273,8 +272,7 @@ public class AlarmClock implements Parcelable {
     /** Defaults any current settings and turns off any running alarms. */
     public void defaultAlarmSettings() {
         Calendar calendar = Calendar.getInstance();
-        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 != 0 ?
-                (calendar.get(Calendar.DAY_OF_WEEK) + 1) % 7 : 1;
+        int tomorrow = (calendar.get(Calendar.DAY_OF_WEEK) % 7) + 1;
 
         mOriginId           = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
         mOriginAddress      = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
