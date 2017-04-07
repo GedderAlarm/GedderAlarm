@@ -11,11 +11,13 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.gedder.gedderalarm.R;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema;
+
+import java.util.Locale;
 
 /**
  * <p>Provides a custom ArrayAdapter for the AlarmClock class.</p>
@@ -37,20 +39,30 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // Get our views; we will populate them.
-        TextView time = (TextView) view.findViewById(R.id.itemAlarmClock_WakeupTime);
-        TextView repeat = (TextView) view.findViewById(R.id.itemAlarmClock_RepeatDates);
-        Button gedderToggle = (Button) view.findViewById(R.id.itemAlarmClock_GedderAlarmToggleBtn);
-        Button alarmToggle = (Button) view.findViewById(R.id.itemAlarmClock_alarmClockToggleBtn);
-        // Get data from cursor.
-        long alarmTime = cursor.getLong(cursor.getColumnIndexOrThrow(
-                AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_TIME));
-        int alarmSet = cursor.getInt(cursor.getColumnIndexOrThrow(
-                AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_SET));
-        // Populate our views with that data.
-        time.setText(String.valueOf(alarmTime));
-//        alarmToggle.setText(alarmSet > 0 ? "Turn off" : "Turn on");
+        // Set the UUID of the alarm as a tag to this view.
         view.setTag(cursor.getString(cursor.getColumnIndexOrThrow(
                 AlarmClockDBSchema.AlarmClockTable.Columns.UUID)));
+
+        // Get data needed for this view.
+        int hour = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_HOUR));
+        int minute = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_MINUTE));
+        boolean alarmOn = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_SET)) > 0;
+        boolean gedderOn = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.GEDDER_SET)) > 0;
+
+        // Format our display.
+        String period = hour >= 12? "PM":"AM";
+        hour = hour > 12? ((hour % 12) + 1) : (hour == 0? 12 : hour);
+        String time = String.format(Locale.getDefault(), "%d:%02d %s", hour, minute, period);
+
+        // Populate our views with that formatted data.
+        ((TextView) view.findViewById(R.id.itemAlarmClock_WakeupTime)).setText(time);
+        if (alarmOn) {
+            ((ToggleButton) view.findViewById(R.id.itemAlarmClock_alarmClockToggleBtn))
+                    .setChecked(true);
+        }
+        if (gedderOn) {
+            ((ToggleButton) view.findViewById(R.id.itemAlarmClock_GedderAlarmToggleBtn))
+                    .setChecked(true);
+        }
     }
 }

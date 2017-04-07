@@ -13,14 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 
-import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -73,18 +72,14 @@ public class MainActivity extends AppCompatActivity {
         alarmClocksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlarmClockDBHelper db = new AlarmClockDBHelper(
-                        GedderAlarmApplication.getAppContext());
-                AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(
-                        db.getAlarmClock(UUID.fromString(view.getTag().toString())));
-                cursor.moveToFirst();
+                AlarmClock alarmClock = getAlarmClockFromView(view);
                 Intent intent = new Intent(GedderAlarmApplication.getAppContext(),
                         AddEditAlarmScrollingActivity.class);
-                intent.putExtra(PARCEL_ALARM_CLOCK, cursor.getAlarmClock());
+                intent.putExtra(PARCEL_ALARM_CLOCK, alarmClock);
                 startActivityForResult(intent, mIntentRequestCode);
-                db.close();
             }
         });
+        // When an alarm in the list is long-clicked, we activate deletion mode.
         alarmClocksListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
            @Override
            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -137,29 +132,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickDeleteAlarm(View view) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        // For each row, uncheck the checkbox, hide it, and delete alarms which were checked.
         for (int i = 0; i < alarmClocksListView.getCount(); ++i) {
-            // Get a row.
             View child = alarmClocksListView.getChildAt(i);
             CheckBox cb = (CheckBox) child.findViewById(R.id.itemAlarmClock_removeCheckBox);
             cb.setVisibility(View.GONE);
             if (cb.isChecked()) {
-                // Uncheck each.
                 cb.setChecked(false);
 
-                // Get the UUID for this item.
-                UUID uuid = UUID.fromString(child.getTag().toString());
-                AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(
-                        db.getAlarmClock(uuid));
-                cursor.moveToFirst();
-                AlarmClock alarmClock = cursor.getAlarmClock();
-                // Turn off any remaining alarms.
+                AlarmClock alarmClock = getAlarmClockFromView(child);
                 if (alarmClock.isAlarmOn()) {
                     alarmClock.toggleAlarm();
                 }
                 if (alarmClock.isGedderOn()) {
                     alarmClock.toggleGedder();
                 }
-                // Delete.
                 db.deleteAlarmClock(UUID.fromString(child.getTag().toString()));
             }
         }
@@ -169,17 +156,55 @@ public class MainActivity extends AppCompatActivity {
         db.close();
     }
 
+    public void onClickToggleGedder(View view) {
+        ToggleButton tb = (ToggleButton) view;
+        View row = (View) view.getParent();
+        AlarmClock alarmClock = getAlarmClockFromView(row);
+        if (alarmClock.isGedderOn()) {
+            alarmClock.toggleGedder();
+            tb.setChecked(false);
+        } else {
+            if (alarmClock.getOriginId().equals("") || alarmClock.getDestinationId().equals("")) {
+                // Gedder information is incomplete. Go request for it.
+                Intent intent = new Intent(GedderAlarmApplication.getAppContext(),
+                        AddEditAlarmScrollingActivity.class);
+                intent.putExtra(PARCEL_ALARM_CLOCK, alarmClock);
+                startActivityForResult(intent, mIntentRequestCode);
+                tb.setChecked(false);
+            } else if (!alarmClock.isAlarmOn()) {
+                // Alarm is off but trying to activate Gedder. So turn alarm on too.
+                alarmClock.toggleAlarm();
+                alarmClock.toggleGedder();
+                tb.setChecked(true);
+            } else {
+                alarmClock.toggleGedder();
+                tb.setChecked(true);
+            }
+        }
+    }
+
+    public void onClickToggleAlarm(View view) {
+
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == mIntentRequestCode) {
             if (resultCode == RESULT_OK) {
                 AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
-                //For testing
-                Calendar temp_cal = alarmClock.getAlarmTime();
-                String hour = Integer.toString(temp_cal.get(Calendar.HOUR_OF_DAY));
-                String minute = Integer.toString(temp_cal.get(Calendar.MINUTE));
-                Toast.makeText(this, "Hour: " + hour + " Minute: " + minute, Toast.LENGTH_SHORT).show();
+                mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
             }
         }
+    }
+
+    public static AlarmClock getAlarmClockFromView(View view) {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
+        AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(
+                db.getAlarmClock(UUID.fromString(view.getTag().toString())));
+        cursor.moveToFirst();
+        AlarmClock alarmClock = cursor.getAlarmClock();
+        cursor.close();
+        db.close();
+        return alarmClock;
     }
 }
 
