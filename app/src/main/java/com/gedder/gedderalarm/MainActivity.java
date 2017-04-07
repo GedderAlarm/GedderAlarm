@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 View child = alarmClocksListView.getChildAt(i);
                 View item = child.findViewById(R.id.itemAlarmClock_removeCheckBox);
                 CheckBox cb = (CheckBox) item.findViewById(R.id.itemAlarmClock_removeCheckBox);
+                cb.setChecked(false);
                 cb.setVisibility(View.GONE);
             }
         } else {
