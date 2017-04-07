@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickToggleGedder(View view) {
+        // TODO: Dirty logic, fix.
+        // TODO: Send a notification and/or toast.
         ToggleButton tb = (ToggleButton) view;
         View row = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockFromView(row);
@@ -174,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (!alarmClock.isAlarmOn()) {
                 // Alarm is off but trying to activate Gedder. So turn alarm on too.
                 alarmClock.toggleAlarm();
+                ((ToggleButton) findViewById(R.id.itemAlarmClock_alarmClockToggleBtn))
+                        .setChecked(true);
                 alarmClock.toggleGedder();
                 tb.setChecked(true);
             } else {
@@ -181,10 +185,28 @@ public class MainActivity extends AppCompatActivity {
                 tb.setChecked(true);
             }
         }
+        new AlarmClockDBHelper(this).updateAlarmClock(alarmClock);
+        mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
     }
 
     public void onClickToggleAlarm(View view) {
-
+        // TODO: Dirty logic, fix.
+        // TODO: Send a notification and/or toast.
+        ToggleButton tb = (ToggleButton) view;
+        View row = (View) view.getParent();
+        AlarmClock alarmClock = getAlarmClockFromView(row);
+        alarmClock.toggleAlarm();
+        if (alarmClock.isAlarmOn()) {
+            tb.setChecked(true);
+        } else {
+            tb.setChecked(false);
+            if (alarmClock.isGedderOn()) {
+                alarmClock.toggleGedder();
+                ((ToggleButton) findViewById(R.id.itemAlarmClock_GedderAlarmToggleBtn)).setChecked(false);
+            }
+        }
+        new AlarmClockDBHelper(this).updateAlarmClock(alarmClock);
+        mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
