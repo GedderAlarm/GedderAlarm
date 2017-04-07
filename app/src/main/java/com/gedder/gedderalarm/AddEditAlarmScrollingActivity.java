@@ -82,6 +82,10 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                 .editAlarm_ArrivalTimePickerMonologBox);
         mPrepTimeEditText = (EditText) findViewById(R.id
                 .editAlarm_PrepTimeTextBox);
+//        Long prepMilli = mAlarmClock.getPrepTimeMillis();
+//        if (prepMilli != 0) {
+//            mPrepTimeEditText.setText(Integer.toString(c.));
+//        }
 
         //Initialize auto-complete textviews
         mGoogleApiClient = new GoogleApiClient.Builder(AddEditAlarmScrollingActivity.this)
@@ -102,14 +106,16 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mAutocompleteTextViewOrigin.setAdapter(mPlaceArrayAdapter);
         mAutocompleteTextViewDestination.setAdapter(mPlaceArrayAdapter);
 //        mOriginAddressString = mAlarmClock.getOriginAddress();
+//        mOriginIdString = mAlarmClock.getOrigin();
 //        if (! mOriginAddressString.equals("")) {
 //            mAutocompleteTextViewOrigin.setText(mOriginAddressString, false);
-//            mOriginIdString = mAlarmClock.getOrigin();
+//            //mOriginIdString = mAlarmClock.getOrigin();
 //        }
 //        mDestinationAddressString = mAlarmClock.getDestinationAddress();
+//        mOriginIdString = mAlarmClock.getDestination();
 //        if (! mDestinationAddressString.equals("")) {
 //            mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
-//            mDestinationIdString = mAlarmClock.getDestination();
+//            //mDestinationIdString = mAlarmClock.getDestination();
 //        }
     }
 
@@ -232,10 +238,16 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         if (! mArrivalTimeString.equals("")) {
             arrival_time_set = true;
         }
-        if (! mOriginAddressString.equals("")) {
+//        if (! mOriginAddressString.equals("")) {
+//            origin_set = true;
+//        }
+//        if (! mDestinationAddressString.equals("")) {
+//            destination_set = true;
+//        }
+        if (mOriginAddressString != null) {
             origin_set = true;
         }
-        if (! mDestinationAddressString.equals("")) {
+        if (mDestinationAddressString != null) {
             destination_set = true;
         }
         mHour = mAlarmTimePicker.getCurrentHour();
