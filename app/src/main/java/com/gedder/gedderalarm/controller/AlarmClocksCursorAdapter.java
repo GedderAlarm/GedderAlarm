@@ -51,7 +51,7 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
 
         // Format our display.
         String period = hour >= 12? "PM":"AM";
-        hour = hour > 12? ((hour % 12) + 1) : (hour == 0? 12 : hour);
+        hour = hour > 12? (hour % 12) : (hour == 0? 12 : hour);
         String time = String.format(Locale.getDefault(), "%d:%02d %s", hour, minute, period);
 
         // Populate our views with that formatted data.
