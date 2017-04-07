@@ -27,8 +27,10 @@ public class AlarmClockCursorWrapper extends CursorWrapper {
         return new AlarmClock(
                 UUID.fromString(getString(getColumnIndexOrThrow(AlarmClockTable.Columns.UUID))),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.REQUEST_CODE)),
-                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.ORIGIN)),
-                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.DESTINATION)),
+                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.ORIGIN_ID)),
+                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.ORIGIN_ADDRESS)),
+                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.DESTINATION_ID)),
+                getString(getColumnIndexOrThrow(AlarmClockTable.Columns.DESTINATION_ADDRESS)),
                 new DaysOfWeek(getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.REPEAT_DAYS))),
                 DaysOfWeek.DAY.getDay(getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_DAY))),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_HOUR)),

@@ -50,10 +50,9 @@ public class AlarmClock implements Parcelable {
     private int mRequestCode;
 
     // Required for smart alarm.
-    private String mOrigin;
-    private String mDestination;
-
+    private String mOriginId;
     private String mOriginAddress;
+    private String mDestinationId;
     private String mDestinationAddress;
 
     // The days this alarm will repeat in its current form.
@@ -65,21 +64,18 @@ public class AlarmClock implements Parcelable {
     private int  mAlarmMinute;       // 0-59 (60 minutes)
     private long mAlarmTime;         // Milliseconds since the epoch.
 
-    // The user-planned arrival time to mDestination from mOrigin.
-    // Required for smart alarm.
+    // The user-planned arrival time to mDestinationId from mOriginId.
     private int  mArrivalDay;        // 1-7 (Sunday, Monday, ..., Saturday)
     private int  mArrivalHour;       // 0-23 (24 hour clock)
     private int  mArrivalMinute;     // 0-59 (60 minutes)
     private long mArrivalTime;       // Milliseconds since the epoch.
 
     // The user-inputted or smart-adjusted time it takes to get prepared in the morning.
-    // Required for smart alarm.
     private int  mPrepHour;          // 0-23 (24 hour clock)
     private int  mPrepMinute;        // 0-59 (60 minutes)
     private long mPrepTime;          // Milliseconds since the epoch.
 
     // The user-inputted "wish" time to wake up: do not set an alarm past this time, only before.
-    // Required for smart alarm.
     private int  mUpperBoundDay;     // 1-7 (Sunday, Monday, ..., Saturday)
     private int  mUpperBoundHour;    // 0-23 (24 hour clock)
     private int  mUpperBoundMinute;  // 0-59 (60 minutes)
@@ -96,9 +92,9 @@ public class AlarmClock implements Parcelable {
         mUuid        = UUID.randomUUID();
         mRequestCode = Math.abs((new Random()).nextInt());
 
-        mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
-        mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
-        mOriginAddress      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mOriginId           = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
+        mOriginAddress      = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
+        mDestinationId      = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
         mDestinationAddress = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
 
         // Not repeating by default.
@@ -128,35 +124,39 @@ public class AlarmClock implements Parcelable {
      * @param alarmClock The alarm clock instance to copy.
      */
     public AlarmClock(AlarmClock alarmClock) {
-        mUuid        = alarmClock.mUuid;
-        mRequestCode = alarmClock.mRequestCode;
-        mOrigin      = alarmClock.mOrigin;
-        mDestination = alarmClock.mDestination;
-        mRepeatDays  = alarmClock.mRepeatDays;
-        setAlarmTime(alarmClock.mAlarmDay, alarmClock.mAlarmHour, alarmClock.mAlarmMinute);
-        setArrivalTime(alarmClock.mArrivalDay, alarmClock.mArrivalHour, alarmClock.mArrivalMinute);
-        setPrepTime(alarmClock.mPrepHour, alarmClock.mPrepMinute);
-        setUpperBoundTime(alarmClock.mUpperBoundDay, alarmClock.mUpperBoundHour,
-                alarmClock.mUpperBoundMinute);
-        mAlarmSet    = alarmClock.mAlarmSet;
-        mGedderSet   = alarmClock.mGedderSet;
+        mUuid               = alarmClock.mUuid;
+        mRequestCode        = alarmClock.mRequestCode;
+        mOriginId           = alarmClock.mOriginId;
+        mOriginAddress      = alarmClock.mOriginAddress;
+        mDestinationId      = alarmClock.mDestinationId;
+        mDestinationAddress = alarmClock.mDestinationAddress;
+        mRepeatDays         = alarmClock.mRepeatDays;
+        setAlarmTime        (alarmClock.mAlarmDay, alarmClock.mAlarmHour, alarmClock.mAlarmMinute);
+        setArrivalTime      (alarmClock.mArrivalDay, alarmClock.mArrivalHour, alarmClock.mArrivalMinute);
+        setPrepTime         (alarmClock.mPrepHour, alarmClock.mPrepMinute);
+        setUpperBoundTime   (alarmClock.mUpperBoundDay, alarmClock.mUpperBoundHour, alarmClock.mUpperBoundMinute);
+        mAlarmSet           = alarmClock.mAlarmSet;
+        mGedderSet          = alarmClock.mGedderSet;
     }
 
     /**
      * A copy constructor with explicit variables.
-     * @param origin            The place the user is leaving from.
-     * @param destination       The place the user wants to get to.
-     * @param repeatDays        The days this alarm clock will repeat.
-     * @param alarmTime         The time for which this alarm is set (or going to be set for).
-     * @param arrivalTime       The time the user needs to get to their destination.
-     * @param prepHour          The hour portion of the time it takes the user to get prepared for
-     *                          travel after the alarm goes off.
-     * @param prepMinute        The minute portion of the time it takes the user to get prepared for
-     *                          travel after the alarm goes off.
-     * @param upperBoundTime    The user selected alarm time. If Gedder is activated, this may
-     *                          differ from the actual alarm time.
+     * @param originId           The place the user is leaving from.
+     * @param originAddress
+     * @param destinationId      The place the user wants to get to.
+     * @param destinationAddress
+     * @param repeatDays         The days this alarm clock will repeat.
+     * @param alarmTime          The time for which this alarm is set (or going to be set for).
+     * @param arrivalTime        The time the user needs to get to their destination.
+     * @param prepHour           The hour portion of the time it takes the user to get prepared for
+     *                           travel after the alarm goes off.
+     * @param prepMinute         The minute portion of the time it takes the user to get prepared for
+     *                           travel after the alarm goes off.
+     * @param upperBoundTime     The user selected alarm time. If Gedder is activated, this may
+     *                           differ from the actual alarm time.
      */
-    public AlarmClock(String origin, String destination,
+    public AlarmClock(String originId, String originAddress,
+                      String destinationId, String destinationAddress,
                       DaysOfWeek repeatDays,
                       Calendar alarmTime,
                       Calendar arrivalTime,
@@ -164,8 +164,10 @@ public class AlarmClock implements Parcelable {
                       Calendar upperBoundTime) {
         mUuid             = UUID.randomUUID();
         mRequestCode      = Math.abs((new Random()).nextInt());
-        mOrigin           = origin;
-        mDestination      = destination;
+        mOriginId         = originId;
+        mOriginAddress    = originAddress;
+        mDestinationId    = destinationId;
+        mDestinationAddress = destinationAddress;
         mRepeatDays       = repeatDays;
         setAlarmTime      (alarmTime);
         setArrivalTime    (arrivalTime);
@@ -197,7 +199,8 @@ public class AlarmClock implements Parcelable {
      * @param upperBoundHour    The hour portion of the user selected alarm time.
      * @param upperBoundMinute  The minute portion of the user selected alarm time.
      */
-    public AlarmClock(String origin, String destination,
+    public AlarmClock(String originId, String originAddress,
+                      String destinationId, String destinationAddress,
                       DaysOfWeek repeatDays,
                       DaysOfWeek.DAY alarmDay, int alarmHour, int alarmMinute,
                       DaysOfWeek.DAY arrivalDay, int arrivalHour, int arrivalMinute,
@@ -205,8 +208,10 @@ public class AlarmClock implements Parcelable {
                       DaysOfWeek.DAY upperBoundDay, int upperBoundHour, int upperBoundMinute) {
         mUuid             = UUID.randomUUID();
         mRequestCode      = Math.abs((new Random()).nextInt());
-        mOrigin           = origin;
-        mDestination      = destination;
+        mOriginId         = originId;
+        mOriginAddress    = originAddress;
+        mDestinationId    = destinationId;
+        mDestinationAddress = destinationAddress;
         mRepeatDays       = repeatDays;
         setAlarmTime      (alarmDay, alarmHour, alarmMinute);
         setArrivalTime    (arrivalDay, arrivalHour, arrivalMinute);
@@ -242,7 +247,8 @@ public class AlarmClock implements Parcelable {
      * @param upperBoundMinute  The minute portion of the user selected alarm time.
      */
     public AlarmClock(UUID uuid, int requestCode,
-                      String origin, String destination,
+                      String originId, String originAddress,
+                      String destinationId, String destinationAddress,
                       DaysOfWeek repeatDays,
                       DaysOfWeek.DAY alarmDay, int alarmHour, int alarmMinute,
                       DaysOfWeek.DAY arrivalDay, int arrivalHour, int arrivalMinute,
@@ -250,8 +256,10 @@ public class AlarmClock implements Parcelable {
                       DaysOfWeek.DAY upperBoundDay, int upperBoundHour, int upperBoundMinute) {
         mUuid             = uuid;
         mRequestCode      = requestCode;
-        mOrigin           = origin;
-        mDestination      = destination;
+        mOriginId         = originId;
+        mOriginAddress    = originAddress;
+        mDestinationId    = destinationId;
+        mDestinationAddress = destinationAddress;
         mRepeatDays       = repeatDays;
         setAlarmTime      (alarmDay, alarmHour, alarmMinute);
         setArrivalTime    (arrivalDay, arrivalHour, arrivalMinute);
@@ -265,9 +273,9 @@ public class AlarmClock implements Parcelable {
     public void defaultAlarmSettings() {
         Calendar calendar = Calendar.getInstance();
 
-        mOrigin      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
-        mDestination = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
-        mOriginAddress      = DEFAULT_ORIGIN; // If we find device location, that should be the default.
+        mOriginId           = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
+        mOriginAddress      = DEFAULT_ORIGIN;      // If we find device location, that should be the default.
+        mDestinationId      = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
         mDestinationAddress = DEFAULT_DESTINATION; // If we have history, set it as previously chosen one.
 
         // Not repeating by default.
@@ -294,51 +302,51 @@ public class AlarmClock implements Parcelable {
     }
 
     /**
-     * Sets origin for the purpose of the Gedder alarm.
-     * @param origin The origin to set to. Must be non-null.
-     * @throws IllegalArgumentException If origin is null.
+     * Sets id for the purpose of the Gedder alarm.
+     * @param id The id to set to. Must be non-null.
+     * @throws IllegalArgumentException If id is null.
      */
-    public void setOrigin(String origin) {
-        if (origin == null) {
+    public void setOriginId(String id) {
+        if (id == null) {
             throw new IllegalArgumentException();
         }
-        mOrigin = origin;
+        mOriginId = id;
     }
 
     /**
-     * Sets origin address for the purpose of the Gedder alarm.
-     * @param origin The origin to set to. Must be non-null.
-     * @throws IllegalArgumentException If origin is null.
+     * Sets address address for the purpose of the Gedder alarm.
+     * @param address The address to set to. Must be non-null.
+     * @throws IllegalArgumentException If address is null.
      */
-    public void setOriginAddress(String origin) {
-        if (origin == null) {
+    public void setOriginAddress(String address) {
+        if (address == null) {
             throw new IllegalArgumentException();
         }
-        mOriginAddress = origin;
+        mOriginAddress = address;
     }
 
     /**
-     * Sets destination for the purpose of the Gedder alarm.
-     * @param destination The destination to set to. Must be non-null.
-     * @throws IllegalArgumentException If destination is null.
+     * Sets id for the purpose of the Gedder alarm.
+     * @param id The id to set to. Must be non-null.
+     * @throws IllegalArgumentException If id is null.
      */
-    public void setDestination(String destination) {
-        if (destination == null) {
+    public void setDestinationId(String id) {
+        if (id == null) {
             throw new IllegalArgumentException();
         }
-        mDestination = destination;
+        mDestinationId = id;
     }
 
     /**
-     * Sets destination for the purpose of the Gedder alarm.
-     * @param destination The destination to set to. Must be non-null.
-     * @throws IllegalArgumentException If destination is null.
+     * Sets address for the purpose of the Gedder alarm.
+     * @param address The address to set to. Must be non-null.
+     * @throws IllegalArgumentException If address is null.
      */
-    public void setDestinationAddress(String destination) {
-        if (destination == null) {
+    public void setDestinationAddress(String address) {
+        if (address == null) {
             throw new IllegalArgumentException();
         }
-        mDestinationAddress = destination;
+        mDestinationAddress = address;
     }
 
     /**
@@ -556,8 +564,8 @@ public class AlarmClock implements Parcelable {
      * Gets the place the user is leaving from.
      * @return The place the user is leaving from.
      */
-    public String getOrigin() {
-        return mOrigin;
+    public String getOriginId() {
+        return mOriginId;
     }
 
     /**
@@ -572,8 +580,8 @@ public class AlarmClock implements Parcelable {
      * Gets the place the user is going to.
      * @return The place the user is going to.
      */
-    public String getDestination() {
-        return mDestination;
+    public String getDestinationId() {
+        return mDestinationId;
     }
 
     /**
@@ -701,8 +709,10 @@ public class AlarmClock implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(this.mUuid);
         dest.writeInt(this.mRequestCode);
-        dest.writeString(this.mOrigin);
-        dest.writeString(this.mDestination);
+        dest.writeString(this.mOriginId);
+        dest.writeString(this.mOriginAddress);
+        dest.writeString(this.mDestinationId);
+        dest.writeString(this.mDestinationAddress);
         dest.writeInt(this.mRepeatDays.getCoded());
         dest.writeInt(this.mAlarmDay);
         dest.writeInt(this.mAlarmHour);
@@ -736,8 +746,10 @@ public class AlarmClock implements Parcelable {
     protected AlarmClock(Parcel in) {
         this.mUuid = (UUID) in.readSerializable();
         this.mRequestCode = in.readInt();
-        this.mOrigin = in.readString();
-        this.mDestination = in.readString();
+        this.mOriginId = in.readString();
+        this.mOriginAddress = in.readString();
+        this.mDestinationId = in.readString();
+        this.mDestinationAddress = in.readString();
         this.mRepeatDays = new DaysOfWeek(in.readInt());
         this.mAlarmDay = in.readInt();
         this.mAlarmHour = in.readInt();

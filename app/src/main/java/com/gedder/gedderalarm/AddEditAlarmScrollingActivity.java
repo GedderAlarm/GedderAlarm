@@ -106,16 +106,16 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mAutocompleteTextViewOrigin.setAdapter(mPlaceArrayAdapter);
         mAutocompleteTextViewDestination.setAdapter(mPlaceArrayAdapter);
 //        mOriginAddressString = mAlarmClock.getOriginAddress();
-//        mOriginIdString = mAlarmClock.getOrigin();
+//        mOriginIdString = mAlarmClock.getOriginId();
 //        if (! mOriginAddressString.equals("")) {
 //            mAutocompleteTextViewOrigin.setText(mOriginAddressString, false);
-//            //mOriginIdString = mAlarmClock.getOrigin();
+//            //mOriginIdString = mAlarmClock.getOriginId();
 //        }
 //        mDestinationAddressString = mAlarmClock.getDestinationAddress();
-//        mOriginIdString = mAlarmClock.getDestination();
+//        mOriginIdString = mAlarmClock.getDestinationId();
 //        if (! mDestinationAddressString.equals("")) {
 //            mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
-//            //mDestinationIdString = mAlarmClock.getDestination();
+//            //mDestinationIdString = mAlarmClock.getDestinationId();
 //        }
     }
 
@@ -275,9 +275,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             int prepTimeHours = prepTimeMinutes / 60;
             prepTimeMinutes = prepTimeMinutes % 60;
             mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);
-            mAlarmClock.setOrigin(mOriginIdString);
+            mAlarmClock.setOriginId(mOriginIdString);
             mAlarmClock.setOriginAddress(mOriginAddressString);
-            mAlarmClock.setDestination(mDestinationIdString);
+            mAlarmClock.setDestinationId(mDestinationIdString);
             mAlarmClock.setOriginAddress(mOriginAddressString);
             if (! mAlarmClock.isAlarmOn()) {
                 mAlarmClock.toggleAlarm();

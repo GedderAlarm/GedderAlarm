@@ -21,8 +21,10 @@ public class AlarmClockDBSchema {
             public static final String REQUEST_CODE = "requestCode";
 
             /**  */
-            public static final String ORIGIN = "origin";
-            public static final String DESTINATION = "destination";
+            public static final String ORIGIN_ID = "originId";
+            public static final String ORIGIN_ADDRESS = "originAddress";
+            public static final String DESTINATION_ID = "destinationId";
+            public static final String DESTINATION_ADDRESS = "destinationAddress";
 
             /**  */
             public static final String REPEAT_DAYS = "repeatDays";

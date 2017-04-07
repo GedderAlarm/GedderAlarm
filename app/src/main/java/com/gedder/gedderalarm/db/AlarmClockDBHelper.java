@@ -45,8 +45,10 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 + AlarmClockTable.Columns.ID    + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + AlarmClockTable.Columns.UUID  + " TEXT, "
                 + AlarmClockTable.Columns.REQUEST_CODE + " INTEGER, "
-                + AlarmClockTable.Columns.ORIGIN      + " TEXT, "
-                + AlarmClockTable.Columns.DESTINATION + " TEXT, "
+                + AlarmClockTable.Columns.ORIGIN_ID + " TEXT, "
+                + AlarmClockTable.Columns.ORIGIN_ADDRESS + " TEXT, "
+                + AlarmClockTable.Columns.DESTINATION_ID + " TEXT, "
+                + AlarmClockTable.Columns.DESTINATION_ADDRESS + " TEXT, "
                 + AlarmClockTable.Columns.REPEAT_DAYS + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_DAY    + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_HOUR   + " SMALLINT, "
@@ -155,8 +157,10 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     private ContentValues putAllExceptUuid(AlarmClock alarmClock) {
         ContentValues cv = new ContentValues();
         cv.put(AlarmClockTable.Columns.REQUEST_CODE, alarmClock.getRequestCode());
-        cv.put(AlarmClockTable.Columns.ORIGIN, alarmClock.getOrigin());
-        cv.put(AlarmClockTable.Columns.DESTINATION, alarmClock.getDestination());
+        cv.put(AlarmClockTable.Columns.ORIGIN_ID, alarmClock.getOriginId());
+        cv.put(AlarmClockTable.Columns.ORIGIN_ADDRESS, alarmClock.getOriginAddress());
+        cv.put(AlarmClockTable.Columns.DESTINATION_ID, alarmClock.getDestinationId());
+        cv.put(AlarmClockTable.Columns.DESTINATION_ADDRESS, alarmClock.getDestinationAddress());
         cv.put(AlarmClockTable.Columns.REPEAT_DAYS, alarmClock.getRepeatDays().getCoded());
         cv.put(AlarmClockTable.Columns.ALARM_DAY, alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));
         cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmTime().get(Calendar.HOUR));
