@@ -357,7 +357,7 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setAlarmTime(Calendar future) {
-        mAlarmTime   = TimeUtilities.getMillisUntil(future);
+        mAlarmTime   = TimeUtilities.getMillisSinceEpochTo(future);
         mAlarmDay    = future.get(Calendar.DAY_OF_WEEK);
         mAlarmHour   = future.get(Calendar.HOUR_OF_DAY);
         mAlarmMinute = future.get(Calendar.MINUTE);
@@ -384,7 +384,7 @@ public class AlarmClock implements Parcelable {
      * @see #setAlarmTime(Calendar)
      */
     public void setAlarmTime(int day, int hour, int minute) {
-        mAlarmTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mAlarmTime   = TimeUtilities.getMillisSinceEpochTo(day, hour, minute);
         mAlarmDay    = day;
         mAlarmHour   = hour;
         mAlarmMinute = minute;
@@ -398,7 +398,7 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setArrivalTime(Calendar future) {
-        mArrivalTime   = TimeUtilities.getMillisUntil(future);
+        mArrivalTime   = TimeUtilities.getMillisSinceEpochTo(future);
         mArrivalDay    = future.get(Calendar.DAY_OF_WEEK);
         mArrivalHour   = future.get(Calendar.HOUR_OF_DAY);
         mArrivalMinute = future.get(Calendar.MINUTE);
@@ -425,7 +425,7 @@ public class AlarmClock implements Parcelable {
      * @see #setArrivalTime(Calendar)
      */
     public void setArrivalTime(int day, int hour, int minute) {
-        mArrivalTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mArrivalTime   = TimeUtilities.getMillisSinceEpochTo(day, hour, minute);
         mArrivalDay    = day;
         mArrivalHour   = hour;
         mArrivalMinute = minute;
@@ -450,7 +450,7 @@ public class AlarmClock implements Parcelable {
      *               {@link Calendar#MINUTE}.
      */
     public void setUpperBoundTime(Calendar future) {
-        mUpperBoundTime   = TimeUtilities.getMillisUntil(future);
+        mUpperBoundTime   = TimeUtilities.getMillisSinceEpochTo(future);
         mUpperBoundDay    = future.get(Calendar.DAY_OF_WEEK);
         mUpperBoundHour   = future.get(Calendar.HOUR_OF_DAY);
         mUpperBoundMinute = future.get(Calendar.MINUTE);
@@ -477,7 +477,7 @@ public class AlarmClock implements Parcelable {
      * @see #setUpperBoundTime(Calendar)
      */
     public void setUpperBoundTime(int day, int hour, int minute) {
-        mUpperBoundTime   = TimeUtilities.getMillisUntil(day, hour, minute);
+        mUpperBoundTime   = TimeUtilities.getMillisSinceEpochTo(day, hour, minute);
         mUpperBoundDay    = day;
         mUpperBoundHour   = hour;
         mUpperBoundMinute = minute;

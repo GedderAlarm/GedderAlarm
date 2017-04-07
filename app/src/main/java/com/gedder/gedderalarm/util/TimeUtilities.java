@@ -28,6 +28,54 @@ public final class TimeUtilities {
 
     private TimeUtilities() {}
 
+    public static long getMillisSinceEpochTo(DaysOfWeek.DAY day, int hour, int minute) {
+        return getMillisSinceEpochTo(day.getInt(), hour, minute);
+    }
+
+    public static long getMillisSinceEpochTo(int day, int hour, int minute) {
+        if (day < 1 || day > 7 || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+            throw new IllegalArgumentException(
+                    "day = " + day
+                            + " hour = " + hour
+                            + " minute = " + minute
+            );
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        long then;
+        if (day >= calendar.get(Calendar.DAY_OF_WEEK)) {
+            // This week.
+            then = (day - 1 - calendar.get(Calendar.DAY_OF_WEEK))*MILLIS_PER_DAY
+                    + (hour - calendar.get(Calendar.HOUR_OF_DAY))*MILLIS_PER_HOUR
+                    + (minute - calendar.get(Calendar.MINUTE))*MILLIS_PER_MINUTE;
+        } else {
+            // Next week.
+            then = day*MILLIS_PER_DAY
+                    + hour*MILLIS_PER_HOUR
+                    + minute*MILLIS_PER_MINUTE;
+        }
+
+        return System.currentTimeMillis() + then;
+    }
+
+    public static long getMillisSinceEpochTo(Calendar future) {
+        Calendar calendar = Calendar.getInstance();
+        long then;
+        if (future.get(Calendar.DAY_OF_WEEK) >= calendar.get(Calendar.DAY_OF_WEEK)) {
+            // This week.
+            then = (future.get(Calendar.DAY_OF_WEEK) - 1 - calendar.get(Calendar.DAY_OF_WEEK))*MILLIS_PER_DAY
+                    + (future.get(Calendar.HOUR_OF_DAY) - calendar.get(Calendar.HOUR_OF_DAY))*MILLIS_PER_HOUR
+                    + (future.get(Calendar.MINUTE) - calendar.get(Calendar.MINUTE))*MILLIS_PER_MINUTE;
+        } else {
+            // Next week.
+            then = future.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
+                    + future.get(Calendar.HOUR_OF_DAY)*MILLIS_PER_HOUR
+                    + future.get(Calendar.MINUTE)*MILLIS_PER_MINUTE;
+        }
+
+        return System.currentTimeMillis() + then;
+    }
+
     public static long getMillisUntil(DaysOfWeek.DAY day, int hour, int minute) {
         return getMillisUntil(day.getInt(), hour, minute);
     }
@@ -51,7 +99,7 @@ public final class TimeUtilities {
 
         Calendar calendar = Calendar.getInstance();
         long now = calendar.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
-                 + calendar.get(Calendar.HOUR)*MILLIS_PER_HOUR
+                 + calendar.get(Calendar.HOUR_OF_DAY)*MILLIS_PER_HOUR
                  + calendar.get(Calendar.MINUTE)*MILLIS_PER_MINUTE;
         long then = day*MILLIS_PER_DAY
                   + hour*MILLIS_PER_HOUR
@@ -68,10 +116,10 @@ public final class TimeUtilities {
     public static long getMillisUntil(Calendar future) {
         Calendar calendar = Calendar.getInstance();
         long now = calendar.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
-                 + calendar.get(Calendar.HOUR)*MILLIS_PER_HOUR
+                 + calendar.get(Calendar.HOUR_OF_DAY)*MILLIS_PER_HOUR
                  + calendar.get(Calendar.MINUTE)*MILLIS_PER_MINUTE;
         long then = future.get(Calendar.DAY_OF_WEEK)*MILLIS_PER_DAY
-                  + future.get(Calendar.HOUR)*MILLIS_PER_HOUR
+                  + future.get(Calendar.HOUR_OF_DAY)*MILLIS_PER_HOUR
                   + future.get(Calendar.MINUTE)*MILLIS_PER_MINUTE;
         return then - now;
     }
