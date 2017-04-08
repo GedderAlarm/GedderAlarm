@@ -24,12 +24,12 @@ public class GedderRestartReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                resetAlarms(context);
+                restartAllGedders(context);
             }
         }
     }
 
-    private void resetAlarms(Context context) {
+    private void restartAllGedders(Context context) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(context);
         AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAllAlarmClocks());
         if (!cursor.moveToFirst()) {
@@ -37,6 +37,7 @@ public class GedderRestartReceiver extends BroadcastReceiver {
         } else {
             do {
                 AlarmClock alarmClock = cursor.getAlarmClock();
+
                 if (alarmClock.isAlarmOn() && alarmClock.getAlarmTimeMillis() > System.currentTimeMillis()) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, alarmClock);
@@ -45,6 +46,7 @@ public class GedderRestartReceiver extends BroadcastReceiver {
                 } else {
                     // We missed the alarm while the phone was off; appropriate alarm variables.
                     alarmClock.setGedder(AlarmClock.OFF);
+                    db.updateAlarmClock(alarmClock);
                 }
             } while (cursor.moveToNext());
         }
