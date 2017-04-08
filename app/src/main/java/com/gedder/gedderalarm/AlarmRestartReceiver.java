@@ -27,12 +27,12 @@ public class AlarmRestartReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
             if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                resetAlarms(context);
+                restartAllAlarms(context);
             }
         }
     }
 
-    private void resetAlarms(Context context) {
+    private void restartAllAlarms(Context context) {
         AlarmClockDBHelper db = new AlarmClockDBHelper(context);
         AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAllAlarmClocks());
         if (!cursor.moveToFirst()) {
@@ -49,6 +49,7 @@ public class AlarmRestartReceiver extends BroadcastReceiver {
                 } else {
                     // We missed the alarm while the phone was off; appropriate alarm variables.
                     alarmClock.setAlarm(AlarmClock.OFF);
+                    db.updateAlarmClock(alarmClock);
                 }
             } while (cursor.moveToNext());
         }
