@@ -24,6 +24,7 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -238,6 +239,34 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 AlarmClockDBHelper db = new AlarmClockDBHelper(this);
                 AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
+                /************************************************************************/
+                //FOR TESTING
+                Calendar alarmTime = alarmClock.getAlarmTime();
+                Toast.makeText(getBaseContext(),
+                        "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
+                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
+                        Toast.LENGTH_SHORT).show();
+                Calendar arrivalTime = alarmClock.getArrivalTime();
+                Toast.makeText(getBaseContext(),
+                        "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
+                                + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
+                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),
+                        "Prep Time: " + Integer.toString((((int)alarmClock.getPrepTimeMillis()) / 1000) / 60),
+                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),
+                        "Destination: " + alarmClock.getDestinationAddress(),
+                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),
+                        "Destination ID: " + alarmClock.getDestinationId(),
+                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),
+                        "Origin: " + alarmClock.getOriginAddress(),
+                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),
+                        "Origin ID: " + alarmClock.getOriginId(),
+                        Toast.LENGTH_SHORT).show();
+                /************************************************************************/
                 mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
             }
         }
