@@ -49,21 +49,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Cursor mAlarmClockCursor;
-
-        // Get a cursor pointing to all currently saved alarm clocks.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
 
         /////////////////////////////
-        if (db.getAlarmClockCount() == 0) {
+        // FOR TESTING ONLY.
+        if (db.getAlarmClockCount() == 0)
+        {
             db.addAlarmClock(new AlarmClock());
             db.addAlarmClock(new AlarmClock());
             db.addAlarmClock(new AlarmClock());
             db.addAlarmClock(new AlarmClock());
         }
+        //
         /////////////////////////////
 
-        mAlarmClockCursor = db.getAllAlarmClocks();
+        Cursor mAlarmClockCursor = db.getAllAlarmClocks();
 
         // Make an adapter based off of the cursor.
         mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, mAlarmClockCursor);
@@ -163,25 +163,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickToggleGedder(View view) {
-        // TODO: Dirty logic, fix.
-        ToggleButton toggle = (ToggleButton) view;
-        View row = (View) view.getParent();
+        ToggleButton toggle   = (ToggleButton) view;
+        View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
+
         if (alarmClock.isGedderOn()) {
+            // CASE: Gedder is on.
             alarmClock.toggleGedder();
             toggle.setChecked(false);
             toastMessage("Gedder service off");
             cancelGedderPersistentIcon();
         } else {
             if (alarmClock.getOriginId().equals("") || alarmClock.getDestinationId().equals("")) {
-                // Gedder information is incomplete. Go request for it.
+                // CASE: Gedder is off but missing required information.
                 Intent intent = new Intent(GedderAlarmApplication.getAppContext(),
                         AddEditAlarmScrollingActivity.class);
                 intent.putExtra(PARCEL_ALARM_CLOCK, alarmClock);
                 startActivityForResult(intent, mIntentRequestCode);
                 toggle.setChecked(false);
             } else if (!alarmClock.isAlarmOn()) {
-                // Alarm is off but trying to activate Gedder. So turn alarm on too.
+                // CASE: Gedder is off and alarm is off.
                 alarmClock.toggleAlarm();
                 ((ToggleButton) findViewById(R.id.itemAlarmClock_alarmClockToggleBtn))
                         .setChecked(true);
@@ -190,20 +191,25 @@ public class MainActivity extends AppCompatActivity {
                 toastMessage("Gedder service on.");
                 setGedderPersistentIcon();
             } else {
+                // CASE: Gedder is off and alarm is on.
                 alarmClock.toggleGedder();
                 toggle.setChecked(true);
                 toastMessage("Gedder service on.");
                 setGedderPersistentIcon();
             }
         }
-        new AlarmClockDBHelper(this).updateAlarmClock(alarmClock);
-        mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
+
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        db.updateAlarmClock(alarmClock);
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        db.close();
     }
 
     public void onClickToggleAlarm(View view) {
-        ToggleButton toggle = (ToggleButton) view;
-        View row = (View) view.getParent();
+        ToggleButton toggle   = (ToggleButton) view;
+        View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
+
         alarmClock.toggleAlarm();
         if (alarmClock.isAlarmOn()) {
             toggle.setChecked(true);
@@ -221,15 +227,18 @@ public class MainActivity extends AppCompatActivity {
             cancelGedderPersistentIcon();
         }
 
-        new AlarmClockDBHelper(this).updateAlarmClock(alarmClock);
-        mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        db.updateAlarmClock(alarmClock);
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        db.close();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == mIntentRequestCode) {
             if (resultCode == RESULT_OK) {
+                AlarmClockDBHelper db = new AlarmClockDBHelper(this);
                 AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
-                mAlarmClocksCursorAdapter.changeCursor(new AlarmClockDBHelper(this).getAllAlarmClocks());
+                mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
             }
         }
     }

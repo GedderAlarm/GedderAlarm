@@ -28,9 +28,9 @@ import java.util.UUID;
 public class AlarmActivity extends AppCompatActivity {
     // TODO: @gil - UI.
 
-    private static final String TAG = AlarmActivity.class.getSimpleName();
-
     public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
+
+    private static final String TAG = AlarmActivity.class.getSimpleName();
 
     // This is used to get the ringtone.
     private Uri alert;

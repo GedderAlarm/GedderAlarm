@@ -37,22 +37,22 @@ public class JsonParser {
 
     private static final String TAG = JsonParser.class.getSimpleName();
 
-    private String json;
-    private JSONObject obj;
+    private String mJson;
+    private JSONObject mJsonObj;
 
     /**
      * Initializes JsonParser object using a valid JSON string.
      * @param json The JSON string to parse.
      */
     public JsonParser(String json) {
-        this.json = json;
+        mJson = json;
 
         try {
-            this.obj = new JSONObject(this.json);
+            mJsonObj = new JSONObject(this.mJson);
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in constructor " + TAG + "::JsonParser(String).");
-            this.json = "";
-            this.obj = null;
+            mJson = "";
+            mJsonObj = null;
         }
     }
 
@@ -85,10 +85,10 @@ public class JsonParser {
         JSONArray legs;
         JSONObject leg_number;
         JSONObject durationObj;
-        int duration = -1;
+        int duration;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -130,10 +130,10 @@ public class JsonParser {
         JSONObject route_number;
         JSONArray legs;
         JSONObject leg_number;
-        int distance = -1;
+        int distance;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -178,10 +178,10 @@ public class JsonParser {
         JSONArray legs;
         JSONObject leg_number;
         JSONObject duration_in_traffic;
-        int value = -1;
+        int value;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);
@@ -215,11 +215,12 @@ public class JsonParser {
         ArrayList<String> warningsList = new ArrayList<>();
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             warnings = route_number.getJSONArray("warnings");
-            for (int i = 0; i < warnings.length(); i++)
+            for (int i = 0; i < warnings.length(); i++) {
                 warningsList.add(warnings.getString(i));
+            }
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in function " + TAG + "::warnings.");
             return null;
@@ -244,10 +245,10 @@ public class JsonParser {
     public String copyrights(int route) {
         JSONArray routes;
         JSONObject route_number;
-        String copyrights = "";
+        String copyrights;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             copyrights = route_number.getString("copyrights");
         } catch (JSONException e) {
@@ -274,10 +275,10 @@ public class JsonParser {
     public String summary(int route) {
         JSONArray routes;
         JSONObject route_number;
-        String summary = "";
+        String summary;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             summary = route_number.getString("summary");
         } catch (JSONException e) {
@@ -305,10 +306,10 @@ public class JsonParser {
         JSONArray routes;
         JSONObject route_number;
         JSONObject fare;
-        String currency = "";
+        String currency;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             fare = route_number.getJSONObject("fare");
             currency = fare.getString("currency");
@@ -338,10 +339,10 @@ public class JsonParser {
         JSONArray routes;
         JSONObject route_number;
         JSONObject fareObj;
-        int fare = -1;
+        int fare;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             fareObj = route_number.getJSONObject("fare");
             fare = fareObj.getInt("value");
@@ -360,10 +361,10 @@ public class JsonParser {
      */
     public JsonStatus status() {
         JsonStatus code;
-        String status = "";
+        String status;
 
         try {
-            status = obj.getString("status");
+            status = mJsonObj.getString("status");
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in function " + TAG + "::status.");
             return null;
@@ -407,10 +408,10 @@ public class JsonParser {
      * @return error message string.
      */
     public String errorMessage() {
-        String error = "";
+        String error;
 
         try {
-            error = obj.getString("error_message");
+            error = mJsonObj.getString("error_message");
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in function " + TAG + "::errorMessage.");
             return null;
@@ -429,9 +430,10 @@ public class JsonParser {
         ArrayList<String> modes = new ArrayList<>();
 
         try {
-            travel_modes = obj.getJSONArray("available_travel_modes");
-            for (int i = 0; i < travel_modes.length(); i++)
+            travel_modes = mJsonObj.getJSONArray("available_travel_modes");
+            for (int i = 0; i < travel_modes.length(); i++) {
                 modes.add(travel_modes.getString(i));
+            }
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in function " + TAG + "::availableTravelModes.");
             return null;
@@ -454,11 +456,11 @@ public class JsonParser {
         JSONObject leg_number;
         JSONArray steps;
         JSONObject step_number;
-        String travelModeStr = "";
+        String travelModeStr;
         TravelMode travelMode;
 
         try {
-            routes = obj.getJSONArray("routes");
+            routes = mJsonObj.getJSONArray("routes");
             route_number = routes.getJSONObject(route);
             legs = route_number.getJSONArray("legs");
             leg_number = legs.getJSONObject(leg);

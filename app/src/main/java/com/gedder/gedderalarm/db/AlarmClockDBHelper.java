@@ -17,9 +17,7 @@ import com.gedder.gedderalarm.model.AlarmClock;
 import java.util.Calendar;
 import java.util.UUID;
 
-/**
- * A SQLite wrapper class to help in creating, reading, updating, and deleting Alarm Clocks.
- */
+/** A SQLite wrapper class to help in creating, reading, updating, and deleting Alarm Clocks. */
 
 public class AlarmClockDBHelper extends SQLiteOpenHelper {
     private static final String TAG = AlarmClockDBHelper.class.getSimpleName();
@@ -144,12 +142,22 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 AlarmClockTable.Columns.UUID + "=?", new String[] { uuid.toString() });
     }
 
+    /**
+     *
+     * @param alarmClock
+     * @return
+     */
     private ContentValues putAll(AlarmClock alarmClock) {
         ContentValues cv = new ContentValues(putAllExceptUuid(alarmClock));
         cv.put(AlarmClockTable.Columns.UUID, alarmClock.getUUID().toString());
         return cv;
     }
 
+    /**
+     *
+     * @param alarmClock
+     * @return
+     */
     private ContentValues putAllExceptUuid(AlarmClock alarmClock) {
         ContentValues cv = new ContentValues();
         cv.put(AlarmClockTable.Columns.REQUEST_CODE, alarmClock.getRequestCode());

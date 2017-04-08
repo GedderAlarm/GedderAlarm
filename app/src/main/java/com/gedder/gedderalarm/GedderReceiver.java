@@ -55,34 +55,33 @@ import java.util.ArrayList;
  */
 
 public class GedderReceiver extends BroadcastReceiver {
-    private static final String TAG = GedderReceiver.class.getSimpleName();
+    public static final String PARAM_ORIGIN_ID      = "__PARAM_ORIGIN__";
+    public static final String PARAM_DESTINATION_ID = "__PARAM_DESTINATION__";
+    public static final String PARAM_ARRIVAL_TIME   = "__PARAM_ARRIVAL_TIME__";
+    public static final String PARAM_PREP_TIME      = "__PARAM_PREP_TIME__";
+    public static final String PARAM_ALARM_TIME     = "__PARAM_ALARM_BOUND_TIME__";
+    public static final String PARAM_ID             = "__PARAM_ID__";
 
-    public static final String PARAM_ORIGIN = "__PARAM_ORIGIN__";
-    public static final String PARAM_DESTINATION = "__PARAM_DESTINATION__";
-    public static final String PARAM_ARRIVAL_TIME = "__PARAM_ARRIVAL_TIME__";
-    public static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
-    public static final String PARAM_ALARM_BOUND_TIME = "__PARAM_ALARM_BOUND_TIME__";
-    public static final String PARAM_ID = "__PARAM_ID__";
+    private static final String TAG = GedderReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String origin      = intent.getStringExtra(PARAM_ORIGIN);
-        String dest        = intent.getStringExtra(PARAM_DESTINATION);
-        long   arrivalTime = intent.getLongExtra(PARAM_ARRIVAL_TIME, -1);
-        long   prepTime    = intent.getLongExtra(PARAM_PREP_TIME, -1);
-        long   alarmTime   = intent.getLongExtra(PARAM_ALARM_BOUND_TIME, -1);
-        int    id          = intent.getIntExtra(PARAM_ID, -1);
+        String origin      = intent.getStringExtra(PARAM_ORIGIN_ID);
+        String dest        = intent.getStringExtra(PARAM_DESTINATION_ID);
+        long   arrivalTime = intent.getLongExtra  (PARAM_ARRIVAL_TIME, -1);
+        long   prepTime    = intent.getLongExtra  (PARAM_PREP_TIME, -1);
+        long   alarmTime   = intent.getLongExtra  (PARAM_ALARM_TIME, -1);
+        int    id          = intent.getIntExtra   (PARAM_ID, -1);
 
-        if (origin == null || dest == null
-                || origin.equals("") || dest.equals("")
-                || arrivalTime == -1 || prepTime == -1 || alarmTime == -1
-                || id == -1) {
-            throw new IllegalArgumentException("origin = " + origin
-                            + " dest = " + dest
-                            + " arrivalTime = " + arrivalTime
-                            + " prepTime = " + prepTime
-                            + " alarmTime = " + alarmTime
-                            + " id = " + id);
+        if (origin == null || dest == null || origin.equals("") || dest.equals("")
+                || arrivalTime == -1 || prepTime == -1 || alarmTime == -1 || id == -1) {
+            throw new IllegalArgumentException("Missing parameter in GedderReceiver: "
+                    + "origin = "        + origin
+                    + ", dest = "        + dest
+                    + ", arrivalTime = " + arrivalTime
+                    + ", prepTime = "    + prepTime
+                    + ", alarmTime = "   + alarmTime
+                    + ", id = "          + id);
         }
 
         // Turn on the engine, and get back the results.

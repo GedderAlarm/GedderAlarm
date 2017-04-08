@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.gedder.gedderalarm.R;
-import com.gedder.gedderalarm.db.AlarmClockDBSchema;
+import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
 
 import java.util.Locale;
 
@@ -41,18 +41,22 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Set the UUID of the alarm as a tag to this view.
         view.setTag(cursor.getString(cursor.getColumnIndexOrThrow(
-                AlarmClockDBSchema.AlarmClockTable.Columns.UUID)));
+                AlarmClockTable.Columns.UUID)));
 
         // Get data needed for this view.
-        int hour = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_HOUR));
-        int minute = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_MINUTE));
-        boolean alarmOn = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.ALARM_SET)) > 0;
-        boolean gedderOn = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmClockDBSchema.AlarmClockTable.Columns.GEDDER_SET)) > 0;
+        int hour         = cursor.getInt(cursor.getColumnIndexOrThrow(
+                AlarmClockTable.Columns.ALARM_HOUR));
+        int minute       = cursor.getInt(cursor.getColumnIndexOrThrow(
+                AlarmClockTable.Columns.ALARM_MINUTE));
+        boolean alarmOn  = cursor.getInt(cursor.getColumnIndexOrThrow(
+                AlarmClockTable.Columns.ALARM_SET)) > 0;
+        boolean gedderOn = cursor.getInt(cursor.getColumnIndexOrThrow(
+                AlarmClockTable.Columns.GEDDER_SET)) > 0;
 
         // Format our display.
         String period = hour >= 12? "PM":"AM";
-        hour = hour > 12? (hour % 12) : (hour == 0? 12 : hour);
-        String time = String.format(Locale.getDefault(), "%d:%02d %s", hour, minute, period);
+        hour          = hour > 12? (hour % 12) : (hour == 0? 12 : hour);
+        String time   = String.format(Locale.getDefault(), "%d:%02d %s", hour, minute, period);
 
         // Populate our views with that formatted data.
         ((TextView) view.findViewById(R.id.itemAlarmClock_WakeupTime)).setText(time);

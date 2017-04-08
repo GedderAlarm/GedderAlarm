@@ -14,9 +14,9 @@ import android.content.Intent;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private static final String TAG = AlarmReceiver.class.getSimpleName();
-
     public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
+
+    private static final String TAG = AlarmReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.gedder.gedderalarm.model.AlarmClock;
-import com.gedder.gedderalarm.util.Log;
 
 import java.util.UUID;
 
@@ -31,12 +30,12 @@ import static android.content.Context.ALARM_SERVICE;
  */
 
 public final class GedderAlarmManager {
-    private static final String TAG = GedderAlarmManager.class.getSimpleName();
-
     public static final String PARAM_ALARM_CLOCK = "__PARAM_ALARM_CLOCK__";
-    public static final String PARAM_UNIQUE_ID = "__PARAM_UNIQUE_ID__";
-    public static final String PARAM_ALARM_TIME = "__PARAM_ALARM_TIME__";
-    public static final String PARAM_UUID = "__PARAM_UUID__";
+    public static final String PARAM_UNIQUE_ID   = "__PARAM_UNIQUE_ID__";
+    public static final String PARAM_ALARM_TIME  = "__PARAM_ALARM_TIME__";
+    public static final String PARAM_UUID        = "__PARAM_UUID__";
+
+    private static final String TAG = GedderAlarmManager.class.getSimpleName();
 
     private static AlarmManager sAlarmManager =
             (AlarmManager) GedderAlarmApplication.getAppContext().getSystemService(ALARM_SERVICE);
@@ -49,17 +48,15 @@ public final class GedderAlarmManager {
      */
     public static void setAlarm(Bundle alarmData) {
         UUID uuid = (UUID) alarmData.getSerializable(PARAM_UUID);
-        int id = alarmData.getInt(PARAM_UNIQUE_ID, -1);
+        int id    = alarmData.getInt(PARAM_UNIQUE_ID, -1);
         long time = alarmData.getLong(PARAM_ALARM_TIME, -1);
 
         if (uuid == null || id == -1 || time == -1) {
-            throw new IllegalArgumentException(
-                    "id = " + id
-                    + " time = " + time
-                    + " uuid = " + uuid);
+            throw new IllegalArgumentException("Missing parameter in call to setAlarm(): "
+                    + "id = "     + id
+                    + ", time = " + time
+                    + ", uuid = " + uuid);
         }
-
-        Log.e(TAG, String.valueOf(id));
 
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
@@ -77,9 +74,7 @@ public final class GedderAlarmManager {
     public static void cancelAlarm(Bundle alarmData) {
         int id = alarmData.getInt(PARAM_UNIQUE_ID, -1);
 
-        if (id == -1) {
-            throw new IllegalArgumentException("id = " + id);
-        }
+        if (id == -1) throw new IllegalArgumentException("No id given in call to cancelAlarm().");
 
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
@@ -98,18 +93,18 @@ public final class GedderAlarmManager {
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
         if (alarmClock == null || id == -1) {
-            throw new IllegalArgumentException(
-                    "alarmClock = " + alarmClock
-                          + " id = " + id);
+            throw new IllegalArgumentException("Missing parameter in call to setGedder(): "
+                    + "alarmClock = " + alarmClock
+                    + ", id = "       + id);
         }
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
-        intent.putExtra(GedderReceiver.PARAM_ORIGIN, alarmClock.getOriginId());
-        intent.putExtra(GedderReceiver.PARAM_DESTINATION, alarmClock.getDestinationId());
-        intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
-        intent.putExtra(GedderReceiver.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
-        intent.putExtra(GedderReceiver.PARAM_ALARM_BOUND_TIME, alarmClock.getAlarmTimeMillis());
-        intent.putExtra(GedderReceiver.PARAM_ID, id);
+        intent.putExtra(GedderReceiver.PARAM_ORIGIN_ID,      alarmClock.getOriginId());
+        intent.putExtra(GedderReceiver.PARAM_DESTINATION_ID, alarmClock.getDestinationId());
+        intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME,   alarmClock.getArrivalTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_PREP_TIME,      alarmClock.getPrepTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_ALARM_TIME,     alarmClock.getAlarmTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_ID,             id);
         LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
                 .sendBroadcast(intent);
     }
@@ -121,9 +116,7 @@ public final class GedderAlarmManager {
     public static void cancelGedder(Bundle gedderData) {
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
-        if (id == -1) {
-            throw new IllegalArgumentException("id = " + id);
-        }
+        if (id == -1) throw new IllegalArgumentException("No id given in call to cancelGedder().");
 
         Intent alarmIntent =
                 new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
@@ -163,9 +156,7 @@ public final class GedderAlarmManager {
      */
     @TargetApi(24)
     public static void cancel(AlarmManager.OnAlarmListener listener) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            sAlarmManager.cancel(listener);
-        }
+        if (Build.VERSION.SDK_INT >= 24) sAlarmManager.cancel(listener);
     }
 
     /**
@@ -174,9 +165,7 @@ public final class GedderAlarmManager {
      */
     @TargetApi(21)
     public static AlarmManager.AlarmClockInfo getNextAlarmClock() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            return sAlarmManager.getNextAlarmClock();
-        }
+        if (Build.VERSION.SDK_INT >= 21) return sAlarmManager.getNextAlarmClock();
         return null;
     }
 
@@ -206,9 +195,7 @@ public final class GedderAlarmManager {
      */
     @TargetApi(21)
     public static void setAlarmClock(AlarmManager.AlarmClockInfo info, PendingIntent operation) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            sAlarmManager.setAlarmClock(info, operation);
-        }
+        if (Build.VERSION.SDK_INT >= 21) sAlarmManager.setAlarmClock(info, operation);
     }
 
     /**
