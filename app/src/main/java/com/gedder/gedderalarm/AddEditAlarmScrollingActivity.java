@@ -74,31 +74,31 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
 
         /************************************************************************/
         //FOR TESTING
-        Calendar alarmTime = mAlarmClock.getAlarmTime();
-        Toast.makeText(getBaseContext(),
-                "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
-                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
-                Toast.LENGTH_SHORT).show();
-        Calendar arrivalTime = mAlarmClock.getArrivalTime();
-        Toast.makeText(getBaseContext(),
-                "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
-                        + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),
-                "Prep Time: " + Integer.toString((((int)mAlarmClock.getPrepTimeMillis()) / 1000) / 60),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),
-                "Destination: " + mAlarmClock.getDestinationAddress(),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),
-                "Destination ID: " + mAlarmClock.getDestinationId(),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),
-                "Origin: " + mAlarmClock.getOriginAddress(),
-                Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(),
-                "Origin ID: " + mAlarmClock.getOriginId(),
-                Toast.LENGTH_SHORT).show();
+//        Calendar alarmTime = mAlarmClock.getAlarmTime();
+//        Toast.makeText(getBaseContext(),
+//                "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
+//                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
+//                Toast.LENGTH_SHORT).show();
+//        Calendar arrivalTime = mAlarmClock.getArrivalTime();
+//        Toast.makeText(getBaseContext(),
+//                "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
+//                        + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Prep Time: " + Integer.toString((((int)mAlarmClock.getPrepTimeMillis()) / 1000) / 60),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Destination: " + mAlarmClock.getDestinationAddress(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Destination ID: " + mAlarmClock.getDestinationId(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Origin: " + mAlarmClock.getOriginAddress(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Origin ID: " + mAlarmClock.getOriginId(),
+//                Toast.LENGTH_SHORT).show();
         /************************************************************************/
 
         //Initialize variables for textviews, edittexts and timepicker
