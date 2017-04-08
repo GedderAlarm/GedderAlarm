@@ -117,11 +117,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         int hourOfDay = mHourArrival;
         int minute = mMinuteArrival;
         String am_or_pm;
-        if (hourOfDay > 12) {
+        if (hourOfDay >= 12) {
             am_or_pm = "pm";
             hourOfDay = hourOfDay - 12;
         } else {
             am_or_pm = "am";
+        }
+        if (hourOfDay == 0) {
+            hourOfDay = 12;
         }
         String hour_string = Integer.toString(hourOfDay);
         if(hourOfDay < 10) {
@@ -275,11 +278,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                         mHourArrival = hourOfDay;
                         mMinuteArrival = minute;
                         String am_or_pm;
-                        if (hourOfDay > 12) {
+                        if (hourOfDay >= 12) {
                             am_or_pm = "pm";
                             hourOfDay = hourOfDay - 12;
                         } else {
                             am_or_pm = "am";
+                        }
+                        if (hourOfDay == 0) {
+                            hourOfDay = 12;
                         }
                         String hour_string = Integer.toString(hourOfDay);
                         if(hourOfDay < 10) {
