@@ -47,12 +47,6 @@ public class AlarmClockDBSchema {
             public static final String PREP_TIME = "prepTime";
 
             /**  */
-            public static final String UPPER_BOUND_DAY = "upperBoundDay";
-            public static final String UPPER_BOUND_HOUR = "upperBoundHour";
-            public static final String UPPER_BOUND_MINUTE = "upperBoundMinute";
-            public static final String UPPER_BOUND_TIME = "upperBoundTime";
-
-            /**  */
             public static final String ALARM_SET = "alarmSet";
             public static final String GEDDER_SET = "gedderSet";
         }

@@ -61,10 +61,6 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
                 + AlarmClockTable.Columns.PREP_HOUR   + " SMALLINT, "
                 + AlarmClockTable.Columns.PREP_MINUTE + " SMALLINT, "
                 + AlarmClockTable.Columns.PREP_TIME   + " INT8, "
-                + AlarmClockTable.Columns.UPPER_BOUND_DAY    + " SMALLINT, "
-                + AlarmClockTable.Columns.UPPER_BOUND_HOUR   + " SMALLINT, "
-                + AlarmClockTable.Columns.UPPER_BOUND_MINUTE + " SMALLINT, "
-                + AlarmClockTable.Columns.UPPER_BOUND_TIME   + " INT8, "
                 + AlarmClockTable.Columns.ALARM_SET  + " BOOLEAN, "
                 + AlarmClockTable.Columns.GEDDER_SET + " BOOLEAN)"
         );
@@ -173,10 +169,6 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepTime().get(Calendar.HOUR_OF_DAY));
         cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepTime().get(Calendar.MINUTE));
         cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTimeMillis());
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_DAY, alarmClock.getUpperBoundTime().get(Calendar.DAY_OF_WEEK));
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_HOUR, alarmClock.getUpperBoundTime().get(Calendar.HOUR_OF_DAY));
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_MINUTE, alarmClock.getUpperBoundTime().get(Calendar.MINUTE));
-        cv.put(AlarmClockTable.Columns.UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
         cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isAlarmOn());
         cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
         return cv;

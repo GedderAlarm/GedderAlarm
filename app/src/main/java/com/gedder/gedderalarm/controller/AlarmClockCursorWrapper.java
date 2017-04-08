@@ -39,10 +39,7 @@ public class AlarmClockCursorWrapper extends CursorWrapper {
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ARRIVAL_HOUR)),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ARRIVAL_MINUTE)),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.PREP_HOUR)),
-                getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.PREP_MINUTE)),
-                DaysOfWeek.DAY.getDay(getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.UPPER_BOUND_DAY))),
-                getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.UPPER_BOUND_HOUR)),
-                getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.UPPER_BOUND_MINUTE))
+                getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.PREP_MINUTE))
         );
         if (getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_SET)) > 0) {
             alarmClock.setAlarm(AlarmClock.ON);

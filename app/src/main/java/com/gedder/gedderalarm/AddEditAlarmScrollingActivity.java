@@ -270,7 +270,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             }
             mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
             mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
-            mAlarmClock.setUpperBoundTime(alarmDay, mHour, mMinute);
             int prepTimeMinutes =Integer.parseInt(mPrepTimeEditText.getText() + "");
             int prepTimeHours = prepTimeMinutes / 60;
             prepTimeMinutes = prepTimeMinutes % 60;
@@ -291,7 +290,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                 alarmDay = (alarmDay % 7) + 1;
             }
             mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
-            mAlarmClock.setUpperBoundTime(alarmDay, mHour, mMinute);
             if (! mAlarmClock.isAlarmOn()) {
                 mAlarmClock.toggleAlarm();
             }

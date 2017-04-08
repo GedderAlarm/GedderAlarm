@@ -61,27 +61,27 @@ public class GedderReceiver extends BroadcastReceiver {
     public static final String PARAM_DESTINATION = "__PARAM_DESTINATION__";
     public static final String PARAM_ARRIVAL_TIME = "__PARAM_ARRIVAL_TIME__";
     public static final String PARAM_PREP_TIME = "__PARAM_PREP_TIME__";
-    public static final String PARAM_UPPER_BOUND_TIME = "__PARAM_UPPER_BOUND_TIME__";
+    public static final String PARAM_ALARM_BOUND_TIME = "__PARAM_ALARM_BOUND_TIME__";
     public static final String PARAM_ID = "__PARAM_ID__";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String origin         = intent.getStringExtra(PARAM_ORIGIN);
-        String dest           = intent.getStringExtra(PARAM_DESTINATION);
-        long   arrivalTime    = intent.getLongExtra(PARAM_ARRIVAL_TIME, -1);
-        long   prepTime       = intent.getLongExtra(PARAM_PREP_TIME, -1);
-        long   upperBoundTime = intent.getLongExtra(PARAM_UPPER_BOUND_TIME, -1);
-        int    id             = intent.getIntExtra(PARAM_ID, -1);
+        String origin      = intent.getStringExtra(PARAM_ORIGIN);
+        String dest        = intent.getStringExtra(PARAM_DESTINATION);
+        long   arrivalTime = intent.getLongExtra(PARAM_ARRIVAL_TIME, -1);
+        long   prepTime    = intent.getLongExtra(PARAM_PREP_TIME, -1);
+        long   alarmTime   = intent.getLongExtra(PARAM_ALARM_BOUND_TIME, -1);
+        int    id          = intent.getIntExtra(PARAM_ID, -1);
 
         if (origin == null || dest == null
                 || origin.equals("") || dest.equals("")
-                || arrivalTime == -1 || prepTime == -1 || upperBoundTime == -1
+                || arrivalTime == -1 || prepTime == -1 || alarmTime == -1
                 || id == -1) {
             throw new IllegalArgumentException("origin = " + origin
                             + " dest = " + dest
                             + " arrivalTime = " + arrivalTime
                             + " prepTime = " + prepTime
-                            + " upperBoundTime = " + upperBoundTime
+                            + " alarmTime = " + alarmTime
                             + " id = " + id);
         }
 
@@ -97,7 +97,7 @@ public class GedderReceiver extends BroadcastReceiver {
 
         // Need this for a comprehensible analysis below.
         long optimalWakeUpTime = arrivalTime - duration - prepTime;
-        long wishWakeUpTime    = arrivalTime - prepTime - upperBoundTime;
+        long wishWakeUpTime    = arrivalTime - prepTime - alarmTime;
         long timeUntilAlarm    = optimalWakeUpTime - System.currentTimeMillis();
 
         // Initialize & declare intents and variables for our next action.

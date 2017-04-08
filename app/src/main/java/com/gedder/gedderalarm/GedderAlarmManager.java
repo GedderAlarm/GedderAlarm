@@ -108,7 +108,7 @@ public final class GedderAlarmManager {
         intent.putExtra(GedderReceiver.PARAM_DESTINATION, alarmClock.getDestinationId());
         intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_PREP_TIME, alarmClock.getPrepTimeMillis());
-        intent.putExtra(GedderReceiver.PARAM_UPPER_BOUND_TIME, alarmClock.getUpperBoundTimeMillis());
+        intent.putExtra(GedderReceiver.PARAM_ALARM_BOUND_TIME, alarmClock.getAlarmTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_ID, id);
         LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
                 .sendBroadcast(intent);
