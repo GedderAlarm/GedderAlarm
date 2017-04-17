@@ -98,16 +98,14 @@ public class AlarmActivity extends AppCompatActivity {
      * @param uuid The UUID of the alarm clock in question.
      */
     private void turnOffAlarm(UUID uuid) {
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
         AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAlarmClock(uuid));
         cursor.moveToFirst();
         AlarmClock alarmClock = cursor.getAlarmClock();
 
         // Since the alarm just went off, we need to now internally say it's off.
         alarmClock.setAlarm(AlarmClock.OFF);
-        if (alarmClock.isGedderOn()) {
-            alarmClock.toggleGedder();
-        }
+        alarmClock.turnGedderOff();
         db.updateAlarmClock(alarmClock);
         db.close();
     }

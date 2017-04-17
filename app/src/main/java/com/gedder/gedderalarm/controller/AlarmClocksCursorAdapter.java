@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 
 import com.gedder.gedderalarm.R;
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
+import com.gedder.gedderalarm.util.Log;
 
 import java.util.Locale;
 
@@ -40,6 +41,8 @@ public class AlarmClocksCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Set the UUID of the alarm as a tag to this view.
+        Log.e(TAG, "Running through bind view.");
+
         view.setTag(cursor.getString(cursor.getColumnIndexOrThrow(
                 AlarmClockTable.Columns.UUID)));
 

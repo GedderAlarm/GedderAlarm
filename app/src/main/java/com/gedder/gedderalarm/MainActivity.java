@@ -105,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        db.close();
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         // Check to see if we're in alarm clock delete state.
         if (findViewById(R.id.activityMain_DeleteAlarmBtn).getVisibility() != View.GONE) {
@@ -145,11 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 cb.setChecked(false);
 
                 AlarmClock alarmClock = getAlarmClockInListViewFromChild(child);
-                if (alarmClock.isAlarmOn()) {
-                    alarmClock.toggleAlarm();
-                }
+                alarmClock.turnAlarmOff();
                 if (alarmClock.isGedderOn()) {
-                    alarmClock.toggleGedder();
+                    alarmClock.turnGedderOff();
                     cancelGedderPersistentIcon();
                 }
                 db.deleteAlarmClock(UUID.fromString(child.getTag().toString()));
@@ -224,6 +230,17 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == mIntentRequestCode) {
             if (resultCode == RESULT_OK) {
                 AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+                AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
+                alarmClock.turnAlarmOn();
+                Toast.makeText(this, "Alarm set", Toast.LENGTH_SHORT).show();
+
+                if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
+                    alarmClock.turnGedderOn();
+                } else if (!alarmClock.isGedderEligible() && alarmClock.isGedderOn()) {
+                    alarmClock.turnGedderOff();
+                }
+
+                db.updateAlarmClock(alarmClock);
                 mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
             }
         }

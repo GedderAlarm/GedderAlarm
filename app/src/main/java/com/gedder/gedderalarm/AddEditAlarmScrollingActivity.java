@@ -345,7 +345,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mAlarmClock.setDestinationId(mDestinationIdString);
         mAlarmClock.setDestinationAddress(mDestinationAddressString);
 
-        //Send off the alramclock
+        // Send off the alarm clock.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         if (db.updateAlarmClock(mAlarmClock) != 1) {
             db.addAlarmClock(mAlarmClock);
@@ -353,7 +353,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         db.close();
 
         Intent data = new Intent();
-        //set the data to pass back
+        // Set the data to pass back
         data.putExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK, mAlarmClock);
         setResult(RESULT_OK, data);
         finish();

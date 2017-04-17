@@ -390,33 +390,54 @@ public class AlarmClock implements Parcelable {
      * Toggles the alarm on and off.
      */
     public void toggleAlarm() {
+        if (!isAlarmOn()) {
+            turnAlarmOn();
+        } else {
+            turnAlarmOff();
+        }
+    }
+
+    public void turnAlarmOn() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(GedderAlarmManager.PARAM_UUID, mUuid);
         bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
         bundle.putLong(GedderAlarmManager.PARAM_ALARM_TIME, mAlarmTime);
+        GedderAlarmManager.setAlarm(bundle);
+        mAlarmSet = true;
+    }
 
-        if (!isAlarmOn()) {
-            GedderAlarmManager.setAlarm(bundle);
-            mAlarmSet = true;
-        } else {
-            GedderAlarmManager.cancelAlarm(bundle);
-            mAlarmSet = false;
-        }
+    public void turnAlarmOff() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(GedderAlarmManager.PARAM_UUID, mUuid);
+        bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+        bundle.putLong(GedderAlarmManager.PARAM_ALARM_TIME, mAlarmTime);
+        GedderAlarmManager.cancelAlarm(bundle);
+        mAlarmSet = false;
     }
 
     /** Toggle the Gedder service for this alarm on and off. */
     public void toggleGedder() {
+        if (!isGedderOn()) {
+            turnGedderOn();
+        } else {
+            turnGedderOff();
+        }
+    }
+
+    public void turnGedderOn() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
         bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+        GedderAlarmManager.setGedder(bundle);
+        mGedderSet = true;
+    }
 
-        if (!isGedderOn()) {
-            GedderAlarmManager.setGedder(bundle);
-            mGedderSet = true;
-        } else {
-            GedderAlarmManager.cancelGedder(bundle);
-            mGedderSet = false;
-        }
+    public void turnGedderOff() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
+        bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
+        GedderAlarmManager.cancelGedder(bundle);
+        mGedderSet = false;
     }
 
     /**
@@ -577,6 +598,10 @@ public class AlarmClock implements Parcelable {
      */
     public boolean isGedderOn() {
         return mGedderSet;
+    }
+
+    public boolean isGedderEligible() {
+        return !mOriginAddress.equals("") && !mDestinationAddress.equals("");
     }
 
     /**
