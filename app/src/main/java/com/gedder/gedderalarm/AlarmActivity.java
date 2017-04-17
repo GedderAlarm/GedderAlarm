@@ -102,15 +102,13 @@ public class AlarmActivity extends AppCompatActivity {
         AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAlarmClock(uuid));
         cursor.moveToFirst();
         AlarmClock alarmClock = cursor.getAlarmClock();
+
         // Since the alarm just went off, we need to now internally say it's off.
-        if (alarmClock.isAlarmOn()) {
-            alarmClock.toggleAlarm();
-        }
+        alarmClock.setAlarm(AlarmClock.OFF);
         if (alarmClock.isGedderOn()) {
             alarmClock.toggleGedder();
         }
         db.updateAlarmClock(alarmClock);
-        cursor.close();
         db.close();
     }
 

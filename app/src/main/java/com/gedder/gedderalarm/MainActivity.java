@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
@@ -163,14 +162,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickToggleGedder(View view) {
-        ToggleButton toggle   = (ToggleButton) view;
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
         if (alarmClock.isGedderOn()) {
             // CASE: Gedder is on.
             alarmClock.toggleGedder();
-            toggle.setChecked(false);
             toastMessage("Gedder service off");
             cancelGedderPersistentIcon();
         } else {
@@ -180,20 +177,15 @@ public class MainActivity extends AppCompatActivity {
                         AddEditAlarmScrollingActivity.class);
                 intent.putExtra(PARCEL_ALARM_CLOCK, alarmClock);
                 startActivityForResult(intent, mIntentRequestCode);
-                toggle.setChecked(false);
             } else if (!alarmClock.isAlarmOn()) {
                 // CASE: Gedder is off and alarm is off.
                 alarmClock.toggleAlarm();
-                ((ToggleButton) findViewById(R.id.itemAlarmClock_alarmClockToggleBtn))
-                        .setChecked(true);
                 alarmClock.toggleGedder();
-                toggle.setChecked(true);
                 toastMessage("Gedder service on.");
                 setGedderPersistentIcon();
             } else {
                 // CASE: Gedder is off and alarm is on.
                 alarmClock.toggleGedder();
-                toggle.setChecked(true);
                 toastMessage("Gedder service on.");
                 setGedderPersistentIcon();
             }
@@ -206,23 +198,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickToggleAlarm(View view) {
-        ToggleButton toggle   = (ToggleButton) view;
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
         alarmClock.toggleAlarm();
         if (alarmClock.isAlarmOn()) {
-            toggle.setChecked(true);
             toastMessage("Alarm set.");
         } else {
-            toggle.setChecked(false);
             toastMessage("Alarm off.");
         }
 
         if (alarmClock.isGedderOn()) {
             alarmClock.toggleGedder();
-            ((ToggleButton) findViewById(R.id.itemAlarmClock_GedderAlarmToggleBtn))
-                    .setChecked(false);
             toastMessage("Gedder service off.");
             cancelGedderPersistentIcon();
         }
@@ -237,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == mIntentRequestCode) {
             if (resultCode == RESULT_OK) {
                 AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-                AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
                 mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
             }
         }
