@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Destination"
-                    android:lines="1"/>
+                    android:lines="1" />
 
                 <Space
                     android:layout_width="1dp"

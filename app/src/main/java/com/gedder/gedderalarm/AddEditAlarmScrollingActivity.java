@@ -38,16 +38,16 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     private String mOriginIdString;
     private String mDestinationAddressString;
     private String mDestinationIdString;
-    private String mArrivalTimeString;
     private String mPrepTimeString;
     private int mHourArrival;
     private int mMinuteArrival;
     private int mHour;
     private int mMinute;
+    private int mPrepTime;
 
     //Variables for time-picker and textviews:
     TimePicker mAlarmTimePicker;
-    TextView mArivalTimeEditText;
+    TextView mArrivalTimeEditText;
     EditText mPrepTimeEditText;
 
     //Variables for auto-complete text boxes
@@ -72,20 +72,79 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         // Get the alarm clock in question.
         mAlarmClock = (AlarmClock) getIntent().getParcelableExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK);
 
+        /************************************************************************/
+        //FOR TESTING
+//        Calendar alarmTime = mAlarmClock.getAlarmTime();
+//        Toast.makeText(getBaseContext(),
+//                "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
+//                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
+//                Toast.LENGTH_SHORT).show();
+//        Calendar arrivalTime = mAlarmClock.getArrivalTime();
+//        Toast.makeText(getBaseContext(),
+//                "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
+//                        + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Prep Time: " + Integer.toString((((int)mAlarmClock.getPrepTimeMillis()) / 1000) / 60),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Destination: " + mAlarmClock.getDestinationAddress(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Destination ID: " + mAlarmClock.getDestinationId(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Origin: " + mAlarmClock.getOriginAddress(),
+//                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(),
+//                "Origin ID: " + mAlarmClock.getOriginId(),
+//                Toast.LENGTH_SHORT).show();
+        /************************************************************************/
+
         //Initialize variables for textviews, edittexts and timepicker
         mAlarmTimePicker = (TimePicker) findViewById(R.id
                 .generalAlarmTimePicker);
         Calendar temp_cal = mAlarmClock.getAlarmTime();
-        mAlarmTimePicker.setCurrentHour(temp_cal.get(Calendar.HOUR_OF_DAY));
-        mAlarmTimePicker.setCurrentMinute(temp_cal.get(Calendar.MINUTE));
-        mArivalTimeEditText = (TextView) findViewById(R.id
+        mHour = temp_cal.get(Calendar.HOUR_OF_DAY);
+        mMinute = temp_cal.get(Calendar.MINUTE);
+        mAlarmTimePicker.setCurrentHour(mHour);
+        mAlarmTimePicker.setCurrentMinute(mMinute);
+        mArrivalTimeEditText = (TextView) findViewById(R.id
                 .editAlarm_ArrivalTimePickerMonologBox);
+        temp_cal = mAlarmClock.getArrivalTime();
+        mHourArrival = temp_cal.get(Calendar.HOUR_OF_DAY);
+        mMinuteArrival = temp_cal.get(Calendar.MINUTE);
+        int hourOfDay = mHourArrival;
+        int minute = mMinuteArrival;
+        String am_or_pm;
+        if (hourOfDay >= 12) {
+            am_or_pm = "pm";
+            hourOfDay = hourOfDay - 12;
+        } else {
+            am_or_pm = "am";
+        }
+        if (hourOfDay == 0) {
+            hourOfDay = 12;
+        }
+        String hour_string = Integer.toString(hourOfDay);
+        if(hourOfDay < 10) {
+            hour_string = "0" + hour_string;
+        }
+        String minute_string = Integer.toString(minute);
+        if(minute < 10) {
+            minute_string = "0" + minute_string;
+        }
+        mArrivalTimeEditText.setText("Arrival time: " + hour_string + ":" + minute_string + " " + am_or_pm);
         mPrepTimeEditText = (EditText) findViewById(R.id
                 .editAlarm_PrepTimeTextBox);
-//        Long prepMilli = mAlarmClock.getPrepTimeMillis();
-//        if (prepMilli != 0) {
-//            mPrepTimeEditText.setText(Integer.toString(c.));
-//        }
+        //We check to see if prep time is greater than 0, otherwise we leave the hint for user
+        Long prepMilli = mAlarmClock.getPrepTimeMillis();
+        mPrepTime = 0;
+        if (prepMilli != 0) {
+            int prepSeconds = (int) (prepMilli / 1000);
+            mPrepTime = prepSeconds / 60;
+            mPrepTimeEditText.setText(Integer.toString(mPrepTime));
+        }
 
         //Initialize auto-complete textviews
         mGoogleApiClient = new GoogleApiClient.Builder(AddEditAlarmScrollingActivity.this)
@@ -105,18 +164,19 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                 NEW_YORK_CITY, null);
         mAutocompleteTextViewOrigin.setAdapter(mPlaceArrayAdapter);
         mAutocompleteTextViewDestination.setAdapter(mPlaceArrayAdapter);
-//        mOriginAddressString = mAlarmClock.getOriginAddress();
-//        mOriginIdString = mAlarmClock.getOriginId();
-//        if (! mOriginAddressString.equals("")) {
-//            mAutocompleteTextViewOrigin.setText(mOriginAddressString, false);
-//            //mOriginIdString = mAlarmClock.getOriginId();
-//        }
-//        mDestinationAddressString = mAlarmClock.getDestinationAddress();
-//        mOriginIdString = mAlarmClock.getDestinationId();
-//        if (! mDestinationAddressString.equals("")) {
-//            mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
-//            //mDestinationIdString = mAlarmClock.getDestinationId();
-//        }
+        //we check to see if there is a non-empty origin and address and
+        //if there is we replace the text hint
+        mOriginAddressString = mAlarmClock.getOriginAddress();
+        mOriginIdString = mAlarmClock.getOriginId();
+        if (! mOriginAddressString.equals("")) {
+            mAutocompleteTextViewOrigin.setText(mOriginAddressString, false);
+        }
+        mDestinationAddressString = mAlarmClock.getDestinationAddress();
+        mOriginIdString = mAlarmClock.getDestinationId();
+        mDestinationIdString = mAlarmClock.getDestinationId();
+        if (! mDestinationAddressString.equals("")) {
+            mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
+        }
     }
 
     //This is called when one of the drop-down results is selected on origin tab
@@ -146,11 +206,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             //need to check API of device here, will do later
             mOriginAddressString = Html.fromHtml(place.getAddress() + "") + "";
             mOriginIdString = Html.fromHtml(place.getId() + "") + "";
-
-            //THIS IS FOR TESTING TO MAKE SURE PARCING CORRECTLY
-            Toast.makeText(getBaseContext(),
-                    "Origin Address = " + mOriginAddressString + "\nID = " + mOriginIdString,
-                    Toast.LENGTH_LONG).show();
         }
     };
 
@@ -181,11 +236,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             //need to check API of device here, will do later
             mDestinationAddressString = Html.fromHtml(place.getAddress() + "") + "";
             mDestinationIdString = Html.fromHtml(place.getId() + "") + "";
-
-            //THIS IS FOR TESTING TO MAKE SURE PARCING CORRECTLY
-            Toast.makeText(getBaseContext(),
-                    "Destination Address = " + mDestinationAddressString + "\nID = " + mDestinationIdString,
-                    Toast.LENGTH_LONG).show();
         }
     };
 
@@ -213,111 +263,10 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         Log.e(LOG_TAG, "Google Places API connection suspended.");
     }
 
-    /**
-     *
-     * @param view
-     */
-    public void cancel(View view) {
-        finish();
-    }
-
-    /**
-     *
-     * @param view
-     */
-    public void done(View view) {
-        boolean arrival_time_set = false;
-        boolean origin_set = false;
-        boolean destination_set = false;
-        boolean prep_time_set = false;
-        mPrepTimeString = mPrepTimeEditText.getText() + "";
-        mArrivalTimeString = mArivalTimeEditText.getText() + "";
-        if (! mPrepTimeString.equals("")) {
-            prep_time_set = true;
-        }
-        if (! mArrivalTimeString.equals("")) {
-            arrival_time_set = true;
-        }
-//        if (! mOriginAddressString.equals("")) {
-//            origin_set = true;
-//        }
-//        if (! mDestinationAddressString.equals("")) {
-//            destination_set = true;
-//        }
-        if (mOriginAddressString != null) {
-            origin_set = true;
-        }
-        if (mDestinationAddressString != null) {
-            destination_set = true;
-        }
-        mHour = mAlarmTimePicker.getCurrentHour();
-        mMinute = mAlarmTimePicker.getCurrentMinute();
-
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int min = c.get(Calendar.MINUTE);
-        int alarmDay = c.get(Calendar.DAY_OF_WEEK);
-
-        if (arrival_time_set && origin_set && destination_set && prep_time_set) {
-            int arrivalDay = alarmDay;
-            if (mHour < hour || hour < mHourArrival || (hour == mHour && min <= mMinute)
-                    || (hour == mHourArrival && min <= mMinuteArrival)) {
-                alarmDay = (alarmDay % 7) + 1;
-                arrivalDay = alarmDay;
-            }
-            if (mHour > mHourArrival || (mHour == mHourArrival && mMinuteArrival <= mMinute)) {
-                arrivalDay = (alarmDay % 7) + 1;
-            }
-            mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
-            mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
-            int prepTimeMinutes =Integer.parseInt(mPrepTimeEditText.getText() + "");
-            int prepTimeHours = prepTimeMinutes / 60;
-            prepTimeMinutes = prepTimeMinutes % 60;
-            mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);
-            mAlarmClock.setOriginId(mOriginIdString);
-            mAlarmClock.setOriginAddress(mOriginAddressString);
-            mAlarmClock.setDestinationId(mDestinationIdString);
-            mAlarmClock.setOriginAddress(mOriginAddressString);
-            if (! mAlarmClock.isAlarmOn()) {
-                mAlarmClock.toggleAlarm();
-            }
-            if (! mAlarmClock.isGedderOn()) {
-                mAlarmClock.toggleGedder();
-            }
-            Toast.makeText(this, "Gedder Alarm Set!", Toast.LENGTH_SHORT).show();
-        } else {
-            if (mHour < hour || (mHour == hour && mMinute <= min)) {
-                alarmDay = (alarmDay % 7) + 1;
-            }
-            mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
-            if (! mAlarmClock.isAlarmOn()) {
-                mAlarmClock.toggleAlarm();
-            }
-            //Turn off Gedder if it was on
-            if (mAlarmClock.isGedderOn()) {
-                mAlarmClock.toggleGedder();
-            }
-            Toast.makeText(this, "Regular Alarm Set!", Toast.LENGTH_SHORT).show();
-        }
-
-        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
-        if (db.updateAlarmClock(mAlarmClock) != 1) {
-            db.addAlarmClock(mAlarmClock);
-        }
-        db.close();
-
-        Intent data = new Intent();
-        //set the data to pass back
-        data.putExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK, mAlarmClock);
-        setResult(RESULT_OK, data);
-        finish();
-    }
-
     public void setArrivalTime(View view){
         // Get Current Time
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int min = c.get(Calendar.MINUTE);
+        int hour = mHourArrival;
+        int min = mMinuteArrival;
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
@@ -329,11 +278,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                         mHourArrival = hourOfDay;
                         mMinuteArrival = minute;
                         String am_or_pm;
-                        if (hourOfDay > 12) {
+                        if (hourOfDay >= 12) {
                             am_or_pm = "pm";
                             hourOfDay = hourOfDay - 12;
                         } else {
                             am_or_pm = "am";
+                        }
+                        if (hourOfDay == 0) {
+                            hourOfDay = 12;
                         }
                         String hour_string = Integer.toString(hourOfDay);
                         if(hourOfDay < 10) {
@@ -343,9 +295,67 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
                         if(minute < 10) {
                             minute_string = "0" + minute_string;
                         }
-                        mArivalTimeEditText.setText(hour_string + ":" + minute_string + " " + am_or_pm);
+                        mArrivalTimeEditText.setText("Arrival time: " + hour_string + ":" + minute_string + " " + am_or_pm);
                     }
                 }, hour, min, false);
         timePickerDialog.show();
+    }
+
+    /**
+     *
+     * @param view
+     */
+    public void cancel(View view) {
+        Toast.makeText(getBaseContext(),
+                "Cancel pressed! No changes made to the alarm. ",
+                Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    /**
+     *
+     * @param view
+     */
+    public void done(View view) {
+        mPrepTimeString = mPrepTimeEditText.getText() + "";
+        if (! mPrepTimeString.equals("")) {
+            mPrepTime =  Integer.parseInt(mPrepTimeString);
+        }
+        int prepTimeMinutes = mPrepTime;
+        int prepTimeHours = prepTimeMinutes / 60;
+        prepTimeMinutes = prepTimeMinutes % 60;
+        mHour = mAlarmTimePicker.getCurrentHour();
+        mMinute = mAlarmTimePicker.getCurrentMinute();
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        int alarmDay = c.get(Calendar.DAY_OF_WEEK);
+        int arrivalDay = alarmDay;
+        if (mHour < hour || (mHour == hour) && mMinute <= min) {
+            alarmDay = (alarmDay % 7) + 1;
+        }
+        if (mHour > mHourArrival || (mHour == mHourArrival && mMinuteArrival <= mMinute)) {
+            arrivalDay = (alarmDay % 7) + 1;
+        }
+        mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
+        mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
+        mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);
+        mAlarmClock.setOriginId(mOriginIdString);
+        mAlarmClock.setOriginAddress(mOriginAddressString);
+        mAlarmClock.setDestinationId(mDestinationIdString);
+        mAlarmClock.setDestinationAddress(mDestinationAddressString);
+
+        //Send off the alramclock
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        if (db.updateAlarmClock(mAlarmClock) != 1) {
+            db.addAlarmClock(mAlarmClock);
+        }
+        db.close();
+
+        Intent data = new Intent();
+        //set the data to pass back
+        data.putExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK, mAlarmClock);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }

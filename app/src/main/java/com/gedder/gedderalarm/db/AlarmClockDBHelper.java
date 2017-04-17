@@ -160,25 +160,25 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
      */
     private ContentValues putAllExceptUuid(AlarmClock alarmClock) {
         ContentValues cv = new ContentValues();
-        cv.put(AlarmClockTable.Columns.REQUEST_CODE, alarmClock.getRequestCode());
-        cv.put(AlarmClockTable.Columns.ORIGIN_ID, alarmClock.getOriginId());
-        cv.put(AlarmClockTable.Columns.ORIGIN_ADDRESS, alarmClock.getOriginAddress());
-        cv.put(AlarmClockTable.Columns.DESTINATION_ID, alarmClock.getDestinationId());
+        cv.put(AlarmClockTable.Columns.REQUEST_CODE,        alarmClock.getRequestCode());
+        cv.put(AlarmClockTable.Columns.ORIGIN_ID,           alarmClock.getOriginId());
+        cv.put(AlarmClockTable.Columns.ORIGIN_ADDRESS,      alarmClock.getOriginAddress());
+        cv.put(AlarmClockTable.Columns.DESTINATION_ID,      alarmClock.getDestinationId());
         cv.put(AlarmClockTable.Columns.DESTINATION_ADDRESS, alarmClock.getDestinationAddress());
-        cv.put(AlarmClockTable.Columns.REPEAT_DAYS, alarmClock.getRepeatDays().getCoded());
-        cv.put(AlarmClockTable.Columns.ALARM_DAY, alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));
-        cv.put(AlarmClockTable.Columns.ALARM_HOUR, alarmClock.getAlarmTime().get(Calendar.HOUR_OF_DAY));
-        cv.put(AlarmClockTable.Columns.ALARM_MINUTE, alarmClock.getAlarmTime().get(Calendar.MINUTE));
-        cv.put(AlarmClockTable.Columns.ALARM_TIME, alarmClock.getAlarmTimeMillis());
-        cv.put(AlarmClockTable.Columns.ARRIVAL_DAY, alarmClock.getArrivalTime().get(Calendar.DAY_OF_WEEK));
-        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR, alarmClock.getArrivalTime().get(Calendar.HOUR_OF_DAY));
-        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE, alarmClock.getAlarmTime().get(Calendar.MINUTE));
-        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME, alarmClock.getArrivalTimeMillis());
-        cv.put(AlarmClockTable.Columns.PREP_HOUR, alarmClock.getPrepTime().get(Calendar.HOUR_OF_DAY));
-        cv.put(AlarmClockTable.Columns.PREP_MINUTE, alarmClock.getPrepTime().get(Calendar.MINUTE));
-        cv.put(AlarmClockTable.Columns.PREP_TIME, alarmClock.getPrepTimeMillis());
-        cv.put(AlarmClockTable.Columns.ALARM_SET, alarmClock.isAlarmOn());
-        cv.put(AlarmClockTable.Columns.GEDDER_SET, alarmClock.isGedderOn());
+        cv.put(AlarmClockTable.Columns.REPEAT_DAYS,         alarmClock.getRepeatDays().getCoded());
+        cv.put(AlarmClockTable.Columns.ALARM_DAY,           alarmClock.getAlarmTime().get(Calendar.DAY_OF_WEEK));
+        cv.put(AlarmClockTable.Columns.ALARM_HOUR,          alarmClock.getAlarmTime().get(Calendar.HOUR_OF_DAY));
+        cv.put(AlarmClockTable.Columns.ALARM_MINUTE,        alarmClock.getAlarmTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.ALARM_TIME,          alarmClock.getAlarmTimeMillis());
+        cv.put(AlarmClockTable.Columns.ARRIVAL_DAY,         alarmClock.getArrivalTime().get(Calendar.DAY_OF_WEEK));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_HOUR,        alarmClock.getArrivalTime().get(Calendar.HOUR_OF_DAY));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_MINUTE,      alarmClock.getArrivalTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.ARRIVAL_TIME,        alarmClock.getArrivalTimeMillis());
+        cv.put(AlarmClockTable.Columns.PREP_HOUR,           alarmClock.getPrepTime().get(Calendar.HOUR_OF_DAY));
+        cv.put(AlarmClockTable.Columns.PREP_MINUTE,         alarmClock.getPrepTime().get(Calendar.MINUTE));
+        cv.put(AlarmClockTable.Columns.PREP_TIME,           alarmClock.getPrepTimeMillis());
+        cv.put(AlarmClockTable.Columns.ALARM_SET,           alarmClock.isAlarmOn());
+        cv.put(AlarmClockTable.Columns.GEDDER_SET,          alarmClock.isGedderOn());
         return cv;
     }
 
