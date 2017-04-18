@@ -107,18 +107,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
-        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        mAlarmClocksCursorAdapter = new AlarmClocksCursorAdapter(this, db.getAllAlarmClocks());
+        alarmClocksListView.setAdapter(mAlarmClocksCursorAdapter);
         db.close();
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        // Check to see if we're in alarm clock delete state.
         if (findViewById(R.id.activityMain_DeleteAlarmBtn).getVisibility() != View.GONE) {
-            // Make the delete button invisible (gone).
             findViewById(R.id.activityMain_DeleteAlarmBtn).setVisibility(View.GONE);
-            // Now loop through all rows and make hide the checkboxes.
             for (int i = 0; i < alarmClocksListView.getCount(); ++i) {
                 View child = alarmClocksListView.getChildAt(i);
                 View item = child.findViewById(R.id.itemAlarmClock_removeCheckBox);
