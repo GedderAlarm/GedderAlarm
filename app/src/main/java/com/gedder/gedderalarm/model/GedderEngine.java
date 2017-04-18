@@ -8,14 +8,9 @@ package com.gedder.gedderalarm.model;
 
 import android.os.Bundle;
 
-import com.gedder.gedderalarm.google.JsonParser;
-import com.gedder.gedderalarm.google.UrlGenerator;
-import com.gedder.gedderalarm.util.HttpRequest;
-import com.gedder.gedderalarm.util.Log;
-import com.gedder.gedderalarm.util.except.GoogleMapsAPIException;
+import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * <p>The engine goes through the following pipeline:</p>
@@ -57,15 +52,10 @@ public final class GedderEngine {
      * @param origin            The place the user is leaving from.
      * @param destination       The place the user wants to get to.
      * @param arrivalTime       The time the user needs to get to their destination.
-     * @param prepTime          The either user-selected or smart-adjusted time it takes the user
-     *                          to get prepared for travel after the alarm goes off.
-     * @param upperBoundTime    The user selected alarm time. The Gedder Engine will never delay
-     *                          an alarm past this time.
      * @return A {@link Bundle} containing relevant data from the pipeline. You can extract this
      * data by using keys like {@link #RESULT_DURATION}, {@link #RESULT_WARNINGS}, etc..
      */
-    public static Bundle start(String origin, String destination,
-                               long arrivalTime) {
+    public static Bundle start(String origin, String destination, long arrivalTime) {
         // TODO: Fix up some of the "style" of the code.
         // TODO: Move parts to different functions.
         // TODO: Make another `start` function with departureTime instead of arrival (use prep + upperBound).
@@ -78,6 +68,7 @@ public final class GedderEngine {
         ArrayList<String> warnings;
 
         // Generate URL
+        /*
         url = new UrlGenerator.UrlBuilder(origin, destination, sApiKey)
                 .arrivalTime(arrivalTime)
                 .build().toString();
@@ -97,6 +88,13 @@ public final class GedderEngine {
         duration = jp.duration();
         durationInTraffic = jp.durationInTraffic();
         warnings = jp.warnings();
+        */
+
+        // DEMO VALUES
+        duration = (int) TimeUtilities.hoursToSeconds(1);
+        durationInTraffic = (int) TimeUtilities.hoursToSeconds(1);
+        warnings = new ArrayList<>();
+        warnings.add("Many warnings, much warnings, such warnings!");
 
         Bundle results = new Bundle();
         results.putInt(RESULT_DURATION, duration);
