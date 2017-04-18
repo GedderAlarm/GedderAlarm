@@ -108,6 +108,7 @@ public class GedderReceiver extends BroadcastReceiver {
             // Wake up the user!
             next.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
             nextTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
+            next.putExtras(results);
         } else {
             // Check back in a time dependent on how close we are to the alarm time.
             nextTime = System.currentTimeMillis() + getFrequencyDependingOn(timeUntilAlarm);

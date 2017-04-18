@@ -14,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.model.GedderEngine;
 
 import java.util.UUID;
 
@@ -35,6 +37,11 @@ public class AlarmActivity extends AppCompatActivity {
     // This is used to get the ringtone.
     private Uri alert;
     private Ringtone ringtone;
+    private TextView mInfoDisplay;
+    private int mDuration;
+    private int mDurationTraffic;
+    private int mPrepTime;
+    private String warnings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,21 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_2);
 
         // First thing's first: turn off the alarm internally.
-        Intent intent = getIntent();
-        UUID alarmUuid = (UUID) intent.getSerializableExtra(PARAM_ALARM_UUID);
+        Bundle results = getIntent().getExtras();
+        UUID alarmUuid = (UUID) results.getSerializable(PARAM_ALARM_UUID);
         turnOffAlarm(alarmUuid);
+
+        mInfoDisplay = (TextView) findViewById(R.id.alarm_display_info);
+        String displayStr = "";
+
+        //this was a Gedder Alarm
+        if (results.getBoolean("gedder_alarm_bool") == true) {
+            displayStr += "Travel Time: " + String.valueOf(results.getInt(GedderEngine.RESULT_DURATION)) + "\n";
+            displayStr += "Prep Time: " + String.valueOf(mPrepTime);
+        } else {  //this was a regular alarm
+            displayStr = "ALARM!";
+        }
+        mInfoDisplay.setText(displayStr);
 
         // Now play the alarm sound.
         alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
@@ -102,6 +121,9 @@ public class AlarmActivity extends AppCompatActivity {
         AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAlarmClock(uuid));
         cursor.moveToFirst();
         AlarmClock alarmClock = cursor.getAlarmClock();
+
+        //Grab variables we need from the alarmClock
+        mPrepTime = (int)(alarmClock.getPrepTimeMillis()/60000);
 
         // Since the alarm just went off, we need to now internally say it's off.
         alarmClock.setAlarm(AlarmClock.OFF);
