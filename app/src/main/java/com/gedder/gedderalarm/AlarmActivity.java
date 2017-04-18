@@ -43,7 +43,7 @@ public class AlarmActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        setContentView(R.layout.activity_alarm);
+        setContentView(R.layout.activity_alarm_2);
 
         // First thing's first: turn off the alarm internally.
         Intent intent = getIntent();
@@ -63,7 +63,7 @@ public class AlarmActivity extends AppCompatActivity {
         ringtone = RingtoneManager.getRingtone(this, alert);
         ringtone.play();
 
-        Button stopAlarmBtn = (Button) findViewById(R.id.button_stop_alarm);
+        Button stopAlarmBtn = (Button) findViewById(R.id.button_stop_alarm_2);
         stopAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
