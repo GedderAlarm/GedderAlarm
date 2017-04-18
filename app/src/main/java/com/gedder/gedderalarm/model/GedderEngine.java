@@ -7,6 +7,7 @@ package com.gedder.gedderalarm.model;
 
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.gedder.gedderalarm.util.TimeUtilities;
 
@@ -91,6 +92,8 @@ public final class GedderEngine {
         */
 
         // DEMO VALUES
+        Log.e("Testing", "In GedderEngine.start()");
+
         duration = (int) TimeUtilities.hoursToSeconds(1);
         durationInTraffic = (int) TimeUtilities.hoursToSeconds(1);
         warnings = new ArrayList<>();

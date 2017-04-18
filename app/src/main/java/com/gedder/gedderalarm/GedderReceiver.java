@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.gedder.gedderalarm.model.GedderEngine;
 import com.gedder.gedderalarm.util.TimeUtilities;
@@ -66,6 +67,7 @@ public class GedderReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.e("Testing", "GedderReceiver: onReceive()");
         String origin      = intent.getStringExtra(PARAM_ORIGIN_ID);
         String dest        = intent.getStringExtra(PARAM_DESTINATION_ID);
         long   arrivalTime = intent.getLongExtra  (PARAM_ARRIVAL_TIME, -1);

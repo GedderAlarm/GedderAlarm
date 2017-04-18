@@ -8,6 +8,7 @@ package com.gedder.gedderalarm.model;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.gedder.gedderalarm.GedderAlarmManager;
 import com.gedder.gedderalarm.util.DaysOfWeek;
@@ -425,6 +426,7 @@ public class AlarmClock implements Parcelable {
     }
 
     public void turnGedderOn() {
+        Log.e("Testing", "turning gedder on");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
         bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
