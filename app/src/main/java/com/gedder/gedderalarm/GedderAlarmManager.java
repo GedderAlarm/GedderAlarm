@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.gedder.gedderalarm.model.AlarmClock;
@@ -101,6 +100,7 @@ public final class GedderAlarmManager {
         }
 
         Intent intent = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
+        intent.putExtra(GedderReceiver.PARAM_UUID,           alarmClock.getUUID());
         intent.putExtra(GedderReceiver.PARAM_ORIGIN_ID,      alarmClock.getOriginId());
         intent.putExtra(GedderReceiver.PARAM_DESTINATION_ID, alarmClock.getDestinationId());
         intent.putExtra(GedderReceiver.PARAM_ARRIVAL_TIME,   alarmClock.getArrivalTimeMillis());

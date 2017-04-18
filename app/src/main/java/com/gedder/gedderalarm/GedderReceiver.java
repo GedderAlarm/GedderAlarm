@@ -11,12 +11,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.gedder.gedderalarm.model.GedderEngine;
+import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -56,6 +57,7 @@ import java.util.ArrayList;
  */
 
 public class GedderReceiver extends BroadcastReceiver {
+    public static final String PARAM_UUID           = "__PARAM_UUID__";
     public static final String PARAM_ORIGIN_ID      = "__PARAM_ORIGIN__";
     public static final String PARAM_DESTINATION_ID = "__PARAM_DESTINATION__";
     public static final String PARAM_ARRIVAL_TIME   = "__PARAM_ARRIVAL_TIME__";
@@ -68,6 +70,7 @@ public class GedderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("Testing", "GedderReceiver: onReceive()");
+        UUID   uuid        = (UUID) intent.getSerializableExtra(PARAM_UUID);
         String origin      = intent.getStringExtra(PARAM_ORIGIN_ID);
         String dest        = intent.getStringExtra(PARAM_DESTINATION_ID);
         long   arrivalTime = intent.getLongExtra  (PARAM_ARRIVAL_TIME, -1);
@@ -109,8 +112,10 @@ public class GedderReceiver extends BroadcastReceiver {
                 || System.currentTimeMillis() > wishWakeUpTime) {
             // Wake up the user!
             next.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
-            nextTime = System.currentTimeMillis() + TimeUtilities.secondsToMillis(1);
-            next.putExtras(results);
+            next.putExtra(AlarmReceiver.PARAM_ALARM_UUID, uuid);
+            next.putExtra("bundle", results);
+            Log.e(TAG, "putting da bundle");
+            nextTime = System.currentTimeMillis();
         } else {
             // Check back in a time dependent on how close we are to the alarm time.
             nextTime = System.currentTimeMillis() + getFrequencyDependingOn(timeUntilAlarm);

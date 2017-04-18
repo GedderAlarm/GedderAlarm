@@ -53,15 +53,16 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_2);
 
         // First thing's first: turn off the alarm internally.
-        Bundle results = getIntent().getExtras();
-        UUID alarmUuid = (UUID) results.getSerializable(PARAM_ALARM_UUID);
+        Intent intent = getIntent();
+        Bundle results = intent.getBundleExtra("bundle");
+        UUID alarmUuid = (UUID) intent.getSerializableExtra(PARAM_ALARM_UUID);
         turnOffAlarm(alarmUuid);
 
         mInfoDisplay = (TextView) findViewById(R.id.alarm_display_info);
         String displayStr = "";
 
         //this was a Gedder Alarm
-        if (results.getBoolean("gedder_alarm_bool") == true) {
+        if (results.getBoolean("gedder_alarm_bool")) {
             displayStr += "Travel Time: " + String.valueOf(results.getInt(GedderEngine.RESULT_DURATION)) + "\n";
             displayStr += "Prep Time: " + String.valueOf(mPrepTime);
         } else {  //this was a regular alarm
