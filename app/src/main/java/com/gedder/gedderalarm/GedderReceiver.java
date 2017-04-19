@@ -89,7 +89,6 @@ public class GedderReceiver extends BroadcastReceiver {
                     + ", id = "          + id);
         }
 
-        // Turn on the engine, and get back the results.
         Bundle results = GedderEngine.start(origin, dest, arrivalTime);
         long duration = TimeUtilities.secondsToMillis(
                 results.getInt(GedderEngine.RESULT_DURATION, -1));
@@ -99,25 +98,27 @@ public class GedderReceiver extends BroadcastReceiver {
         ArrayList<String> warnings = (ArrayList<String>)
                 results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
-        // Need this for a comprehensible analysis below.
         long optimalWakeUpTime = arrivalTime - duration - prepTime;
-        long wishWakeUpTime    = arrivalTime - prepTime - alarmTime;
         long timeUntilAlarm    = optimalWakeUpTime - System.currentTimeMillis();
 
-        // Initialize & declare intents and variables for our next action.
         Intent next = new Intent(GedderAlarmApplication.getAppContext(), GedderReceiver.class);
         long nextTime;
 
         if (System.currentTimeMillis() > optimalWakeUpTime
-                || System.currentTimeMillis() > wishWakeUpTime) {
-            // Wake up the user!
+                || System.currentTimeMillis() > alarmTime) {
+            // Wake up
             next.setClass(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
             next.putExtra(AlarmReceiver.PARAM_ALARM_UUID, uuid);
-            next.putExtra("bundle", results);
-            Log.e(TAG, "putting da bundle");
+            next.putExtra("bundle",                       results);
             nextTime = System.currentTimeMillis();
         } else {
-            // Check back in a time dependent on how close we are to the alarm time.
+            next.putExtra(PARAM_UUID,           uuid);
+            next.putExtra(PARAM_ORIGIN_ID,      origin);
+            next.putExtra(PARAM_DESTINATION_ID, dest);
+            next.putExtra(PARAM_ARRIVAL_TIME,   arrivalTime);
+            next.putExtra(PARAM_PREP_TIME,      prepTime);
+            next.putExtra(PARAM_ALARM_TIME,     alarmTime);
+            next.putExtra(PARAM_ID,             id);
             nextTime = System.currentTimeMillis() + getFrequencyDependingOn(timeUntilAlarm);
         }
 
