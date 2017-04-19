@@ -327,11 +327,11 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mHour = mAlarmTimePicker.getCurrentHour();
         mMinute = mAlarmTimePicker.getCurrentMinute();
         Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int min = c.get(Calendar.MINUTE);
+        int now_hour = c.get(Calendar.HOUR_OF_DAY);
+        int now_min = c.get(Calendar.MINUTE);
         int alarmDay = c.get(Calendar.DAY_OF_WEEK);
         int arrivalDay = alarmDay;
-        if (mHour < hour || (mHour == hour) && mMinute <= min) {
+        if (mHour < now_hour || (mHour == now_hour && mMinute <= now_min)) {
             alarmDay = (alarmDay % 7) + 1;
         }
         if (mHour > mHourArrival || (mHour == mHourArrival && mMinuteArrival <= mMinute)) {
