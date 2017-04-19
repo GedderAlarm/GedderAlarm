@@ -23,17 +23,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle results = intent.getExtras();
-        if (results.getString(GedderEngine.RESULT_DURATION) != null) {
-            results.putBoolean("gedder_alarm_bool", true);
-        } else {
-            results.putBoolean("gedder_alarm_bool", false);
-        }
-
         Intent alarmActivity = new Intent(context.getApplicationContext(), AlarmActivity.class);
         alarmActivity.putExtra(AlarmActivity.PARAM_ALARM_UUID,
                 intent.getSerializableExtra(PARAM_ALARM_UUID));
-        alarmActivity.putExtra("bundle", results);
+        Bundle results = intent.getBundleExtra("bundle");
+        if (results != null) {
+            alarmActivity.putExtra("bundle", results);
+        }
 
         alarmActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK

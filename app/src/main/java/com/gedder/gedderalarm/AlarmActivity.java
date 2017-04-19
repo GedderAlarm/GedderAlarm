@@ -15,12 +15,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.model.GedderEngine;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -41,7 +43,8 @@ public class AlarmActivity extends AppCompatActivity {
     private int mDuration;
     private int mDurationTraffic;
     private int mPrepTime;
-    private String warnings;
+    private String mDestination;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +65,30 @@ public class AlarmActivity extends AppCompatActivity {
         String displayStr = "";
 
         //this was a Gedder Alarm
-        if (results.getBoolean("gedder_alarm_bool")) {
-            displayStr += "Travel Time: " + String.valueOf(results.getInt(GedderEngine.RESULT_DURATION)) + "\n";
-            displayStr += "Prep Time: " + String.valueOf(mPrepTime);
+        if (results != null) {
+            displayStr += "GEDDER ALARM!\n\n";
+            int travel_time_min = results.getInt(GedderEngine.RESULT_DURATION)/60;
+            int travel_time_hour = travel_time_min / 60;
+            travel_time_min = travel_time_hour % 60;
+            String travel_time_string = "";
+            if (travel_time_hour > 0) {
+                travel_time_string += String.valueOf(travel_time_hour) + " hours(s) and ";
+            }
+            travel_time_string += String.valueOf(travel_time_min) + " minute(s).";
+            displayStr += "Travel Time: " + travel_time_string + "\n\n";
+            displayStr += "Prep Time: " + String.valueOf(mPrepTime) + " minute(s)\n\n";
+            displayStr += "DESTINATION:\n" + mDestination;
+            //UNSURE ABOUT THESE ARRAY LISTS, WILL FIX LATER
+//            ArrayList<> warnings = results.(GedderEngine.RESULT_WARNINGS);
+//            if (warnings != null && warnings.length > 0) {
+//                String warnings_string = "WARNINGS:\n";
+//                for (int i = 0; i < warnings.length; ++i) {
+//                    warnings += "\t" + warnings[i];
+//                }
+//            }
+
         } else {  //this was a regular alarm
-            displayStr = "ALARM!";
+            displayStr += "ALARM!";
         }
         mInfoDisplay.setText(displayStr);
 
@@ -125,6 +147,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         //Grab variables we need from the alarmClock
         mPrepTime = (int)(alarmClock.getPrepTimeMillis()/60000);
+        mDestination = alarmClock.getDestinationAddress();
 
         // Since the alarm just went off, we need to now internally say it's off.
         alarmClock.setAlarm(AlarmClock.OFF);
