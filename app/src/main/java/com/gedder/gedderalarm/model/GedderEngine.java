@@ -9,9 +9,13 @@ package com.gedder.gedderalarm.model;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.gedder.gedderalarm.util.TimeUtilities;
+import com.gedder.gedderalarm.google.JsonParser;
+import com.gedder.gedderalarm.google.UrlGenerator;
+import com.gedder.gedderalarm.util.HttpRequest;
+import com.gedder.gedderalarm.util.except.GoogleMapsAPIException;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p>The engine goes through the following pipeline:</p>
@@ -69,7 +73,6 @@ public final class GedderEngine {
         ArrayList<String> warnings;
 
         // Generate URL
-        /*
         url = new UrlGenerator.UrlBuilder(origin, destination, sApiKey)
                 .arrivalTime(arrivalTime)
                 .build().toString();
@@ -89,15 +92,6 @@ public final class GedderEngine {
         duration = jp.duration();
         durationInTraffic = jp.durationInTraffic();
         warnings = jp.warnings();
-        */
-
-        // DEMO VALUES
-        Log.e("Testing", "In GedderEngine.start()");
-
-        duration = (int) TimeUtilities.hoursToSeconds(1);
-        durationInTraffic = (int) TimeUtilities.hoursToSeconds(1);
-        warnings = new ArrayList<>();
-        warnings.add("Many warnings, much warnings, such warnings!");
 
         Bundle results = new Bundle();
         results.putInt(RESULT_DURATION, duration);
