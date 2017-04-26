@@ -75,35 +75,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         // Get the alarm clock in question.
         mAlarmClock = (AlarmClock) getIntent().getParcelableExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK);
 
-        /************************************************************************/
-        //FOR TESTING
-//        Calendar alarmTime = mAlarmClock.getAlarmTime();
-//        Toast.makeText(getBaseContext(),
-//                "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
-//                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
-//                Toast.LENGTH_SHORT).show();
-//        Calendar arrivalTime = mAlarmClock.getArrivalTime();
-//        Toast.makeText(getBaseContext(),
-//                "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
-//                        + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Prep Time: " + Integer.toString((((int)mAlarmClock.getPrepTimeMillis()) / 1000) / 60),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Destination: " + mAlarmClock.getDestinationAddress(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Destination ID: " + mAlarmClock.getDestinationId(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Origin: " + mAlarmClock.getOriginAddress(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Origin ID: " + mAlarmClock.getOriginId(),
-//                Toast.LENGTH_SHORT).show();
-        /************************************************************************/
-
         //Initialize variables for textviews, edittexts and timepicker
         mAlarmTimePicker = (TimePicker) findViewById(R.id
                 .generalAlarmTimePicker);
@@ -180,33 +151,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         if (! mDestinationAddressString.equals("")) {
             mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
         }
-
-        //These two listeners fix the following problems:
-        // 1) The keyboard closes on selection of an address
-        // 2) Once selected the text window shows the beggining of selected string
-        mAutocompleteTextViewOrigin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                View view = getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-                mAutocompleteTextViewOrigin.setSelection(0);
-            }
-        });
-
-        mAutocompleteTextViewDestination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                View view = getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-                mAutocompleteTextViewDestination.setSelection(0);
-            }
-        });
     }
 
     //This is called when one of the drop-down results is selected on origin tab
@@ -219,6 +163,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallbackOrigin);
+            //makes keyboard go away after item selected
+            View focus = getCurrentFocus();
+            if (focus != null) {
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(focus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            //makes it so that begginging of address is shown in view
+            mAutocompleteTextViewOrigin.setSelection(0);
         }
     };
 
@@ -249,6 +201,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallbackDestination);
+            //makes keyboard go away after item selected
+            View focus = getCurrentFocus();
+            if (focus != null) {
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(focus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            //makes it so that begginging of address is shown in view
+            mAutocompleteTextViewDestination.setSelection(0);
         }
     };
 
