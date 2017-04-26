@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.DayPicker;
 import com.gedder.gedderalarm.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -326,17 +327,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         prepTimeMinutes = prepTimeMinutes % 60;
         mHour = mAlarmTimePicker.getCurrentHour();
         mMinute = mAlarmTimePicker.getCurrentMinute();
-        Calendar c = Calendar.getInstance();
-        int now_hour = c.get(Calendar.HOUR_OF_DAY);
-        int now_min = c.get(Calendar.MINUTE);
-        int alarmDay = c.get(Calendar.DAY_OF_WEEK);
-        int arrivalDay = alarmDay;
-        if (mHour < now_hour || (mHour == now_hour && mMinute <= now_min)) {
-            alarmDay = (alarmDay % 7) + 1;
-        }
-        if (mHour > mHourArrival || (mHour == mHourArrival && mMinuteArrival <= mMinute)) {
-            arrivalDay = (alarmDay % 7) + 1;
-        }
+        DayPicker daypicker = new DayPicker(mHour, mMinute, mHourArrival, mMinuteArrival);
+        int alarmDay = daypicker.getAlarmDay();
+        int arrivalDay = daypicker.getmArrivalDay();
         mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
         mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
         mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);
