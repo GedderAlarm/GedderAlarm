@@ -1,11 +1,13 @@
 package com.gedder.gedderalarm;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -178,6 +180,33 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         if (! mDestinationAddressString.equals("")) {
             mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
         }
+
+        //These two listeners fix the following problems:
+        // 1) The keyboard closes on selection of an address
+        // 2) Once selected the text window shows the beggining of selected string
+        mAutocompleteTextViewOrigin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                mAutocompleteTextViewOrigin.setSelection(0);
+            }
+        });
+
+        mAutocompleteTextViewDestination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                mAutocompleteTextViewDestination.setSelection(0);
+            }
+        });
     }
 
     //This is called when one of the drop-down results is selected on origin tab
