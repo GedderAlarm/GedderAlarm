@@ -296,9 +296,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
      * @param view
      */
     public void cancel(View view) {
-        Toast.makeText(getBaseContext(),
-                "Cancel pressed! No changes made to the alarm. ",
-                Toast.LENGTH_LONG).show();
         finish();
     }
 
