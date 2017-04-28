@@ -153,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 AlarmClock alarmClock = getAlarmClockInListViewFromChild(child);
                 alarmClock.turnAlarmOff();
                 if (alarmClock.isGedderOn()) {
-                    alarmClock.turnGedderOff();
-                    cancelGedderPersistentIcon();
+                    turnGedderOff(alarmClock);
                 }
                 db.deleteAlarmClock(UUID.fromString(child.getTag().toString()));
             }
@@ -171,9 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (alarmClock.isGedderOn()) {
             // CASE: Gedder is on.
-            alarmClock.toggleGedder();
-            toastMessage("Gedder service off");
-            cancelGedderPersistentIcon();
+            turnGedderOff(alarmClock);
         } else {
             if (alarmClock.getOriginId().equals("") || alarmClock.getDestinationId().equals("")) {
                 // CASE: Gedder is off but missing required information.
@@ -184,14 +181,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (!alarmClock.isAlarmOn()) {
                 // CASE: Gedder is off and alarm is off.
                 alarmClock.toggleAlarm();
-                alarmClock.toggleGedder();
-                toastMessage("Gedder service on.");
-                setGedderPersistentIcon();
+                turnGedderOn(alarmClock);
             } else {
                 // CASE: Gedder is off and alarm is on.
-                alarmClock.toggleGedder();
-                toastMessage("Gedder service on.");
-                setGedderPersistentIcon();
+                turnGedderOn(alarmClock);
             }
         }
 
@@ -213,9 +206,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (alarmClock.isGedderOn()) {
-            alarmClock.toggleGedder();
-            toastMessage("Gedder service off.");
-            cancelGedderPersistentIcon();
+            turnGedderOff(alarmClock);
         }
 
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
@@ -233,8 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Alarm set", Toast.LENGTH_SHORT).show();
 
                 if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
-                    alarmClock.turnGedderOn();
-                    setGedderPersistentIcon();
+                    turnGedderOn(alarmClock);
                 } else if (!alarmClock.isGedderEligible() && alarmClock.isGedderOn()) {
                     alarmClock.turnGedderOff();
                 }
@@ -254,6 +244,16 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
         return alarmClock;
+    }
+
+    private void turnGedderOn(AlarmClock alarmClock) {
+        alarmClock.turnGedderOn();
+        setGedderPersistentIcon();
+    }
+
+    private void turnGedderOff(AlarmClock alarmClock) {
+        alarmClock.turnGedderOff();
+        cancelGedderPersistentIcon();
     }
 
     private void setGedderPersistentIcon() {
