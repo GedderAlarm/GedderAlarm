@@ -23,6 +23,7 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.DayPicker;
+import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 AlarmClockDBHelper db = new AlarmClockDBHelper(this);
                 AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
                 alarmClock.turnAlarmOn();
-                Toast.makeText(this, "Alarm set", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, timeToAlarm(alarmClock), Toast.LENGTH_LONG).show();
 
                 if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
                     turnGedderOn(alarmClock);
@@ -250,6 +251,56 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
         return alarmClock;
+    }
+
+    /*
+     * FROM: https://android.googlesource.com/platform/packages/apps/AlarmClock
+     * FILE: src/com/android/alarmclock/SetAlarm.java
+     * MODIFIED BY: mslm
+     * DATE OF MODIFICATION: 4/28/17 and onward.
+     */
+    private String timeToAlarm(AlarmClock alarmClock) {
+        int daysToAlarm = (int) daysToAlarm(alarmClock);
+        int hoursToAlarm = (int) (hoursToAlarm(alarmClock) % 24);
+        int minutesToAlarm = (int) Math.ceil((minutesToAlarm(alarmClock) % 60));
+
+        String daySeq = (daysToAlarm == 0) ? "" :
+                (daysToAlarm == 1) ? this.getString(R.string.day) :
+                        this.getString(R.string.days, Long.toString(daysToAlarm));
+
+        String minSeq = (minutesToAlarm == 0) ? "" :
+                (minutesToAlarm == 1) ? this.getString(R.string.minute) :
+                        this.getString(R.string.minutes, Long.toString(minutesToAlarm));
+
+        String hourSeq = (hoursToAlarm == 0) ? "" :
+                (hoursToAlarm == 1) ? this.getString(R.string.hour) :
+                        this.getString(R.string.hours, Long.toString(hoursToAlarm));
+
+        boolean displayDays = daysToAlarm > 0;
+        boolean displayHours = hoursToAlarm > 0;
+        boolean displayMinutes = minutesToAlarm > 0;
+
+        int index = (displayDays ? 1 : 0) |
+                    (displayHours ? 2 : 0) |
+                    (displayMinutes ? 4 : 0);
+
+        String[] formats = this.getResources().getStringArray(R.array.alarm_set);
+        return String.format(formats[index], daySeq, hourSeq, minSeq);
+    }
+
+    private double daysToAlarm(AlarmClock alarmClock) {
+        return TimeUtilities.millisToDays(
+                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
+    }
+
+    private double hoursToAlarm(AlarmClock alarmClock) {
+        return TimeUtilities.millisToHours(
+                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
+    }
+
+    private double minutesToAlarm(AlarmClock alarmClock) {
+        return TimeUtilities.millisToMinutes(
+                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
     }
 
     private AlarmClock adjustDaysInAlarm(AlarmClock alarmClock) {
