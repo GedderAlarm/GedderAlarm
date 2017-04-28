@@ -9,6 +9,7 @@ import java.util.Calendar;
 public class DayPicker {
     private int mAlarmDay;
     private int mArrivalDay;
+
     public DayPicker(int alarm_hour, int alarm_minute, int arrival_hour, int arrival_minute) {
         Calendar c = Calendar.getInstance();
         int now_hour = c.get(Calendar.HOUR_OF_DAY);
@@ -22,11 +23,12 @@ public class DayPicker {
             mArrivalDay = (mAlarmDay % 7) + 1;
         }
     }
+
     public int getAlarmDay () {
         return mAlarmDay;
     }
 
-    public int getmArrivalDay() {
+    public int getArrivalDay() {
         return mArrivalDay;
     }
 }

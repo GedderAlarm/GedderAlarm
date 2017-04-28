@@ -315,7 +315,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mMinute = mAlarmTimePicker.getCurrentMinute();
         DayPicker daypicker = new DayPicker(mHour, mMinute, mHourArrival, mMinuteArrival);
         int alarmDay = daypicker.getAlarmDay();
-        int arrivalDay = daypicker.getmArrivalDay();
+        int arrivalDay = daypicker.getArrivalDay();
         mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
         mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
         mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);

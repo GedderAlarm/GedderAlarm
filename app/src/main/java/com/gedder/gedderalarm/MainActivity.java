@@ -22,7 +22,9 @@ import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.DayPicker;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -168,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
+        alarmClock = adjustDaysInAlarm(alarmClock);
+
         if (alarmClock.isGedderOn()) {
             // CASE: Gedder is on.
             turnGedderOff(alarmClock);
@@ -197,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClickToggleAlarm(View view) {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
+
+        alarmClock = adjustDaysInAlarm(alarmClock);
 
         alarmClock.toggleAlarm();
         if (alarmClock.isAlarmOn()) {
@@ -243,6 +249,25 @@ public class MainActivity extends AppCompatActivity {
         AlarmClock alarmClock = cursor.getAlarmClock();
         cursor.close();
         db.close();
+        return alarmClock;
+    }
+
+    private AlarmClock adjustDaysInAlarm(AlarmClock alarmClock) {
+        Calendar alarmTimeCalendar = alarmClock.getAlarmTime();
+        Calendar arrivalTimeCalendar = alarmClock.getArrivalTime();
+        DayPicker dayPicker = new DayPicker(
+                alarmTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                alarmTimeCalendar.get(Calendar.MINUTE),
+                arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                arrivalTimeCalendar.get(Calendar.MINUTE));
+        alarmClock.setAlarmTime(
+                dayPicker.getAlarmDay(),
+                alarmTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                alarmTimeCalendar.get(Calendar.MINUTE));
+        alarmClock.setArrivalTime(
+                dayPicker.getArrivalDay(),
+                arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                arrivalTimeCalendar.get(Calendar.MINUTE));
         return alarmClock;
     }
 
