@@ -1,11 +1,13 @@
 package com.gedder.gedderalarm;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.DayPicker;
 import com.gedder.gedderalarm.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -71,35 +74,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     private void InitializeVariables(){
         // Get the alarm clock in question.
         mAlarmClock = (AlarmClock) getIntent().getParcelableExtra(com.gedder.gedderalarm.MainActivity.PARCEL_ALARM_CLOCK);
-
-        /************************************************************************/
-        //FOR TESTING
-//        Calendar alarmTime = mAlarmClock.getAlarmTime();
-//        Toast.makeText(getBaseContext(),
-//                "Alarm Time: Hour: " + Integer.toString(alarmTime.get(Calendar.HOUR_OF_DAY))
-//                        + " Minute: " + Integer.toString(alarmTime.get(Calendar.MINUTE)),
-//                Toast.LENGTH_SHORT).show();
-//        Calendar arrivalTime = mAlarmClock.getArrivalTime();
-//        Toast.makeText(getBaseContext(),
-//                "Arrival Time: Hour: " + Integer.toString(arrivalTime.get(Calendar.HOUR_OF_DAY))
-//                        + " Minute: " + Integer.toString(arrivalTime.get(Calendar.MINUTE)),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Prep Time: " + Integer.toString((((int)mAlarmClock.getPrepTimeMillis()) / 1000) / 60),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Destination: " + mAlarmClock.getDestinationAddress(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Destination ID: " + mAlarmClock.getDestinationId(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Origin: " + mAlarmClock.getOriginAddress(),
-//                Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getBaseContext(),
-//                "Origin ID: " + mAlarmClock.getOriginId(),
-//                Toast.LENGTH_SHORT).show();
-        /************************************************************************/
 
         //Initialize variables for textviews, edittexts and timepicker
         mAlarmTimePicker = (TimePicker) findViewById(R.id
@@ -189,6 +163,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallbackOrigin);
+            //makes keyboard go away after item selected
+            View focus = getCurrentFocus();
+            if (focus != null) {
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(focus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            //makes it so that begginging of address is shown in view
+            mAutocompleteTextViewOrigin.setSelection(0);
         }
     };
 
@@ -219,6 +201,14 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallbackDestination);
+            //makes keyboard go away after item selected
+            View focus = getCurrentFocus();
+            if (focus != null) {
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(focus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+            //makes it so that begginging of address is shown in view
+            mAutocompleteTextViewDestination.setSelection(0);
         }
     };
 
@@ -306,9 +296,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
      * @param view
      */
     public void cancel(View view) {
-        Toast.makeText(getBaseContext(),
-                "Cancel pressed! No changes made to the alarm. ",
-                Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -326,17 +313,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         prepTimeMinutes = prepTimeMinutes % 60;
         mHour = mAlarmTimePicker.getCurrentHour();
         mMinute = mAlarmTimePicker.getCurrentMinute();
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int min = c.get(Calendar.MINUTE);
-        int alarmDay = c.get(Calendar.DAY_OF_WEEK);
-        int arrivalDay = alarmDay;
-        if (mHour < hour || (mHour == hour) && mMinute <= min) {
-            alarmDay = (alarmDay % 7) + 1;
-        }
-        if (mHour > mHourArrival || (mHour == mHourArrival && mMinuteArrival <= mMinute)) {
-            arrivalDay = (alarmDay % 7) + 1;
-        }
+        DayPicker daypicker = new DayPicker(mHour, mMinute, mHourArrival, mMinuteArrival);
+        int alarmDay = daypicker.getAlarmDay();
+        int arrivalDay = daypicker.getArrivalDay();
         mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
         mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
         mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);

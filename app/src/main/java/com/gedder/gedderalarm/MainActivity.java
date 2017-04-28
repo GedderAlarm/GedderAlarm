@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -23,7 +22,9 @@ import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
+import com.gedder.gedderalarm.util.DayPicker;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -154,8 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 AlarmClock alarmClock = getAlarmClockInListViewFromChild(child);
                 alarmClock.turnAlarmOff();
                 if (alarmClock.isGedderOn()) {
-                    alarmClock.turnGedderOff();
-                    cancelGedderPersistentIcon();
+                    turnGedderOff(alarmClock);
                 }
                 db.deleteAlarmClock(UUID.fromString(child.getTag().toString()));
             }
@@ -170,11 +170,11 @@ public class MainActivity extends AppCompatActivity {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
+        alarmClock = adjustDaysInAlarm(alarmClock);
+
         if (alarmClock.isGedderOn()) {
             // CASE: Gedder is on.
-            alarmClock.toggleGedder();
-            toastMessage("Gedder service off");
-            cancelGedderPersistentIcon();
+            turnGedderOff(alarmClock);
         } else {
             if (alarmClock.getOriginId().equals("") || alarmClock.getDestinationId().equals("")) {
                 // CASE: Gedder is off but missing required information.
@@ -185,14 +185,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (!alarmClock.isAlarmOn()) {
                 // CASE: Gedder is off and alarm is off.
                 alarmClock.toggleAlarm();
-                alarmClock.toggleGedder();
-                toastMessage("Gedder service on.");
-                setGedderPersistentIcon();
+                turnGedderOn(alarmClock);
             } else {
                 // CASE: Gedder is off and alarm is on.
-                alarmClock.toggleGedder();
-                toastMessage("Gedder service on.");
-                setGedderPersistentIcon();
+                turnGedderOn(alarmClock);
             }
         }
 
@@ -206,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
+        alarmClock = adjustDaysInAlarm(alarmClock);
+
         alarmClock.toggleAlarm();
         if (alarmClock.isAlarmOn()) {
             toastMessage("Alarm set.");
@@ -214,9 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (alarmClock.isGedderOn()) {
-            alarmClock.toggleGedder();
-            toastMessage("Gedder service off.");
-            cancelGedderPersistentIcon();
+            turnGedderOff(alarmClock);
         }
 
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
@@ -234,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Alarm set", Toast.LENGTH_SHORT).show();
 
                 if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
-                    alarmClock.turnGedderOn();
+                    turnGedderOn(alarmClock);
                 } else if (!alarmClock.isGedderEligible() && alarmClock.isGedderOn()) {
                     alarmClock.turnGedderOff();
                 }
@@ -254,6 +250,35 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
         return alarmClock;
+    }
+
+    private AlarmClock adjustDaysInAlarm(AlarmClock alarmClock) {
+        Calendar alarmTimeCalendar = alarmClock.getAlarmTime();
+        Calendar arrivalTimeCalendar = alarmClock.getArrivalTime();
+        DayPicker dayPicker = new DayPicker(
+                alarmTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                alarmTimeCalendar.get(Calendar.MINUTE),
+                arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                arrivalTimeCalendar.get(Calendar.MINUTE));
+        alarmClock.setAlarmTime(
+                dayPicker.getAlarmDay(),
+                alarmTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                alarmTimeCalendar.get(Calendar.MINUTE));
+        alarmClock.setArrivalTime(
+                dayPicker.getArrivalDay(),
+                arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY),
+                arrivalTimeCalendar.get(Calendar.MINUTE));
+        return alarmClock;
+    }
+
+    private void turnGedderOn(AlarmClock alarmClock) {
+        alarmClock.turnGedderOn();
+        setGedderPersistentIcon();
+    }
+
+    private void turnGedderOff(AlarmClock alarmClock) {
+        alarmClock.turnGedderOff();
+        cancelGedderPersistentIcon();
     }
 
     private void setGedderPersistentIcon() {
