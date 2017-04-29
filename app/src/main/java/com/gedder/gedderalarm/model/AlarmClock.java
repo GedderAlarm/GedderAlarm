@@ -426,7 +426,6 @@ public class AlarmClock implements Parcelable {
     }
 
     public void turnGedderOn() {
-        Log.e("Testing", "turning gedder on");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GedderAlarmManager.PARAM_ALARM_CLOCK, this);
         bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, mRequestCode);
