@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
 /**
  * <p>Class to generate URLs for Google Maps API.</p>
  *

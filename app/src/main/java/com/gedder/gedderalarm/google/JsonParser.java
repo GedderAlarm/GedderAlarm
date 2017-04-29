@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 /**
  * <p>Class to parse the JSON received from Google Maps API.</p>
  *
@@ -29,6 +28,7 @@ import java.util.ArrayList;
  * private String route2_destination = jsonParser.destination(1);
  * </pre></code>
  */
+
 public class JsonParser {
     // For mslm:
     // TODO: Add origin() and destination() functionality.

@@ -16,10 +16,6 @@ import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.Log;
 
-/**
- *
- */
-
 public class AlarmRestartReceiver extends BroadcastReceiver {
     private static final String TAG = AlarmRestartReceiver.class.getSimpleName();
 

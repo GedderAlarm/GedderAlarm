@@ -5,8 +5,6 @@
 
 package com.gedder.gedderalarm.google;
 
-/**  */
-
 public enum TravelMode {
     DRIVING,
     WALKING,

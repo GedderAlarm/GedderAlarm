@@ -23,13 +23,7 @@ import com.gedder.gedderalarm.model.GedderEngine;
 
 import java.util.UUID;
 
-/**
- *
- */
-
 public class AlarmActivity extends AppCompatActivity {
-    // TODO: @gil - UI.
-
     public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
 
     private static final String TAG = AlarmActivity.class.getSimpleName();
@@ -76,16 +70,8 @@ public class AlarmActivity extends AppCompatActivity {
             displayStr += "Travel Time: " + travel_time_string + "\n\n";
             displayStr += "Prep Time: " + String.valueOf(mPrepTime) + " minute(s)\n\n";
             displayStr += "DESTINATION:\n" + mDestination;
-            //UNSURE ABOUT THESE ARRAY LISTS, WILL FIX LATER
-//            ArrayList<> warnings = results.(GedderEngine.RESULT_WARNINGS);
-//            if (warnings != null && warnings.length > 0) {
-//                String warnings_string = "WARNINGS:\n";
-//                for (int i = 0; i < warnings.length; ++i) {
-//                    warnings += "\t" + warnings[i];
-//                }
-//            }
 
-        } else {  //this was a regular alarm
+        } else {  // This was a regular alarm.
             displayStr += "ALARM!";
         }
         mInfoDisplay.setText(displayStr);
@@ -143,8 +129,8 @@ public class AlarmActivity extends AppCompatActivity {
         cursor.moveToFirst();
         AlarmClock alarmClock = cursor.getAlarmClock();
 
-        //Grab variables we need from the alarmClock
-        mPrepTime = (int)(alarmClock.getPrepTimeMillis()/60000);
+        // Grab variables we need from the alarmClock.
+        mPrepTime = (int) (alarmClock.getPrepTimeMillis() / 60000);
         mDestination = alarmClock.getDestinationAddress();
 
         // Since the alarm just went off, we need to now internally say it's off.

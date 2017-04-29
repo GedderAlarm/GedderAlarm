@@ -5,8 +5,8 @@
 
 package com.gedder.gedderalarm.google;
 
-
 /** Enumeration class holding different status codes returned by Google Maps API. */
+
 public enum JsonStatus {
     OK,
     NOT_FOUND,

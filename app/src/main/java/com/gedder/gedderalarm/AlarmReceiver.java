@@ -10,12 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.gedder.gedderalarm.model.GedderEngine;
-
-/**
- *
- */
-
 public class AlarmReceiver extends BroadcastReceiver {
     public static final String PARAM_ALARM_UUID = "__PARAM_ALARM_UUID__";
 

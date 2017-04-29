@@ -44,8 +44,8 @@ public class GedderRestartReceiver extends BroadcastReceiver {
                     bundle.putInt(GedderAlarmManager.PARAM_UNIQUE_ID, alarmClock.getRequestCode());
                     GedderAlarmManager.setGedder(bundle);
                 } else {
-                    // We missed the alarm while the phone was off; appropriate alarm variables.
-                    alarmClock.setGedder(AlarmClock.OFF);
+                    // We missed the alarm while the phone was off.
+                    alarmClock.turnGedderOff();
                     db.updateAlarmClock(alarmClock);
                 }
             } while (cursor.moveToNext());

@@ -28,10 +28,6 @@ import com.gedder.gedderalarm.util.Log;
 import java.util.Calendar;
 import java.util.UUID;
 
-/**
- *
- */
-
 public class MainActivity extends AppCompatActivity {
     // TODO: Stop handling UI in this activity. Move it to a view class in the view package.
     // See http://www.techyourchance.com/mvp-mvc-android-2/
@@ -150,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
 
-        alarmClock = adjustDaysInAlarm(alarmClock);
-
         if (alarmClock.isGedderOn()) {
             turnGedderOff(alarmClock);
         } else {
@@ -178,8 +172,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClickToggleAlarm(View view) {
         View row              = (View) view.getParent();
         AlarmClock alarmClock = getAlarmClockInListViewFromChild(row);
-
-        alarmClock = adjustDaysInAlarm(alarmClock);
 
         if (!alarmClock.isAlarmOn()) {
             turnAlarmOn(alarmClock);
@@ -247,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 .cancel(ID_GEDDER_PERSISTENT_NOTIFICATION);
     }
 
+    /* TEMPORARY */
     public static String timeToArrival(AlarmClock alarmClock) {
         long delta = alarmClock.getArrivalTimeMillis() - System.currentTimeMillis();
         Log.e(TAG, "Arrival: " + alarmClock.getArrivalTimeMillis());
@@ -318,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
         return String.format(formats[index], daySeq, hourSeq, minSeq);
     }
 
-    private AlarmClock adjustDaysInAlarm(AlarmClock alarmClock) {
+    private void adjustDaysInAlarm(AlarmClock alarmClock) {
         Calendar alarmTimeCalendar = alarmClock.getAlarmTime();
         Calendar arrivalTimeCalendar = alarmClock.getArrivalTime();
         DayPicker dayPicker = new DayPicker(
@@ -334,29 +327,31 @@ public class MainActivity extends AppCompatActivity {
                 dayPicker.getArrivalDay(),
                 arrivalTimeCalendar.get(Calendar.HOUR_OF_DAY),
                 arrivalTimeCalendar.get(Calendar.MINUTE));
-        return alarmClock;
     }
 
     private void turnAlarmOn(AlarmClock alarmClock) {
+        adjustDaysInAlarm(alarmClock);
         alarmClock.turnAlarmOn();
         Toast.makeText(this, timeToAlarm(alarmClock), Toast.LENGTH_LONG).show();
     }
 
     private void turnAlarmOff(AlarmClock alarmClock) {
         alarmClock.turnAlarmOff();
-        toastMessage("Alarm off.");
+        toastShortMessage("Alarm off.");
     }
 
     private void turnGedderOn(AlarmClock alarmClock) {
         alarmClock.turnGedderOn();
-        toastMessage("Gedder on.");
+        toastShortMessage("Gedder on.");
         setGedderPersistentIcon();
-        //Toast.makeText(this, timeToArrival(alarmClock), Toast.LENGTH_LONG).show();
+
+        // TEMPORARY
+        Toast.makeText(this, timeToArrival(alarmClock), Toast.LENGTH_LONG).show();
     }
 
     private void turnGedderOff(AlarmClock alarmClock) {
         alarmClock.turnGedderOff();
-        toastMessage("Gedder off.");
+        toastShortMessage("Gedder off.");
         cancelGedderPersistentIcon();
     }
 
@@ -376,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
         db.close();
     }
 
-    private void toastMessage(String message) {
+    private void toastShortMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

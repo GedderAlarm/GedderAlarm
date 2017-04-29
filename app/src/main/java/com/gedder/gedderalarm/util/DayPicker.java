@@ -1,10 +1,11 @@
+/*
+ * USER: jameskluz
+ * DATE: 4/26/17
+ */
+
 package com.gedder.gedderalarm.util;
 
 import java.util.Calendar;
-
-/**
- * Created by jameskluz on 4/26/17.
- */
 
 public class DayPicker {
     private int mAlarmDay;
