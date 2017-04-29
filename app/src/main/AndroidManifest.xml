@@ -20,22 +20,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".GedderAlarmApplication">
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBLId5t2tWmLHoB7_GUEojHU-JKsJNWKQU"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmActivity">
 
+        <activity android:name=".AlarmActivity">
         </activity>
+
         <activity
             android:name=".AddEditAlarmScrollingActivity"
             android:label="@string/title_activity_edit_alarm_scrolling"
@@ -47,12 +49,14 @@
             android:name=".AlarmReceiver"
             android:process=":remote">
         </receiver>
+
         <receiver
             android:name=".GedderReceiver"
             android:enabled="true"
             android:process=":remote"
             android:exported="false">
         </receiver>
+
         <receiver
             android:name=".AlarmRestartReceiver"
             android:enabled="true"
@@ -61,6 +65,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".GedderRestartReceiver"
             android:enabled="true"
@@ -69,6 +74,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

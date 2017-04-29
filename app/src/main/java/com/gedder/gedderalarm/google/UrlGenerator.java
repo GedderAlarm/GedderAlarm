@@ -59,12 +59,19 @@ public class UrlGenerator {
         mAvoidToll       = builder.mAvoidToll;
         mAvoidHighways   = builder.mAvoidHighways;
         addOrigin       (mOrigin);
+        url += "&";
         addDestination  (mDestination);
+        url += "&";
         addArrivalTime  (mArrivalTime);
+        url += "&";
         addDepartureTime(mDepartureTime);
+        url += "&";
         addTravelMode   (mTravelMode);
+        url += "&";
         addAvoidToll    (mAvoidToll);
+        url += "&";
         addAvoidHighways(mAvoidHighways);
+        url += "&";
         addApiKey       (mApiKey);
     }
 

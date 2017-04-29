@@ -54,7 +54,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     EditText mPrepTimeEditText;
 
     //Variables for auto-complete text boxes
-    private static final String LOG_TAG = "AddEditAlarmScrollingActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
     private AutoCompleteTextView mAutocompleteTextViewOrigin;
     private AutoCompleteTextView mAutocompleteTextViewDestination;
@@ -232,13 +231,13 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i(LOG_TAG, "Google Places API connected.");
+        Log.i(TAG, "Google Places API connected.");
 
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+        Log.e(TAG, "Google Places API connection failed with error code: "
                 + connectionResult.getErrorCode());
 
         Toast.makeText(this,
@@ -250,7 +249,7 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     @Override
     public void onConnectionSuspended(int i) {
         mPlaceArrayAdapter.setGoogleApiClient(null);
-        Log.e(LOG_TAG, "Google Places API connection suspended.");
+        Log.e(TAG, "Google Places API connection suspended.");
     }
 
     public void setArrivalTime(View view){

@@ -414,7 +414,9 @@ public class JsonParser {
             error = mJsonObj.getString("error_message");
         } catch (JSONException e) {
             Log.e(TAG, "Invalid JSON string in function " + TAG + "::errorMessage.");
-            return null;
+            return "";
+        } catch (NullPointerException e) {
+            return "";
         }
 
         return error;

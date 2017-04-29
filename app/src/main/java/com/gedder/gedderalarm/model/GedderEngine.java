@@ -41,7 +41,7 @@ public final class GedderEngine {
 
     // We get this in some secret way. For development, just keep a local API key in a file that
     // is ignored by git.
-    private static final String sApiKey = "qweoihuihuyhuyfbyu this isn't an api key";
+    private static final String sApiKey = "AIzaSyBLId5t2tWmLHoB7_GUEojHU-JKsJNWKQU";
 
     private GedderEngine() {}
 
@@ -76,6 +76,8 @@ public final class GedderEngine {
         url = new UrlGenerator.UrlBuilder(origin, destination, sApiKey)
                 .arrivalTime(arrivalTime)
                 .build().toString();
+
+        Log.e(TAG, "url = " + url);
 
         // Query API
         try {
