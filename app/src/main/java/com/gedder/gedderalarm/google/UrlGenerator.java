@@ -63,14 +63,10 @@ public class UrlGenerator {
         url += "&";
         addArrivalTime  (mArrivalTime);
         url += "&";
-        addDepartureTime(mDepartureTime);
-        url += "&";
-        addTravelMode   (mTravelMode);
-        url += "&";
-        addAvoidToll    (mAvoidToll);
-        url += "&";
-        addAvoidHighways(mAvoidHighways);
-        url += "&";
+        if (addDepartureTime(mDepartureTime)) url += "&";
+        if (addTravelMode   (mTravelMode))    url += "&";
+        if (addAvoidToll    (mAvoidToll))     url += "&";
+        if (addAvoidHighways(mAvoidHighways)) url += "&";
         addApiKey       (mApiKey);
     }
 
@@ -174,40 +170,60 @@ public class UrlGenerator {
      *
      * @param arrivalTime
      */
-    private void addArrivalTime(String arrivalTime) {
-        if (arrivalTime != null) url += "arrival_time=" + arrivalTime;
+    private boolean addArrivalTime(String arrivalTime) {
+        if (arrivalTime != null) {
+            url += "arrival_time=" + arrivalTime;
+            return true;
+        }
+        return false;
     }
 
     /**
      *
      * @param departureTime
      */
-    private void addDepartureTime(String departureTime) {
-        if (departureTime != null) url += "departure_time=" + departureTime;
+    private boolean addDepartureTime(String departureTime) {
+        if (departureTime != null) {
+            url += "departure_time=" + departureTime;
+            return true;
+        }
+        return false;
     }
 
     /**
      *
      * @param travelMode
      */
-    private void addTravelMode(String travelMode) {
-        if (travelMode != null) url += "mode=" + travelMode;
+    private boolean addTravelMode(String travelMode) {
+        if (travelMode != null) {
+            url += "mode=" + travelMode;
+            return true;
+        }
+        return false;
     }
 
     /**
      *
      * @param avoidToll
      */
-    private void addAvoidToll(boolean avoidToll) {
-        if (avoidToll) url += "avoid=tolls";
+    private boolean addAvoidToll(boolean avoidToll) {
+        if (avoidToll) {
+            url += "avoid=tolls";
+            return true;
+        }
+        return false;
     }
 
     /**
      *
      * @param avoidHighways
      */
-    private void addAvoidHighways(boolean avoidHighways) {
-        if (avoidHighways) url += "avoid=highways";
+    private boolean  addAvoidHighways(boolean avoidHighways) {
+        if (avoidHighways) {
+            url += "avoid=highways";
+            return true;
+        }
+        return false;
     }
 
     /**
