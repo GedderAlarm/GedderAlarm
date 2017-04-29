@@ -44,6 +44,9 @@ public class HttpRequest extends AsyncTask<String, String, String> {
         StringBuilder jsonResults = new StringBuilder();
         try {
             URL url = new URL(urlTest[0]);
+
+            Log.i(TAG, "Querying " + url.toString());
+
             mUrlConnection = (HttpURLConnection) url.openConnection();
             mUrlConnection.setRequestMethod("GET");
             mUrlConnection.setDoOutput(true);

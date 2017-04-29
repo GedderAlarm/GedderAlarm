@@ -67,7 +67,6 @@ public final class GedderEngine {
 
         String            url;
         String            json = "";
-        String            err;
         int               duration;
         int               durationInTraffic;
         ArrayList<String> warnings;
@@ -76,8 +75,6 @@ public final class GedderEngine {
         url = new UrlGenerator.UrlBuilder(origin, destination, sApiKey)
                 .arrivalTime(arrivalTime)
                 .build().toString();
-
-        Log.e(TAG, "url = " + url);
 
         // Query API
         try {

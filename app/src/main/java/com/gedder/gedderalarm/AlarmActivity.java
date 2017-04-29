@@ -59,9 +59,9 @@ public class AlarmActivity extends AppCompatActivity {
         //this was a Gedder Alarm
         if (results != null) {
             displayStr += "GEDDER ALARM!\n\n";
-            int travel_time_min = results.getInt(GedderEngine.RESULT_DURATION)/60;
-            int travel_time_hour = travel_time_min / 60;
-            travel_time_min = travel_time_hour % 60;
+            int travel_time_min = results.getInt(GedderEngine.RESULT_DURATION) / 60;
+            double travel_time_hour = travel_time_min / 60;
+            travel_time_min %= 60;
             String travel_time_string = "";
             if (travel_time_hour > 0) {
                 travel_time_string += String.valueOf(travel_time_hour) + " hours(s) and ";
