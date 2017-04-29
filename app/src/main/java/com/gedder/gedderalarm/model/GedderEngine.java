@@ -41,7 +41,7 @@ public final class GedderEngine {
 
     // We get this in some secret way. For development, just keep a local API key in a file that
     // is ignored by git.
-    private static final String sApiKey = "AIzaSyBLId5t2tWmLHoB7_GUEojHU-JKsJNWKQU";
+    private static final String sApiKey = "AIzaSyAdVG58cxY0i9JAjGaGM4yqDeSlD1BUoik";
 
     private GedderEngine() {}
 
