@@ -226,6 +226,25 @@ public class MainActivity extends AppCompatActivity {
         return alarmClock;
     }
 
+    public static void setGedderPersistentIcon() {
+        Notification notification = new Notification.Builder(GedderAlarmApplication.getAppContext())
+                .setSmallIcon(R.drawable.gedder_on)
+                .setContentTitle("Gedder Alarm")
+                .setContentText("Gedder service on.")
+                .setWhen(System.currentTimeMillis())
+                .setOngoing(true)
+                .build();
+        ((NotificationManager) GedderAlarmApplication.getAppContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE))
+                .notify(ID_GEDDER_PERSISTENT_NOTIFICATION, notification);
+    }
+
+    public static void cancelGedderPersistentIcon() {
+        ((NotificationManager) GedderAlarmApplication.getAppContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE))
+                .cancel(ID_GEDDER_PERSISTENT_NOTIFICATION);
+    }
+
     /*
      * FROM: https://android.googlesource.com/platform/packages/apps/AlarmClock
      * FILE: src/com/android/alarmclock/SetAlarm.java
@@ -315,24 +334,6 @@ public class MainActivity extends AppCompatActivity {
         alarmClock.turnGedderOff();
         toastMessage("Gedder off.");
         cancelGedderPersistentIcon();
-    }
-
-    private void setGedderPersistentIcon() {
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.gedder_on)
-                .setContentTitle("Gedder Alarm")
-                .setContentText("Gedder service on.")
-                .setWhen(System.currentTimeMillis())
-                .setOngoing(true)
-                .build();
-        NotificationManager notifier =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        notifier.notify(ID_GEDDER_PERSISTENT_NOTIFICATION, notification);
-    }
-
-    private void cancelGedderPersistentIcon() {
-        ((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE))
-                .cancel(ID_GEDDER_PERSISTENT_NOTIFICATION);
     }
 
     private void toastMessage(String message) {

@@ -15,14 +15,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.model.GedderEngine;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -151,7 +149,12 @@ public class AlarmActivity extends AppCompatActivity {
 
         // Since the alarm just went off, we need to now internally say it's off.
         alarmClock.setAlarm(AlarmClock.OFF);
-        alarmClock.turnGedderOff();
+
+        if (alarmClock.isGedderOn()) {
+            alarmClock.turnGedderOff();
+            MainActivity.cancelGedderPersistentIcon();
+        }
+
         db.updateAlarmClock(alarmClock);
         db.close();
     }
