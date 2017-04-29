@@ -341,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void turnGedderOn(AlarmClock alarmClock) {
+        adjustDaysInAlarm(alarmClock);
         alarmClock.turnGedderOn();
         toastShortMessage("Gedder on.");
         setGedderPersistentIcon();
