@@ -146,7 +146,6 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
             mAutocompleteTextViewOrigin.setText(mOriginAddressString, false);
         }
         mDestinationAddressString = mAlarmClock.getDestinationAddress();
-        mOriginIdString = mAlarmClock.getDestinationId();
         mDestinationIdString = mAlarmClock.getDestinationId();
         if (! mDestinationAddressString.equals("")) {
             mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
