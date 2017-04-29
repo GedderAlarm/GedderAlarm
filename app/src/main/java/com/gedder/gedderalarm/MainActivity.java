@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     turnAlarmOn(alarmClock);
                 }
                 turnGedderOn(alarmClock);
+                turnAllGeddersOffBesidesThis(alarmClock);
             }
         }
 
@@ -205,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
                     turnGedderOn(alarmClock);
+                    turnAllGeddersOffBesidesThis(alarmClock);
                 } else if (!alarmClock.isGedderEligible() && alarmClock.isGedderOn()) {
                     turnGedderOff(alarmClock);
                 }
@@ -334,6 +336,22 @@ public class MainActivity extends AppCompatActivity {
         alarmClock.turnGedderOff();
         toastMessage("Gedder off.");
         cancelGedderPersistentIcon();
+    }
+
+    private void turnAllGeddersOffBesidesThis(AlarmClock alarmClock) {
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        UUID uuid = alarmClock.getUUID();
+        AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAllAlarmClocks());
+        cursor.moveToFirst();
+        do {
+            AlarmClock otherAlarmClock = cursor.getAlarmClock();
+            if (uuid != otherAlarmClock.getUUID()) {
+                otherAlarmClock.turnGedderOff();
+                db.updateAlarmClock(otherAlarmClock);
+            }
+        } while (cursor.moveToNext());
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        db.close();
     }
 
     private void toastMessage(String message) {
