@@ -91,6 +91,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // Alarm clocks might have been modified in other activities.
+        AlarmClockDBHelper db = new AlarmClockDBHelper(this);
+        mAlarmClocksCursorAdapter.changeCursor(db.getAllAlarmClocks());
+        db.close();
+    }
+
+    @Override
     public void onBackPressed() {
         if (findViewById(R.id.activityMain_DeleteAlarmBtn).getVisibility() != View.GONE) {
             findViewById(R.id.activityMain_DeleteAlarmBtn).setVisibility(View.GONE);
