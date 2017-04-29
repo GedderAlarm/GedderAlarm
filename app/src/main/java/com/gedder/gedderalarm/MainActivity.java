@@ -23,7 +23,6 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.DayPicker;
-import com.gedder.gedderalarm.util.Log;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -242,8 +241,6 @@ public class MainActivity extends AppCompatActivity {
     /* TEMPORARY */
     public static String timeToArrival(AlarmClock alarmClock) {
         long delta = alarmClock.getArrivalTimeMillis() - System.currentTimeMillis();
-        Log.e(TAG, "Arrival: " + alarmClock.getArrivalTimeMillis());
-        Log.e(TAG, "Now: " + System.currentTimeMillis());
         long hoursToAlarm = delta / (1000 * 60 * 60);
         long minutesToAlarm = delta / (1000 * 60) % 60;
         long daysToAlarm = hoursToAlarm / 24;

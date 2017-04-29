@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.gedder.gedderalarm.model.GedderEngine;
-import com.gedder.gedderalarm.util.Log;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.ArrayList;
@@ -69,7 +68,6 @@ public class GedderReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("Testing", "GedderReceiver: onReceive()");
         UUID   uuid        = (UUID) intent.getSerializableExtra(PARAM_UUID);
         String origin      = intent.getStringExtra(PARAM_ORIGIN_ID);
         String dest        = intent.getStringExtra(PARAM_DESTINATION_ID);

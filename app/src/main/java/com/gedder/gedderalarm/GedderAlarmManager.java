@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.gedder.gedderalarm.model.AlarmClock;
 
@@ -89,7 +88,6 @@ public final class GedderAlarmManager {
      * @param gedderData The data the Gedder services require for any alarm clock.
      */
     public static void setGedder(Bundle gedderData) {
-        Log.e("Testing", "setGedder Called");
         AlarmClock alarmClock = gedderData.getParcelable(PARAM_ALARM_CLOCK);
         int id = gedderData.getInt(PARAM_UNIQUE_ID, -1);
 
@@ -107,8 +105,6 @@ public final class GedderAlarmManager {
         intent.putExtra(GedderReceiver.PARAM_PREP_TIME,      alarmClock.getPrepTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_ALARM_TIME,     alarmClock.getAlarmTimeMillis());
         intent.putExtra(GedderReceiver.PARAM_ID,             id);
-        //LocalBroadcastManager.getInstance(GedderAlarmApplication.getAppContext())
-        //        .sendBroadcast(intent);
         GedderAlarmApplication.getAppContext().sendBroadcast(intent);
     }
 
