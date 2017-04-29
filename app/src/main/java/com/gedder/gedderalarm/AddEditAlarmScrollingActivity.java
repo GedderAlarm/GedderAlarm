@@ -323,6 +323,11 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         mAlarmClock.setDestinationId(mDestinationIdString);
         mAlarmClock.setDestinationAddress(mDestinationAddressString);
 
+        Log.e(TAG, "alarmDay: " + alarmDay);
+        Log.e(TAG, "today: " + Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        Log.e(TAG, "arrivalDay: " + arrivalDay);
+        Toast.makeText(this, MainActivity.timeToArrival(mAlarmClock), Toast.LENGTH_LONG).show();
+
         // Send off the alarm clock.
         AlarmClockDBHelper db = new AlarmClockDBHelper(this);
         if (db.updateAlarmClock(mAlarmClock) != 1) {

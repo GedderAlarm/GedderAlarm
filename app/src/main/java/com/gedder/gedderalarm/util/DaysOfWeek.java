@@ -23,11 +23,8 @@
 
 package com.gedder.gedderalarm.util;
 
-import android.util.SparseArray;
-
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import java.util.EnumSet;
 
 /**
  * <p>Pulled from Google source code. Their comments:</p>
@@ -44,40 +41,6 @@ import java.util.EnumSet;
  */
 
 public final class DaysOfWeek {
-
-    /*
-     * USER: mslm
-     * DATE: 3/27/17
-     */
-    public enum DAY {
-        MONDAY(Calendar.MONDAY),
-        TUESDAY(Calendar.TUESDAY),
-        WEDNESDAY(Calendar.WEDNESDAY),
-        THURSDAY(Calendar.THURSDAY),
-        FRIDAY(Calendar.FRIDAY),
-        SATURDAY(Calendar.SATURDAY),
-        SUNDAY(Calendar.SUNDAY);
-
-        private final int day;
-        private static final SparseArray<DAY> lookup = new SparseArray<>();
-
-        static {
-            for (DAY d : EnumSet.allOf(DAY.class))
-                lookup.put(d.getInt(), d);
-        }
-
-        DAY(int day) {
-            this.day = day;
-        }
-
-        public int getInt() {
-            return this.day;
-        }
-
-        public static DAY getDay(int day) {
-            return lookup.get(day);
-        }
-    }
 
     private static int[] DAY_MAP = new int[] {
             Calendar.MONDAY,

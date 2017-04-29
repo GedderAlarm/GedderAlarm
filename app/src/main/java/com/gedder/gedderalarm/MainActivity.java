@@ -23,7 +23,7 @@ import com.gedder.gedderalarm.controller.AlarmClocksCursorAdapter;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.DayPicker;
-import com.gedder.gedderalarm.util.TimeUtilities;
+import com.gedder.gedderalarm.util.Log;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -247,6 +247,40 @@ public class MainActivity extends AppCompatActivity {
                 .cancel(ID_GEDDER_PERSISTENT_NOTIFICATION);
     }
 
+    public static String timeToArrival(AlarmClock alarmClock) {
+        long delta = alarmClock.getArrivalTimeMillis() - System.currentTimeMillis();
+        Log.e(TAG, "Arrival: " + alarmClock.getArrivalTimeMillis());
+        Log.e(TAG, "Now: " + System.currentTimeMillis());
+        long hoursToAlarm = delta / (1000 * 60 * 60);
+        long minutesToAlarm = delta / (1000 * 60) % 60;
+        long daysToAlarm = hoursToAlarm / 24;
+        hoursToAlarm = hoursToAlarm % 24;
+        Context c = GedderAlarmApplication.getAppContext();
+
+        String daySeq = (daysToAlarm == 0) ? "" :
+                (daysToAlarm == 1) ? c.getString(R.string.day) :
+                        c.getString(R.string.days, Long.toString(daysToAlarm));
+
+        String minSeq = (minutesToAlarm == 0) ? "" :
+                (minutesToAlarm == 1) ? c.getString(R.string.minute) :
+                        c.getString(R.string.minutes, Long.toString(minutesToAlarm));
+
+        String hourSeq = (hoursToAlarm == 0) ? "" :
+                (hoursToAlarm == 1) ? c.getString(R.string.hour) :
+                        c.getString(R.string.hours, Long.toString(hoursToAlarm));
+
+        boolean displayDays = daysToAlarm > 0;
+        boolean displayHours = hoursToAlarm > 0;
+        boolean displayMinutes = minutesToAlarm > 0;
+
+        int index = (displayDays ? 1 : 0) |
+                (displayHours ? 2 : 0) |
+                (displayMinutes ? 4 : 0);
+
+        String[] formats = c.getResources().getStringArray(R.array.arrival_set);
+        return String.format(formats[index], daySeq, hourSeq, minSeq);
+    }
+
     /*
      * FROM: https://android.googlesource.com/platform/packages/apps/AlarmClock
      * FILE: src/com/android/alarmclock/SetAlarm.java
@@ -254,9 +288,11 @@ public class MainActivity extends AppCompatActivity {
      * DATE OF MODIFICATION: 4/28/17 and onward.
      */
     private String timeToAlarm(AlarmClock alarmClock) {
-        int daysToAlarm = (int) daysToAlarm(alarmClock);
-        int hoursToAlarm = (int) (hoursToAlarm(alarmClock) % 24);
-        int minutesToAlarm = (int) Math.ceil((minutesToAlarm(alarmClock) % 60));
+        long delta = alarmClock.getAlarmTimeMillis() - System.currentTimeMillis();
+        long hoursToAlarm = delta / (1000 * 60 * 60);
+        long minutesToAlarm = delta / (1000 * 60) % 60;
+        long daysToAlarm = hoursToAlarm / 24;
+        hoursToAlarm = hoursToAlarm % 24;
 
         String daySeq = (daysToAlarm == 0) ? "" :
                 (daysToAlarm == 1) ? this.getString(R.string.day) :
@@ -280,21 +316,6 @@ public class MainActivity extends AppCompatActivity {
 
         String[] formats = this.getResources().getStringArray(R.array.alarm_set);
         return String.format(formats[index], daySeq, hourSeq, minSeq);
-    }
-
-    private double daysToAlarm(AlarmClock alarmClock) {
-        return TimeUtilities.millisToDays(
-                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
-    }
-
-    private double hoursToAlarm(AlarmClock alarmClock) {
-        return TimeUtilities.millisToHours(
-                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
-    }
-
-    private double minutesToAlarm(AlarmClock alarmClock) {
-        return TimeUtilities.millisToMinutes(
-                alarmClock.getAlarmTimeMillis() - System.currentTimeMillis());
     }
 
     private AlarmClock adjustDaysInAlarm(AlarmClock alarmClock) {
@@ -330,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
         alarmClock.turnGedderOn();
         toastMessage("Gedder on.");
         setGedderPersistentIcon();
+        //Toast.makeText(this, timeToArrival(alarmClock), Toast.LENGTH_LONG).show();
     }
 
     private void turnGedderOff(AlarmClock alarmClock) {

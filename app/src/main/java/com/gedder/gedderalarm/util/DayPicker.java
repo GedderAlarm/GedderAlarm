@@ -14,13 +14,13 @@ public class DayPicker {
         Calendar c = Calendar.getInstance();
         int now_hour = c.get(Calendar.HOUR_OF_DAY);
         int now_min = c.get(Calendar.MINUTE);
-        mAlarmDay = c.get(Calendar.DAY_OF_WEEK);
+        mAlarmDay = c.get(Calendar.DAY_OF_YEAR);
         if (alarm_hour < now_hour || (alarm_hour == now_hour && alarm_minute <= now_min)) {
-            mAlarmDay = (mAlarmDay % 7) + 1;
+            mAlarmDay = mAlarmDay + 1;
         }
         mArrivalDay = mAlarmDay;
         if (arrival_hour < alarm_hour || (arrival_hour < alarm_hour && arrival_minute < alarm_minute)) {
-            mArrivalDay = (mAlarmDay % 7) + 1;
+            mArrivalDay = mAlarmDay + 1;
         }
     }
 
