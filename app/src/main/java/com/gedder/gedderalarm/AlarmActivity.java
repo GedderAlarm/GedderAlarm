@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
@@ -36,6 +37,7 @@ public class AlarmActivity extends AppCompatActivity {
     private int mDurationTraffic;
     private int mPrepTime;
     private String mDestination;
+    private String mOrigin;
 
 
     @Override
@@ -58,6 +60,22 @@ public class AlarmActivity extends AppCompatActivity {
 
         //this was a Gedder Alarm
         if (results != null) {
+            Button mMapsBtn = (Button) findViewById(R.id.get_directions);
+            mMapsBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    try {
+                        String origin_address = mOrigin.replaceAll(" ", "+");
+                        String destination_address = mDestination.replaceAll(" ", "+");
+                        String uri = "http://maps.google.com/maps?f=d&hl=en&saddr="+origin_address+","+"&daddr="+ destination_address;
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+                        startActivity(Intent.createChooser(intent, "Select an application"));
+                    } catch (Exception e){
+                        Toast.makeText(getBaseContext(),
+                                "Trouble opening Google Maps, please make sure it is installed!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
             displayStr += "GEDDER ALARM!\n\n";
             int travel_time_min = results.getInt(GedderEngine.RESULT_DURATION) / 60;
             double travel_time_hour = travel_time_min / 60;
@@ -132,6 +150,7 @@ public class AlarmActivity extends AppCompatActivity {
         // Grab variables we need from the alarmClock.
         mPrepTime = (int) (alarmClock.getPrepTimeMillis() / 60000);
         mDestination = alarmClock.getDestinationAddress();
+        mOrigin = alarmClock.getOriginAddress();
 
         // Since the alarm just went off, we need to now internally say it's off.
         alarmClock.setAlarm(AlarmClock.OFF);

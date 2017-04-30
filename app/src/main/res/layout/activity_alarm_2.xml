@@ -73,6 +73,16 @@
             android:id="@+id/button_stop_alarm_2"
             android:textSize="24sp" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get Directions"
+            android:gravity="center"
+            android:paddingEnd="100dp"
+            android:paddingStart="100dp"
+            android:id="@+id/get_directions"
+            android:textSize="24sp" />
+
         <TextView
             android:id="@+id/alarm_display_info"
             android:layout_width="match_parent"
