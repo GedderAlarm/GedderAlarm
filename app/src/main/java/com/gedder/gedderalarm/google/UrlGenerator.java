@@ -39,6 +39,7 @@ public class UrlGenerator {
     private final String  mArrivalTime;       // optional
     private final String  mDepartureTime;     // optional
     private final String  mTravelMode;        // optional
+    private final String  mTransitMode;       // optional
     private final boolean mAvoidToll;         // optional
     private final boolean mAvoidHighways;     // optional
 
@@ -49,12 +50,13 @@ public class UrlGenerator {
      * @param builder The builder to base the URL off of.
      */
     private UrlGenerator(UrlBuilder builder) {
-        mOrigin = builder.mOrigin;
+        mOrigin          = builder.mOrigin;
         mDestination     = builder.mDestination;
         mApiKey          = builder.mApiKey;
         mArrivalTime     = builder.mArrivalTime;
         mDepartureTime   = builder.mDepartureTime;
         mTravelMode      = builder.mTravelMode;
+        mTransitMode     = builder.mTransitMode;
         mAvoidToll       = builder.mAvoidToll;
         mAvoidHighways   = builder.mAvoidHighways;
         addOrigin       (mOrigin);
@@ -65,6 +67,7 @@ public class UrlGenerator {
         url += "&";
         if (addDepartureTime(mDepartureTime)) url += "&";
         if (addTravelMode   (mTravelMode))    url += "&";
+        if (addTransitMode  (mTransitMode))   url += "&";
         if (addAvoidToll    (mAvoidToll))     url += "&";
         if (addAvoidHighways(mAvoidHighways)) url += "&";
         addApiKey       (mApiKey);
@@ -124,6 +127,10 @@ public class UrlGenerator {
      */
     public String getTravelMode() {
         return mTravelMode;
+    }
+
+    public String getTransitMode() {
+        return mTransitMode;
     }
 
     /**
@@ -202,6 +209,14 @@ public class UrlGenerator {
         return false;
     }
 
+    private boolean addTransitMode(String transitMode) {
+        if (transitMode != null) {
+            url += "transit_mode=" + transitMode;
+            return true;
+        }
+        return false;
+    }
+
     /**
      *
      * @param avoidToll
@@ -258,6 +273,7 @@ public class UrlGenerator {
         private String  mArrivalTime;   // optional
         private String  mDepartureTime; // optional
         private String  mTravelMode;    // optional
+        private String  mTransitMode;   // optional
         private boolean mAvoidToll;     // optional
         private boolean mAvoidHighways; // optional
 
@@ -340,6 +356,15 @@ public class UrlGenerator {
             return this;
         }
 
+        public UrlBuilder transitMode(String transitMode) {
+            if (!isAvailableTransitMode(transitMode)) {
+                throw new IllegalArgumentException(
+                        SUB_TAG + "::UrlBuilder::mTransitMode: transit mode not available.");
+            }
+            mTransitMode = transitMode;
+            return this;
+        }
+
         /**
          * Set whether the query should return paths where we avoid tolls.
          * @return UrlBuilder to chain method calls off of.
@@ -372,6 +397,13 @@ public class UrlGenerator {
          * @return whether the intended mode of travel is valid for Google Maps API.
          */
         private boolean isAvailableTravelMode(String mode) {
+            return !mode.equals(TravelMode.DRIVING.name())   &&
+                   !mode.equals(TravelMode.BICYCLING.name()) &&
+                   !mode.equals(TravelMode.WALKING.name())   &&
+                   !mode.equals(TravelMode.TRANSIT.name());
+        }
+
+        private boolean isAvailableTransitMode(String mode) {
             return !mode.equals(TransitMode.BUS.name())    &&
                    !mode.equals(TransitMode.SUBWAY.name()) &&
                    !mode.equals(TransitMode.TRAIN.name())  &&
