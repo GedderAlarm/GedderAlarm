@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
     private int mHour;
     private int mMinute;
     private int mPrepTime;
+    private RadioButton mMassTransitBtn;
+    private RadioButton mDrivingBtn;
 
     // Variables for time-picker and TextViews.
     TimePicker mAlarmTimePicker;
@@ -150,6 +153,9 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         if (! mDestinationAddressString.equals("")) {
             mAutocompleteTextViewDestination.setText(mDestinationAddressString, false);
         }
+        mMassTransitBtn = (RadioButton) findViewById(R.id.radioButton1);
+        mDrivingBtn = (RadioButton) findViewById(R.id.radioButton2);
+        mMassTransitBtn.setChecked(true);
     }
 
     // This is called when one of the drop-down results is selected on origin tab.

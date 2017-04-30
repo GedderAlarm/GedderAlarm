@@ -131,6 +131,37 @@
                     android:inputType="time"
                     android:hint='Prep Time (e.g. "30" for 30 minutes)'/>
 
+                <TextView
+                    android:id="@+id/transportation_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="Transportation Type:"
+                    android:onClick="setArrivalTime"
+                    android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                    android:textColor="?attr/editTextColor" />
+
+                <RadioGroup
+                        android:id="@+id/radiogroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" >
+                        <RadioButton
+                            android:id="@+id/radioButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mass Transit          " />
+
+                        <RadioButton
+                            android:id="@+id/radioButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Driving               " />
+
+                    </RadioGroup>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
