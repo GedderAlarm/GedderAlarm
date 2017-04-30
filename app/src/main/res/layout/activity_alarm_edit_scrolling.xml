@@ -83,35 +83,41 @@
 
                 <Space
                     android:layout_width="1dp"
-                    android:layout_height="2dp"/>
+                    android:layout_height="10dp" />
 
                 <AutoCompleteTextView
                     android:id="@+id/editAlarm_OriginAutoComplete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:hint="Origin"
                     android:inputType="text"/>
 
                 <Space
                     android:layout_width="1dp"
-                    android:layout_height="2dp"/>
+                    android:layout_height="10dp" />
 
                 <AutoCompleteTextView
                     android:id="@+id/editAlarm_DestinationAutoComplete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:hint="Destination"
                     android:inputType="text" />
 
                 <Space
                     android:layout_width="1dp"
-                    android:layout_height="2dp"/>
+                    android:layout_height="10dp" />
 
 
                 <TextView
                     android:id="@+id/editAlarm_ArrivalTimePickerMonologBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="?attr/editTextBackground"
                     android:gravity="center_vertical"
                     android:hint="Arrival Time"
@@ -121,20 +127,28 @@
 
                 <Space
                     android:layout_width="1dp"
-                    android:layout_height="2dp"/>
+                    android:layout_height="10dp" />
 
                 <EditText
                     android:id="@+id/editAlarm_PrepTimeTextBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:ems="10"
                     android:inputType="time"
                     android:hint='Prep Time (e.g. "30" for 30 minutes)'/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:id="@+id/transportation_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
                     android:text="Transportation Type:"
@@ -142,26 +156,37 @@
                     android:textAppearance="?android:attr/textAppearanceMediumInverse"
                     android:textColor="?attr/editTextColor" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_weight=".5" />
+
                 <RadioGroup
-                        android:id="@+id/radiogroup"
-                        android:layout_width="wrap_content"
+                    android:id="@+id/radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" >
-                        <RadioButton
-                            android:id="@+id/radioButton1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mass Transit          " />
+                        android:layout_weight=".5"
+                        android:text="Mass Transit"
+                        android:textSize="18sp" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Driving               " />
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:text="Driving"
+                        android:textAlignment="textStart"
+                        android:textSize="18sp" />
 
-                    </RadioGroup>
+                </RadioGroup>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>

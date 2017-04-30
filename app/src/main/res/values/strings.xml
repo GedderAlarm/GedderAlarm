@@ -19,7 +19,7 @@
     <string name="start_alarm">Start Alarm</string>
     <string name="cancel_alarm">Cancel Alarm</string>
     <string name="alarm_message">ALARM!!!!!!!</string>
-    <string name="stop_alarm_txt">STOP ALARM!</string>
+    <string name="stop_alarm_txt">Stop Alarm</string>
     <string name="title_activity_edit_alarm_scrolling">EditAlarmScrollingActivity</string>
     <string name="action_settings">Settings</string>
 
