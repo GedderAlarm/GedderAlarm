@@ -74,8 +74,8 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextClock
-            android:id="@+id/gedderAlarmDisp_getThereByTime"
+        <TextView
+            android:id="@+id/gedderAlarmDisp_leaveByTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
@@ -96,8 +96,8 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextClock
-            android:id="@+id/gedderAlarmDisp_leaveByTime"
+        <TextView
+            android:id="@+id/gedderAlarmDisp_getThereByTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
