@@ -397,18 +397,18 @@ public class UrlGenerator {
          * @return whether the intended mode of travel is valid for Google Maps API.
          */
         private boolean isAvailableTravelMode(String mode) {
-            return !mode.equals(TravelMode.DRIVING.name())   &&
-                   !mode.equals(TravelMode.BICYCLING.name()) &&
-                   !mode.equals(TravelMode.WALKING.name())   &&
-                   !mode.equals(TravelMode.TRANSIT.name());
+            return !mode.equals(TravelMode.DRIVING.name().toLowerCase())   &&
+                   !mode.equals(TravelMode.BICYCLING.name().toLowerCase()) &&
+                   !mode.equals(TravelMode.WALKING.name().toLowerCase())   &&
+                   !mode.equals(TravelMode.TRANSIT.name().toLowerCase());
         }
 
         private boolean isAvailableTransitMode(String mode) {
-            return !mode.equals(TransitMode.BUS.name())    &&
-                   !mode.equals(TransitMode.SUBWAY.name()) &&
-                   !mode.equals(TransitMode.TRAIN.name())  &&
-                   !mode.equals(TransitMode.TRAM.name())   &&
-                   !mode.equals(TransitMode.RAIL.name());
+            return !mode.equals(TransitMode.BUS.name().toLowerCase())    &&
+                   !mode.equals(TransitMode.SUBWAY.name().toLowerCase()) &&
+                   !mode.equals(TransitMode.TRAIN.name().toLowerCase())  &&
+                   !mode.equals(TransitMode.TRAM.name().toLowerCase())   &&
+                   !mode.equals(TransitMode.RAIL.name().toLowerCase());
         }
     }
 }

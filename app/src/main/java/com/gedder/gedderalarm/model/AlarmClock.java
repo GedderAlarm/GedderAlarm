@@ -10,6 +10,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.gedder.gedderalarm.GedderAlarmManager;
+import com.gedder.gedderalarm.google.TransitMode;
+import com.gedder.gedderalarm.google.TravelMode;
 import com.gedder.gedderalarm.util.DaysOfWeek;
 import com.gedder.gedderalarm.util.TimeUtilities;
 
@@ -29,18 +31,20 @@ public class AlarmClock implements Parcelable {
     private static final String TAG = AlarmClock.class.getSimpleName();
 
     // Default values for certain private variables.
-    private static final String  DEFAULT_ORIGIN_ID           = "";
-    private static final String  DEFAULT_ORIGIN_ADDRESS      = "";
-    private static final String  DEFAULT_DESTINATION_ID      = "";
-    private static final String  DEFAULT_DESTINATION_ADDRESS = "";
-    private static final int     DEFAULT_ALARM_HOUR          = 6;
-    private static final int     DEFAULT_ALARM_MINUTE        = 0;
-    private static final int     DEFAULT_ARRIVAL_HOUR        = 7;
-    private static final int     DEFAULT_ARRIVAL_MINUTE      = 0;
-    private static final int     DEFAULT_PREP_HOUR           = 0;
-    private static final int     DEFAULT_PREP_MINUTE         = 0;
-    private static final boolean DEFAULT_ALARM_SET           = false;
-    private static final boolean DEFAULT_GEDDER_SET          = false;
+    private static final String      DEFAULT_ORIGIN_ID           = "";
+    private static final String      DEFAULT_ORIGIN_ADDRESS      = "";
+    private static final String      DEFAULT_DESTINATION_ID      = "";
+    private static final String      DEFAULT_DESTINATION_ADDRESS = "";
+    private static final TravelMode  DEFAULT_TRAVEL_MODE         = null;
+    private static final TransitMode DEFAULT_TRANSIT_MODE        = null;
+    private static final int         DEFAULT_ALARM_HOUR          = 6;
+    private static final int         DEFAULT_ALARM_MINUTE        = 0;
+    private static final int         DEFAULT_ARRIVAL_HOUR        = 7;
+    private static final int         DEFAULT_ARRIVAL_MINUTE      = 0;
+    private static final int         DEFAULT_PREP_HOUR           = 0;
+    private static final int         DEFAULT_PREP_MINUTE         = 0;
+    private static final boolean     DEFAULT_ALARM_SET           = false;
+    private static final boolean     DEFAULT_GEDDER_SET          = false;
 
     // Required for universal uniqueness of each alarm.
     private UUID mUuid;
@@ -49,10 +53,12 @@ public class AlarmClock implements Parcelable {
     private int mRequestCode;
 
     // Required for smart alarm.
-    private String mOriginId;
-    private String mOriginAddress;
-    private String mDestinationId;
-    private String mDestinationAddress;
+    private String      mOriginId;
+    private String      mOriginAddress;
+    private String      mDestinationId;
+    private String      mDestinationAddress;
+    private TravelMode  mTravelMode;
+    private TransitMode mTransitMode;
 
     // The days this alarm will repeat in its current form.
     private DaysOfWeek mRepeatDays;
@@ -89,6 +95,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = DEFAULT_ORIGIN_ADDRESS;      // Device location should be default.
         mDestinationId      = DEFAULT_DESTINATION_ID;      // With history, pick latest one.
         mDestinationAddress = DEFAULT_DESTINATION_ADDRESS; // With history, pick latest one.
+        mTravelMode         = DEFAULT_TRAVEL_MODE;
+        mTransitMode        = DEFAULT_TRANSIT_MODE;
         mRepeatDays         = new DaysOfWeek();
         setAlarmTime        (tomorrow, DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
         setArrivalTime      (tomorrow, DEFAULT_ARRIVAL_HOUR, DEFAULT_ARRIVAL_MINUTE);
@@ -108,6 +116,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = alarmClock.mOriginAddress;
         mDestinationId      = alarmClock.mDestinationId;
         mDestinationAddress = alarmClock.mDestinationAddress;
+        mTravelMode         = alarmClock.mTravelMode;
+        mTransitMode        = alarmClock.mTransitMode;
         mRepeatDays         = alarmClock.mRepeatDays;
         setAlarmTime        (alarmClock.mAlarmDay, alarmClock.mAlarmHour, alarmClock.mAlarmMinute);
         setArrivalTime      (alarmClock.mArrivalDay, alarmClock.mArrivalHour, alarmClock.mArrivalMinute);
@@ -132,6 +142,7 @@ public class AlarmClock implements Parcelable {
      */
     public AlarmClock(String originId, String originAddress,
                       String destinationId, String destinationAddress,
+                      TravelMode travelMode, TransitMode transitMode,
                       DaysOfWeek repeatDays,
                       Calendar alarmTime,
                       Calendar arrivalTime,
@@ -142,6 +153,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = originAddress;
         mDestinationId      = destinationId;
         mDestinationAddress = destinationAddress;
+        mTravelMode         = travelMode;
+        mTransitMode        = transitMode;
         mRepeatDays         = repeatDays;
         setAlarmTime        (alarmTime);
         setArrivalTime      (arrivalTime);
@@ -173,6 +186,7 @@ public class AlarmClock implements Parcelable {
      */
     public AlarmClock(String originId, String originAddress,
                       String destinationId, String destinationAddress,
+                      TravelMode travelMode, TransitMode transitMode,
                       DaysOfWeek repeatDays,
                       int alarmDay, int alarmHour, int alarmMinute,
                       int arrivalDay, int arrivalHour, int arrivalMinute,
@@ -183,6 +197,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = originAddress;
         mDestinationId      = destinationId;
         mDestinationAddress = destinationAddress;
+        mTravelMode         = travelMode;
+        mTransitMode        = transitMode;
         mRepeatDays         = repeatDays;
         setAlarmTime        (alarmDay, alarmHour, alarmMinute);
         setArrivalTime      (arrivalDay, arrivalHour, arrivalMinute);
@@ -218,6 +234,7 @@ public class AlarmClock implements Parcelable {
     public AlarmClock(UUID uuid, int requestCode,
                       String originId, String originAddress,
                       String destinationId, String destinationAddress,
+                      TravelMode travelMode, TransitMode transitMode,
                       DaysOfWeek repeatDays,
                       int alarmDay, int alarmHour, int alarmMinute,
                       int arrivalDay, int arrivalHour, int arrivalMinute,
@@ -228,6 +245,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = originAddress;
         mDestinationId      = destinationId;
         mDestinationAddress = destinationAddress;
+        mTravelMode         = travelMode;
+        mTransitMode        = transitMode;
         mRepeatDays         = repeatDays;
         setAlarmTime        (alarmDay, alarmHour, alarmMinute);
         setArrivalTime      (arrivalDay, arrivalHour, arrivalMinute);
@@ -245,6 +264,8 @@ public class AlarmClock implements Parcelable {
         mOriginAddress      = DEFAULT_ORIGIN_ADDRESS;      // Device location should be default.
         mDestinationId      = DEFAULT_DESTINATION_ID;      // With history, pick latest one.
         mDestinationAddress = DEFAULT_DESTINATION_ADDRESS; // With history, pick latest one.
+        mTravelMode         = DEFAULT_TRAVEL_MODE;
+        mTransitMode        = DEFAULT_TRANSIT_MODE;
         mRepeatDays         = new DaysOfWeek();
         setAlarmTime        (tomorrow, DEFAULT_ALARM_HOUR, DEFAULT_ALARM_MINUTE);
         setArrivalTime      (tomorrow, DEFAULT_ARRIVAL_HOUR, DEFAULT_ARRIVAL_MINUTE);
@@ -291,6 +312,16 @@ public class AlarmClock implements Parcelable {
     public void setDestinationAddress(String address) {
         if (address == null) throw new IllegalArgumentException("Null destination address.");
         mDestinationAddress = address;
+    }
+
+    public void setTravelMode(TravelMode travelMode) {
+        if (travelMode == null) throw new IllegalArgumentException("Null travel mode.");
+        mTravelMode = travelMode;
+    }
+
+    public void setTransitMode(TransitMode transitMode) {
+        if (transitMode == null) throw new IllegalArgumentException("Null transit mode.");
+        mTransitMode = transitMode;
     }
 
     /**
@@ -492,6 +523,14 @@ public class AlarmClock implements Parcelable {
         return mDestinationAddress;
     }
 
+    public TravelMode getTravelMode() {
+        return mTravelMode;
+    }
+
+    public TransitMode getTransitMode() {
+        return mTransitMode;
+    }
+
     /**
      * Gets the days that this alarm is set to repeat on.
      * @return The days this alarm is set to repeat on.
@@ -598,6 +637,8 @@ public class AlarmClock implements Parcelable {
         dest.writeString(this.mOriginAddress);
         dest.writeString(this.mDestinationId);
         dest.writeString(this.mDestinationAddress);
+        dest.writeString(this.mTravelMode.name());
+        dest.writeString(this.mTransitMode.name());
         dest.writeInt(this.mRepeatDays.getCoded());
         dest.writeInt(this.mAlarmDay);
         dest.writeInt(this.mAlarmHour);
@@ -631,6 +672,8 @@ public class AlarmClock implements Parcelable {
         this.mOriginAddress      = in.readString();
         this.mDestinationId      = in.readString();
         this.mDestinationAddress = in.readString();
+        this.mTravelMode         = TravelMode.valueOf(in.readString());
+        this.mTransitMode        = TransitMode.valueOf(in.readString());
         this.mRepeatDays         = new DaysOfWeek(in.readInt());
         this.mAlarmDay           = in.readInt();
         this.mAlarmHour          = in.readInt();

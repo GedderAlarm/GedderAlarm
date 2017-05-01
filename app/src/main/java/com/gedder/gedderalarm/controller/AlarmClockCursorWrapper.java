@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.gedder.gedderalarm.db.AlarmClockDBSchema.AlarmClockTable;
+import com.gedder.gedderalarm.google.TransitMode;
+import com.gedder.gedderalarm.google.TravelMode;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.util.DaysOfWeek;
 
@@ -31,6 +33,8 @@ public class AlarmClockCursorWrapper extends CursorWrapper {
                 getString(getColumnIndexOrThrow(AlarmClockTable.Columns.ORIGIN_ADDRESS)),
                 getString(getColumnIndexOrThrow(AlarmClockTable.Columns.DESTINATION_ID)),
                 getString(getColumnIndexOrThrow(AlarmClockTable.Columns.DESTINATION_ADDRESS)),
+                TravelMode.valueOf(getString(getColumnIndexOrThrow(AlarmClockTable.Columns.TRAVEL_MODE))),
+                TransitMode.valueOf(getString(getColumnIndexOrThrow(AlarmClockTable.Columns.TRANSIT_MODE))),
                 new DaysOfWeek(getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.REPEAT_DAYS))),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_DAY)),
                 getInt(getColumnIndexOrThrow(AlarmClockTable.Columns.ALARM_HOUR)),
