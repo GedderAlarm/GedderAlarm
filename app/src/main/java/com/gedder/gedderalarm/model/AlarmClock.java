@@ -35,8 +35,8 @@ public class AlarmClock implements Parcelable {
     private static final String      DEFAULT_ORIGIN_ADDRESS      = "";
     private static final String      DEFAULT_DESTINATION_ID      = "";
     private static final String      DEFAULT_DESTINATION_ADDRESS = "";
-    private static final TravelMode  DEFAULT_TRAVEL_MODE         = null;
-    private static final TransitMode DEFAULT_TRANSIT_MODE        = null;
+    private static final TravelMode  DEFAULT_TRAVEL_MODE         = TravelMode.DRIVING;
+    private static final TransitMode DEFAULT_TRANSIT_MODE        = TransitMode.SUBWAY;
     private static final int         DEFAULT_ALARM_HOUR          = 6;
     private static final int         DEFAULT_ALARM_MINUTE        = 0;
     private static final int         DEFAULT_ARRIVAL_HOUR        = 7;
