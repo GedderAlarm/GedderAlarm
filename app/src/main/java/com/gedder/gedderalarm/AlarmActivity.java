@@ -154,9 +154,13 @@ public class AlarmActivity extends AppCompatActivity {
         int travelTimeMin = results.getInt(GedderEngine.RESULT_DURATION) / 60;
         int actualPrepMin = arriveTimeMin - (currentTimeMin + travelTimeMin);
         boolean mWarnLessPrep = actualPrepMin < mPrepTime;
-        int actualPrepHours = actualPrepMin / 60;
-        actualPrepMin %= 60;
-        mLeaveByMinutes.setText(tellUserMinutesTillLeave(actualPrepHours, actualPrepMin));
+        if (actualPrepMin > 0) {
+            int actualPrepHours = actualPrepMin / 60;
+            actualPrepMin %= 60;
+            mLeaveByMinutes.setText(timeToLeave(actualPrepHours, actualPrepMin));
+        } else {
+            mLeaveByMinutes.setText("YOU MUST LEAVE IMMEDIATELY!");
+        }
         if (mWarnLessPrep) {
             mLeaveByMinutes.setTextColor(Color.RED);
         } else {
@@ -198,6 +202,28 @@ public class AlarmActivity extends AppCompatActivity {
     private String tellUserMinutesTillLeave(int prepHours, int prepMinutes) {
         return "You have " + Integer.toString(prepHours) + " hour(s) and "
                 + Integer.toString(prepMinutes) + " minute(s) until you need to leave.";
+    }
+
+    private String timeToLeave(int prepHours, int prepMinutes) {
+        long hoursToAlarm = prepHours;
+        long minutesToAlarm = prepMinutes;
+
+        String minSeq = (minutesToAlarm == 0) ? "" :
+                (minutesToAlarm == 1) ? this.getString(R.string.minute) :
+                        this.getString(R.string.minutes, Long.toString(minutesToAlarm));
+
+        String hourSeq = (hoursToAlarm == 0) ? "" :
+                (hoursToAlarm == 1) ? this.getString(R.string.hour) :
+                        this.getString(R.string.hours, Long.toString(hoursToAlarm));
+
+        boolean displayHours = hoursToAlarm > 0;
+        boolean displayMinutes = minutesToAlarm > 0;
+
+        int index = (displayHours ? 2 : 0) |
+                (displayMinutes ? 4 : 0);
+
+        String[] formats = this.getResources().getStringArray(R.array.leave_by);
+        return String.format(formats[index], "", hourSeq, minSeq);
     }
 
     private String returnTimeAsString(Calendar time) {

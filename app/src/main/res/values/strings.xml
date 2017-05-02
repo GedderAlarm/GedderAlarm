@@ -36,6 +36,18 @@
         <item>Alarm set for <xliff:g id="DAYS" example="2 days">%1$s</xliff:g>, <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g>, and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> from now.</item>
     </string-array>
 
+    <!-- How long user has until they must leave -->
+    <string-array name="leave_by">
+        <item>You have less than 1 minute to depart.</item>
+        <item>You have <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> and <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> to depart.</item>
+        <item>You have <xliff:g id="DAYS" example="2 days">%1$s</xliff:g>, <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g>, and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> to depart.</item>
+    </string-array>
+
     <!-- Temporary, for testing arrival times. -->
     <string-array name="arrival_set">
         <item>Arrival set for less than 1 minute from now.</item>
