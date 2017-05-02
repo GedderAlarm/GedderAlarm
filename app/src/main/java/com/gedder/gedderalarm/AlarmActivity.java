@@ -89,7 +89,6 @@ public class AlarmActivity extends AppCompatActivity {
                 snooze();
             }
         });
-
     }
 
     @Override
