@@ -15,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import com.gedder.gedderalarm.google.TransitMode;
+import com.gedder.gedderalarm.google.TravelMode;
 
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
@@ -155,7 +157,11 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         }
         mMassTransitBtn = (RadioButton) findViewById(R.id.radioButton1);
         mDrivingBtn = (RadioButton) findViewById(R.id.radioButton2);
-        mMassTransitBtn.setChecked(true);
+        if (mAlarmClock.getTravelMode() == TravelMode.TRANSIT) {
+            mMassTransitBtn.setChecked(true);
+        } else {
+            mDrivingBtn.setChecked(true);
+        }
     }
 
     // This is called when one of the drop-down results is selected on origin tab.
@@ -317,6 +323,11 @@ public class AddEditAlarmScrollingActivity extends AppCompatActivity implements
         DayPicker daypicker = new DayPicker(mHour, mMinute, mHourArrival, mMinuteArrival);
         int alarmDay = daypicker.getAlarmDay();
         int arrivalDay = daypicker.getArrivalDay();
+        if (mMassTransitBtn.isChecked()) {
+            mAlarmClock.setTravelMode(TravelMode.TRANSIT);
+        } else {
+            mAlarmClock.setTravelMode(TravelMode.DRIVING);
+        }
         mAlarmClock.setAlarmTime(alarmDay, mHour, mMinute);
         mAlarmClock.setArrivalTime(arrivalDay, mHourArrival, mMinuteArrival);
         mAlarmClock.setPrepTime(prepTimeHours, prepTimeMinutes);
