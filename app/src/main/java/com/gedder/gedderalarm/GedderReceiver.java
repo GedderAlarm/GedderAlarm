@@ -96,6 +96,10 @@ public class GedderReceiver extends BroadcastReceiver {
         ArrayList<String> warnings = (ArrayList<String>)
                 results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
+        /* PADDING **/
+        duration += TimeUtilities.minutesToMillis(10);
+        /* *********/
+
         long optimalWakeUpTime = arrivalTime - duration - prepTime;
         long timeUntilAlarm    = optimalWakeUpTime - System.currentTimeMillis();
 
