@@ -18,8 +18,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent alarmActivity = new Intent(context.getApplicationContext(), AlarmActivity.class);
+
         alarmActivity.putExtra(AlarmActivity.PARAM_ALARM_UUID,
                 intent.getSerializableExtra(PARAM_ALARM_UUID));
+
         Bundle results = intent.getBundleExtra("bundle");
         if (results != null) {
             alarmActivity.putExtra("bundle", results);

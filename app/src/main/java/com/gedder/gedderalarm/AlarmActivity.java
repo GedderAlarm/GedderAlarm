@@ -98,6 +98,8 @@ public class AlarmActivity extends AppCompatActivity {
                 AlarmClock alarmClock = cursor.getAlarmClock();
 
                 Intent snooze = new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+                snooze.putExtra(AlarmReceiver.PARAM_ALARM_UUID, alarmClock.getUUID());
+
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         GedderAlarmApplication.getAppContext(),
                         alarmClock.getRequestCode(), snooze, PendingIntent.FLAG_UPDATE_CURRENT);
