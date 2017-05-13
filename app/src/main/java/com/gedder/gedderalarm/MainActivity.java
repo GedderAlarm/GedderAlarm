@@ -205,10 +205,10 @@ public class MainActivity extends AppCompatActivity {
                 AlarmClock alarmClock = data.getParcelableExtra(PARCEL_ALARM_CLOCK);
                 turnAlarmOn(alarmClock);
 
-                if (alarmClock.isGedderEligible() && !alarmClock.isGedderOn()) {
+                if (alarmClock.isGedderEligible()) {
                     turnGedderOn(alarmClock);
                     turnAllGeddersOffBesidesThis(alarmClock);
-                } else if (!alarmClock.isGedderEligible() && alarmClock.isGedderOn()) {
+                } else if (!alarmClock.isGedderEligible()) {
                     turnGedderOff(alarmClock);
                 }
 
