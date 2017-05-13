@@ -172,7 +172,9 @@ public class AlarmActivity extends AppCompatActivity {
         Long arriveTimeMilli = mArriveTime.getTimeInMillis();
         int arriveTimeMin = (int)(arriveTimeMilli / 60000);
         int currentTimeMin = (int)(mCurrentTime.getTimeInMillis()/60000);
-        int travelTimeMin = results.getInt(GedderEngine.RESULT_DURATION) / 60;
+        /*TODO Figure out how to not need padding*/
+        int padding = 10;
+        int travelTimeMin = (results.getInt(GedderEngine.RESULT_DURATION) / 60) + padding;
         int actualPrepMin = arriveTimeMin - (currentTimeMin + travelTimeMin);
         boolean mWarnLessPrep = actualPrepMin < mPrepTime;
         if (actualPrepMin > 0) {
