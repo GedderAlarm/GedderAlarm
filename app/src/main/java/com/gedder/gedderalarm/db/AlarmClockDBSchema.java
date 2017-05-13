@@ -22,6 +22,8 @@ public class AlarmClockDBSchema {
             public static final String ORIGIN_ADDRESS      = "originAddress";
             public static final String DESTINATION_ID      = "destinationId";
             public static final String DESTINATION_ADDRESS = "destinationAddress";
+            public static final String TRAVEL_MODE         = "travelMode";
+            public static final String TRANSIT_MODE        = "transitMode";
             public static final String REPEAT_DAYS         = "repeatDays";
             public static final String ALARM_DAY           = "alarmDay";
             public static final String ALARM_HOUR          = "alarmHour";

@@ -41,13 +41,15 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO: Change AlarmDay/ArrivalDay to INT.
         db.execSQL("CREATE TABLE " + AlarmClockTable.TABLE_NAME + "("
-                + AlarmClockTable.Columns.ID    + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + AlarmClockTable.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + AlarmClockTable.Columns.UUID  + " TEXT, "
                 + AlarmClockTable.Columns.REQUEST_CODE + " INTEGER, "
                 + AlarmClockTable.Columns.ORIGIN_ID + " TEXT, "
                 + AlarmClockTable.Columns.ORIGIN_ADDRESS + " TEXT, "
                 + AlarmClockTable.Columns.DESTINATION_ID + " TEXT, "
                 + AlarmClockTable.Columns.DESTINATION_ADDRESS + " TEXT, "
+                + AlarmClockTable.Columns.TRAVEL_MODE + " TEXT, "
+                + AlarmClockTable.Columns.TRANSIT_MODE + " TEXT, "
                 + AlarmClockTable.Columns.REPEAT_DAYS + " SMALLINT, "
                 + AlarmClockTable.Columns.ALARM_DAY    + " INTEGER, "
                 + AlarmClockTable.Columns.ALARM_HOUR   + " SMALLINT, "
@@ -166,6 +168,8 @@ public class AlarmClockDBHelper extends SQLiteOpenHelper {
         cv.put(AlarmClockTable.Columns.ORIGIN_ADDRESS,      alarmClock.getOriginAddress());
         cv.put(AlarmClockTable.Columns.DESTINATION_ID,      alarmClock.getDestinationId());
         cv.put(AlarmClockTable.Columns.DESTINATION_ADDRESS, alarmClock.getDestinationAddress());
+        cv.put(AlarmClockTable.Columns.TRAVEL_MODE,         alarmClock.getTravelMode().name());
+        cv.put(AlarmClockTable.Columns.TRANSIT_MODE,        alarmClock.getTransitMode().name());
         cv.put(AlarmClockTable.Columns.REPEAT_DAYS,         alarmClock.getRepeatDays().getCoded());
         cv.put(AlarmClockTable.Columns.ALARM_DAY,           alarmClock.getAlarmTime().get(Calendar.DAY_OF_YEAR));
         cv.put(AlarmClockTable.Columns.ALARM_HOUR,          alarmClock.getAlarmTime().get(Calendar.HOUR_OF_DAY));
