@@ -82,6 +82,7 @@ public class AlarmActivity extends AppCompatActivity {
         } else {
             alarm_initialize();
         }
+        /*TODO Add way for user to interact with a snoozed alarm*/
         mStopAlarmBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 stopAlarm();
@@ -173,7 +174,7 @@ public class AlarmActivity extends AppCompatActivity {
         int arriveTimeMin = (int)(arriveTimeMilli / 60000);
         int currentTimeMin = (int)(mCurrentTime.getTimeInMillis()/60000);
         /*TODO Figure out how to not need padding*/
-        int padding = 10;
+        int padding = com.gedder.gedderalarm.GedderReceiver.TRAVEL_TIME_PADDING;
         int travelTimeMin = (results.getInt(GedderEngine.RESULT_DURATION) / 60) + padding;
         int actualPrepMin = arriveTimeMin - (currentTimeMin + travelTimeMin);
         boolean mWarnLessPrep = actualPrepMin < mPrepTime;

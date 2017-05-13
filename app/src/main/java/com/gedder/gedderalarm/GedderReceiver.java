@@ -63,6 +63,8 @@ public class GedderReceiver extends BroadcastReceiver {
     public static final String PARAM_PREP_TIME      = "__PARAM_PREP_TIME__";
     public static final String PARAM_ALARM_TIME     = "__PARAM_ALARM_BOUND_TIME__";
     public static final String PARAM_ID             = "__PARAM_ID__";
+    /*TODO Figure out how to not need padding*/
+    public static final int TRAVEL_TIME_PADDING     = 15;
 
     private static final String TAG = GedderReceiver.class.getSimpleName();
 
@@ -96,8 +98,8 @@ public class GedderReceiver extends BroadcastReceiver {
         ArrayList<String> warnings = (ArrayList<String>)
                 results.getSerializable(GedderEngine.RESULT_WARNINGS);
 
-        /* PADDING **/
-        duration += TimeUtilities.minutesToMillis(10);
+        /*TODO Figure out how to not need padding*/
+        duration += TimeUtilities.minutesToMillis(TRAVEL_TIME_PADDING);
         /* *********/
 
         long optimalWakeUpTime = arrivalTime - duration - prepTime;
