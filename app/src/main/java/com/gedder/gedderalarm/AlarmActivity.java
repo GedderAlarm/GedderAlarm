@@ -5,6 +5,8 @@
 
 package com.gedder.gedderalarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
@@ -22,6 +24,7 @@ import com.gedder.gedderalarm.controller.AlarmClockCursorWrapper;
 import com.gedder.gedderalarm.db.AlarmClockDBHelper;
 import com.gedder.gedderalarm.model.AlarmClock;
 import com.gedder.gedderalarm.model.GedderEngine;
+import com.gedder.gedderalarm.util.TimeUtilities;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -57,7 +60,7 @@ public class AlarmActivity extends AppCompatActivity {
         // First thing's first: turn off the alarm internally.
         Intent intent = getIntent();
         Bundle results = intent.getBundleExtra("bundle");
-        UUID alarmUuid = (UUID) intent.getSerializableExtra(PARAM_ALARM_UUID);
+        final UUID alarmUuid = (UUID) intent.getSerializableExtra(PARAM_ALARM_UUID);
         turnOffAlarm(alarmUuid);
         //need this in order to initialize other variables
         mCurrentTime = Calendar.getInstance();
@@ -86,6 +89,22 @@ public class AlarmActivity extends AppCompatActivity {
         });
         mSnoozeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                long snoozeTime = TimeUtilities.minutesToMillis(10);
+
+                /* TECH DEBT: Repeat code! Make a damn single global instance of db already. */
+                AlarmClockDBHelper db = new AlarmClockDBHelper(GedderAlarmApplication.getAppContext());
+                AlarmClockCursorWrapper cursor = new AlarmClockCursorWrapper(db.getAlarmClock(alarmUuid));
+                cursor.moveToFirst();
+                AlarmClock alarmClock = cursor.getAlarmClock();
+
+                Intent snooze = new Intent(GedderAlarmApplication.getAppContext(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        GedderAlarmApplication.getAppContext(),
+                        alarmClock.getRequestCode(), snooze, PendingIntent.FLAG_UPDATE_CURRENT);
+                GedderAlarmManager.setOptimal(
+                        AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis() + snoozeTime, pendingIntent);
+
                 snooze();
             }
         });
@@ -250,12 +269,12 @@ public class AlarmActivity extends AppCompatActivity {
         return (hour_string + ":" + minute_string + " " + am_or_pm);
     }
 
-    private void stopAlarm(){
+    private void stopAlarm() {
         turnOffAlarmSound();
         finish();
     }
 
-    private void snooze(){
+    private void snooze() {
         turnOffAlarmSound();
         finish();
     }
