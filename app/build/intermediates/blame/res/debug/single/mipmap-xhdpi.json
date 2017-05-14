@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "U:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcherx.png",
+        "source": "U:\\dev\\me\\gedder\\GedderAlarm\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcherx.png"
+    },
+    {
+        "merged": "U:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher.png",
+        "source": "U:\\dev\\me\\gedder\\GedderAlarm\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    }
+]

@@ -1,0 +1,4 @@
+#Sat May 13 16:54:57 EDT 2017
+base.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9
+renamed.0=classes.dex
+file.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9\\classes.dex

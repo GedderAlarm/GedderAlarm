@@ -1,0 +1,227 @@
+-- Merging decision tree log ---
+manifest
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:2:1-80:12
+	package
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:3:5-37
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+uses-permission#com.android.alarm.permission.SET_ALARM
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:5:5-78
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:5:22-75
+uses-permission#android.permission.WAKE_LOCK
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:6:5-68
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:6:22-65
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:7:22-78
+uses-permission#android.permission.VIBRATE
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:8:5-66
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:8:22-63
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:9:5-73
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:9:22-70
+uses-permission#android.permission.DISABLE_KEYGUARD
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:10:5-75
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:10:22-72
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:11:5-75
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:11:22-72
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:12:5-81
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:12:22-78
+uses-permission#com.google.android.providers.gsf.permission.READ_GSERVICES
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:13:5-97
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:13:22-95
+uses-permission#android.permission.INTERNET
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:14:5-66
+MERGED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:20:5-66
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:14:22-64
+application
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:16:5-78:19
+MERGED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.0] C:\Users\emidanRKO\.android\build-cache\4628555dffaabb8d8f3004a0221250bc87a4bee1\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\04ad02eae9a90248c96e62ef3536488f2c225656\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\2f6c5717e646517eec98b5f0c75ad342d6299e86\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.0] C:\Users\emidanRKO\.android\build-cache\0a2738c26a55b101509861be35fe59a5cac11d32\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\emidanRKO\.android\build-cache\cca080e6aa2c82fde2774d053ad075a07129ebd7\output\AndroidManifest.xml:9:5-20
+MERGED from [com.google.android.gms:play-services-places:10.2.1] C:\Users\emidanRKO\.android\build-cache\205764b376c0f2c8528b00ccf472f66dc9098949\output\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.1] C:\Users\emidanRKO\.android\build-cache\37d50849e7187f9f9d84c8d5e1af5f38eb8fd718\output\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.1] C:\Users\emidanRKO\.android\build-cache\2b4949b4ae5782587a57bbdf2b821a4913ac2786\output\AndroidManifest.xml:19:5-21:19
+MERGED from [com.android.support:support-v4:25.3.0] C:\Users\emidanRKO\.android\build-cache\dd504376ace59d42e3960ef523ef4b3060cf5d0c\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.0] C:\Users\emidanRKO\.android\build-cache\7ba0cfc051d11f79a3e00671e3aa6c39d283cdb9\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\252c8b33e8cbb7db1ed9acb5509c2b5d31867728\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.0] C:\Users\emidanRKO\.android\build-cache\95fd9f94d952a909705bca31786bdef5dd9fa160\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.0] C:\Users\emidanRKO\.android\build-cache\96a428b6357bb0b76931309218c0ead82f9aa33b\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\2b60b37fe0c153e05ad1bd60564757010ecf20d0\output\AndroidManifest.xml:29:5-20
+	android:label
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:19:9-41
+	android:supportsRtl
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:20:9-35
+	android:allowBackup
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:17:9-35
+	android:icon
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:18:9-43
+	android:theme
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:21:9-40
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:22:9-47
+meta-data#com.google.android.gms.version
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:24:9-26:68
+MERGED from [com.google.android.gms:play-services-basement:10.2.1] C:\Users\emidanRKO\.android\build-cache\2b4949b4ae5782587a57bbdf2b821a4913ac2786\output\AndroidManifest.xml:20:9-121
+	android:value
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:26:13-66
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:25:13-58
+meta-data#com.google.android.geo.API_KEY
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:27:9-29:70
+	android:value
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:29:13-68
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:28:13-58
+activity#com.gedder.gedderalarm.MainActivity
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:31:9-36:20
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:31:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:32:13-35:29
+action#android.intent.action.MAIN
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:33:17-69
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:33:25-66
+category#android.intent.category.LAUNCHER
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:34:17-77
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:34:27-74
+activity#com.gedder.gedderalarm.AlarmActivity
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:38:9-39:20
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:38:19-48
+activity#com.gedder.gedderalarm.AddEditAlarmScrollingActivity
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:41:9-46:20
+	android:label
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:43:13-72
+	android:theme
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:44:13-44
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:42:13-58
+receiver#com.gedder.gedderalarm.AlarmReceiver
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:48:9-51:20
+	android:process
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:50:13-38
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:49:13-42
+receiver#com.gedder.gedderalarm.GedderReceiver
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:53:9-58:20
+	android:enabled
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:55:13-35
+	android:process
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:56:13-38
+	android:exported
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:57:13-37
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:54:13-43
+receiver#com.gedder.gedderalarm.AlarmRestartReceiver
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:60:9-67:20
+	android:enabled
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:62:13-35
+	android:exported
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:63:13-36
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:61:13-49
+intent-filter#android.intent.action.BOOT_COMPLETED
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:64:13-66:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:65:17-79
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:65:25-76
+receiver#com.gedder.gedderalarm.GedderRestartReceiver
+ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:69:9-76:20
+	android:enabled
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:71:13-35
+	android:exported
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:72:13-36
+	android:name
+		ADDED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml:70:13-50
+uses-sdk
+INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:25.3.0] C:\Users\emidanRKO\.android\build-cache\4628555dffaabb8d8f3004a0221250bc87a4bee1\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\04ad02eae9a90248c96e62ef3536488f2c225656\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\2f6c5717e646517eec98b5f0c75ad342d6299e86\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.0] C:\Users\emidanRKO\.android\build-cache\b3475186bd861bafa7e628848b841daab81cb730\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.0] C:\Users\emidanRKO\.android\build-cache\0a2738c26a55b101509861be35fe59a5cac11d32\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\emidanRKO\.android\build-cache\cca080e6aa2c82fde2774d053ad075a07129ebd7\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.gms:play-services-places:10.2.1] C:\Users\emidanRKO\.android\build-cache\205764b376c0f2c8528b00ccf472f66dc9098949\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:23:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.1] C:\Users\emidanRKO\.android\build-cache\37d50849e7187f9f9d84c8d5e1af5f38eb8fd718\output\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.1] C:\Users\emidanRKO\.android\build-cache\2b4949b4ae5782587a57bbdf2b821a4913ac2786\output\AndroidManifest.xml:17:5-43
+MERGED from [com.android.support:support-v4:25.3.0] C:\Users\emidanRKO\.android\build-cache\dd504376ace59d42e3960ef523ef4b3060cf5d0c\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.0] C:\Users\emidanRKO\.android\build-cache\7ba0cfc051d11f79a3e00671e3aa6c39d283cdb9\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\252c8b33e8cbb7db1ed9acb5509c2b5d31867728\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.0] C:\Users\emidanRKO\.android\build-cache\95fd9f94d952a909705bca31786bdef5dd9fa160\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.0] C:\Users\emidanRKO\.android\build-cache\96a428b6357bb0b76931309218c0ead82f9aa33b\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\2b60b37fe0c153e05ad1bd60564757010ecf20d0\output\AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:23:9-59
+	android:targetSdkVersion
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+		INJECTED from U:\dev\me\gedder\GedderAlarm\app\src\main\AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.0] C:\Users\emidanRKO\.android\build-cache\4628555dffaabb8d8f3004a0221250bc87a4bee1\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\04ad02eae9a90248c96e62ef3536488f2c225656\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.0] C:\Users\emidanRKO\.android\build-cache\2f6c5717e646517eec98b5f0c75ad342d6299e86\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.0] C:\Users\emidanRKO\.android\build-cache\b3475186bd861bafa7e628848b841daab81cb730\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.0] C:\Users\emidanRKO\.android\build-cache\0a2738c26a55b101509861be35fe59a5cac11d32\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-v4:25.3.0] C:\Users\emidanRKO\.android\build-cache\dd504376ace59d42e3960ef523ef4b3060cf5d0c\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.0] C:\Users\emidanRKO\.android\build-cache\7ba0cfc051d11f79a3e00671e3aa6c39d283cdb9\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\252c8b33e8cbb7db1ed9acb5509c2b5d31867728\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.0] C:\Users\emidanRKO\.android\build-cache\95fd9f94d952a909705bca31786bdef5dd9fa160\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.0] C:\Users\emidanRKO\.android\build-cache\96a428b6357bb0b76931309218c0ead82f9aa33b\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.0] C:\Users\emidanRKO\.android\build-cache\2b60b37fe0c153e05ad1bd60564757010ecf20d0\output\AndroidManifest.xml:25:5-27:34
+	android:value
+		ADDED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:27:9-31
+	android:name
+		ADDED from [com.android.support:design:25.3.0] C:\Users\emidanRKO\.android\build-cache\d173caaf389a61f99d91646ceb1b4fbb46d11c47\output\AndroidManifest.xml:26:9-47
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:19:5-78
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:19:22-76
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:21:5-77
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:21:19-51
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:10.2.1] C:\Users\emidanRKO\.android\build-cache\9f5388bfea49f7b6fe865e39269b4cbde2a22d47\output\AndroidManifest.xml:21:52-75
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:19:9-172
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:19:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:19:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:10.2.1] C:\Users\emidanRKO\.android\build-cache\d0a3fcc499d175788247a21da14dcd8b5ccf396c\output\AndroidManifest.xml:19:19-85
