@@ -1,7 +1,4 @@
-#Sat May 13 17:03:42 EDT 2017
-base.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_f49a38d42c4c114649b44822802e9e22d1bdd4b6
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_c587a28077474461c97d3753f9eb03f38520d7b7\\classes.dex
-base.1=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_c587a28077474461c97d3753f9eb03f38520d7b7
-file.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_f49a38d42c4c114649b44822802e9e22d1bdd4b6\\classes.dex
+#Sun May 14 20:37:00 EDT 2017
+base.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+renamed.0=classes.dex
+file.0=U\:\\dev\\me\\gedder\\GedderAlarm\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
